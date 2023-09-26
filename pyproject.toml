@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "uvicore-docs"
+version = "0.2"
+description = "Uvicore Framework Documentation"
+authors = ["Matthew Reschke <mail@mreschke.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
