@@ -1,40 +1,53 @@
 # Configuration
 
+All Uvicore packages contain their own configuration in the `config` directory.
+
+```
+config
+├── app.py
+├── auth.py
+├── cache.py
+├── database.py
+├── dependencies.py
+├── http.py
+├── logger.py
+├── mail.py
+├── overrides.py
+├── package.py
+```
+
+The 2 main configs are `app.py` and `package.py` of which all other `.py` files are referenced.
+
+When you are "running" or "serving" your package as an application, the `app.py` config is used to define all runtime information.  The `package.py` is also used for package specific configs.
+
+When your package is used inside another package (as a shared library for example), the `app.py` is not used.
+
+
 
 ## Registering Configs
 
 All packages register their own configs using a unique `key`, generally your apps name.  This
-registration is done inside the packages [Service Provider](/service-providers/) `register()` method.
-If a config is already registered with the same `key` then the Dictionary value
-will be "deep merged".  This allows packages to override other package configs
-at a granular level.  The last provider defined wins in an override battle.
+registration is done inside the packages `package/provider.py` Provider in the `register()` method.
 
-In a provider, `self.name` is the name of you package, ie: `mreschke.wiki`.  In
-this example I am also overriding the `uvicore.foundation` config with my own
-partial config that gets deep merged.
+If a config is already registered with the same `key` then the Dictionary value
+will be `deep merged`.  This allows packages to override other package configs
+at a granular level.  The last provider defined wins.
 
 ```python
-class Wiki(ServiceProvider):
+@uvicore.provider()
+class Myapp(Provider, Cli):
 
     def register(self) -> None:
         # Register configs
         # If config key already exists items will be deep merged allowing
-        # you to override small peices of other package configs
+        # you to override granular aspects of other package configs
         self.configs([
-            # Here self.name is your packages name (ie: mreschke.wiki).
-            {'key': self.name, 'module': 'mreschke.wiki.config.wiki.config'},
+            # Here self.name is your packages name (ie: myapp).
+            {'key': self.name, 'value': self.package_config},
 
-            # Foundation exists, so this is a deep merge override
-            {'key': 'uvicore.foundation', 'module': 'mreschke.wiki.config.uvicore.foundation.config'},
+            # Example of how to override another packages config with your own.
+            #{'key': 'uvicore.auth', 'module': 'myapp.config.packages.auth.config'},
         ])
-```
-
-Because of this merging technology you can split out your `config/wiki.py` file
-into many files if you wish.  Maybe one for `config/database.py` for example.
-If that file had a `database: {...}` dictionary it would be merge into your wiki
-config by adding this to your `register() self.config` list.
-```python
-{'key': self.name, 'module': 'mreschke.wiki.config.database.config'}
 ```
 
 
@@ -89,7 +102,7 @@ package.config('cache')
 ### Getting Values
 
 !!! notice
-    The config system is a large [SuperDict](/superdict/).  One of the main differences if a [SuperDict](/superdict/) is that keys that do not exist to not return `None`, they return an empty `SuperDict({})` which allows method style chaining to work properly.  So never check `if config.connections is None` as it will never be none.  Instead just check `if config.connection`.  This also means that `hasattr(config, 'somekey')` will ALWAYS return True even if the key does not exist because it default to `SuperDict({})`.
+    The config system is a large [SuperDict](/superdict/).  One of the main differences of a [SuperDict](/superdict/) is that keys that do not exist to not return `None`, they return an empty `SuperDict({})` which allows method style chaining to work properly.  So never check `if config.connections is None` as it will never be none.  Instead just check `if config.connection`.  This also means that `hasattr(config, 'somekey')` will ALWAYS return True even if the key does not exist because it default to `SuperDict({})`.
 
 
 Get the entire config Dictionary from all packages, completely deep merged based

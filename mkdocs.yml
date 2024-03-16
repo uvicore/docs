@@ -8,26 +8,34 @@ repo_url: https://github.com/uvicore/framework
 edit_uri: ''
 
 # Serving
-dev_addr: '127.0.0.1:8034'
+dev_addr: '0.0.0.0:8034'
 
 
 # Navigation
 nav:
-  - Getting Started:
-    - index.md
+  - Getting Started:          # Getting Started
+    - index.md                #   Welcome to Uvicore
     - installation.md
     - configuration.md
     - directory-structure.md
     - deployment.md
-  - The Basics:
-    - routing.md
-    - views.md
-    - controllers.md
-    - exceptions.md
-  - Db/Orm:
-    - db-config.md
-    - db-tables.md
-    - db-queries.md
+  - -API-:
+    - api/router.md
+    - api/model-router.md
+    - api/exceptions.md
+  - -Web-:
+    - web/routing.md
+    - web/views.md
+    - web/controllers.md
+    - web/exceptions.md
+  - -CLI-:
+    - cli/index.md
+    - cli/writing-commands.md
+    - cli/python-entrypoints.md
+  - -Database-:
+    - config.md
+    - tables.md
+    - queries.md
     - orm-basics.md
     - orm-model.md
     - orm-querybuilder.md
