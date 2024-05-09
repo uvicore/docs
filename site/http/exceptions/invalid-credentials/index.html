@@ -10,28 +10,28 @@
       
       
       
-        <link rel="canonical" href="https://uvicore.io/database/queries/">
+        <link rel="canonical" href="https://uvicore.io/http/exceptions/invalid-credentials/">
       
       
-        <link rel="prev" href="../tables/">
+        <link rel="prev" href="../not-authenticated/">
       
       
-        <link rel="next" href="../orm-basics/">
+        <link rel="next" href="../../../cli/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.13">
     
     
       
-        <title>Database Queries - Uvicore - Fullstack Async Python</title>
+        <title>InvalidCredentials - Uvicore - Fullstack Async Python</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e359304.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,9 +50,9 @@
       
     
     
-      <link rel="stylesheet" href="../../files/style.css">
+      <link rel="stylesheet" href="../../../files/style.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#database-queries" class="md-skip">
+        <a href="#invalidcredentials" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Uvicore - Fullstack Async Python" class="md-header__button md-logo" aria-label="Uvicore - Fullstack Async Python" data-md-component="logo">
+    <a href="../../.." title="Uvicore - Fullstack Async Python" class="md-header__button md-logo" aria-label="Uvicore - Fullstack Async Python" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg>
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Database Queries
+              InvalidCredentials
             
           </span>
         </div>
@@ -191,7 +191,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -208,7 +208,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../features/" class="md-tabs__link">
+      <a href="../../../features/" class="md-tabs__link">
         
   
     
@@ -227,7 +227,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../getting-started/installation/" class="md-tabs__link">
+        <a href="../../../getting-started/installation/" class="md-tabs__link">
           
   
   Getting Started
@@ -241,11 +241,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../http/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
   HTTP
@@ -263,7 +265,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../cli/" class="md-tabs__link">
+        <a href="../../../cli/" class="md-tabs__link">
           
   
   CLI
@@ -277,13 +279,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../config/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../database/config/" class="md-tabs__link">
           
   
   Database
@@ -301,7 +301,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../service-providers/" class="md-tabs__link">
+        <a href="../../../service-providers/" class="md-tabs__link">
           
   
   Architecture
@@ -319,7 +319,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../events/" class="md-tabs__link">
+        <a href="../../../events/" class="md-tabs__link">
           
   
   Digging Deeper
@@ -337,7 +337,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../release-notes/" class="md-tabs__link">
+        <a href="../../../release-notes/" class="md-tabs__link">
           
   
   Epologue
@@ -370,7 +370,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Uvicore - Fullstack Async Python" class="md-nav__button md-logo" aria-label="Uvicore - Fullstack Async Python" data-md-component="logo">
+    <a href="../../.." title="Uvicore - Fullstack Async Python" class="md-nav__button md-logo" aria-label="Uvicore - Fullstack Async Python" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg>
@@ -400,7 +400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -420,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../features/" class="md-nav__link">
+      <a href="../../../features/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -478,7 +478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/installation/" class="md-nav__link">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -499,7 +499,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/directory-structure/" class="md-nav__link">
+      <a href="../../../getting-started/directory-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -520,7 +520,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -541,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/deployment/" class="md-nav__link">
+      <a href="../../../getting-started/deployment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -566,23 +566,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -593,7 +598,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             HTTP
@@ -607,7 +612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/api/routing/" class="md-nav__link">
+      <a href="../../api/routing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -687,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/api/model-router/" class="md-nav__link">
+      <a href="../../api/model-router/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -708,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/api/file-upload/" class="md-nav__link">
+      <a href="../../api/file-upload/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -775,7 +780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/web/routing/" class="md-nav__link">
+      <a href="../../web/routing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -796,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/web/views/" class="md-nav__link">
+      <a href="../../web/views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -817,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/web/controllers/" class="md-nav__link">
+      <a href="../../web/controllers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -843,6 +848,8 @@
                 
   
   
+    
+  
   
   
     
@@ -852,11 +859,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
@@ -870,7 +877,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
             Exceptions
@@ -884,7 +891,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/exceptions/concepts/" class="md-nav__link">
+      <a href="../concepts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -905,7 +912,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/exceptions/handlers/" class="md-nav__link">
+      <a href="../handlers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -926,7 +933,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/exceptions/http-exception/" class="md-nav__link">
+      <a href="../http-exception/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -947,7 +954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/exceptions/not-found/" class="md-nav__link">
+      <a href="../not-found/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -968,7 +975,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/exceptions/permission-denied/" class="md-nav__link">
+      <a href="../permission-denied/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -989,7 +996,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/exceptions/not-authenticated/" class="md-nav__link">
+      <a href="../not-authenticated/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1007,10 +1014,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../http/exceptions/invalid-credentials/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    InvalidCredentials
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1019,6 +1046,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#throw-from-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Throw From Controller
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-response-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Response Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Code
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1084,7 +1158,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/" class="md-nav__link">
+      <a href="../../../cli/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1105,7 +1179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/commands/" class="md-nav__link">
+      <a href="../../../cli/commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1126,7 +1200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/writing-commands/" class="md-nav__link">
+      <a href="../../../cli/writing-commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1147,7 +1221,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/python-entrypoints/" class="md-nav__link">
+      <a href="../../../cli/python-entrypoints/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1172,28 +1246,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1204,7 +1273,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Database
@@ -1218,7 +1287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../config/" class="md-nav__link">
+      <a href="../../../database/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1239,7 +1308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tables/" class="md-nav__link">
+      <a href="../../../database/tables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1257,30 +1326,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Database Queries
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../database/queries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1289,53 +1338,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#querybuilder" class="md-nav__link">
-    <span class="md-ellipsis">
-      QueryBuilder
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other" class="md-nav__link">
-    <span class="md-ellipsis">
-      Other
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#raw-queries-without-table-modules" class="md-nav__link">
-    <span class="md-ellipsis">
-      Raw Queries without Table Modules
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1348,7 +1350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../orm-basics/" class="md-nav__link">
+      <a href="../../../database/orm-basics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1369,7 +1371,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../orm-model/" class="md-nav__link">
+      <a href="../../../database/orm-model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1390,7 +1392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../orm-querybuilder/" class="md-nav__link">
+      <a href="../../../database/orm-querybuilder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1411,7 +1413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../orm-pydantic/" class="md-nav__link">
+      <a href="../../../database/orm-pydantic/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1477,7 +1479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../service-providers/" class="md-nav__link">
+      <a href="../../../service-providers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1498,7 +1500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ioc/" class="md-nav__link">
+      <a href="../../../ioc/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1519,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request-lifecycle/" class="md-nav__link">
+      <a href="../../../request-lifecycle/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1540,7 +1542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../bootstrap/" class="md-nav__link">
+      <a href="../../../bootstrap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1606,7 +1608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../events/" class="md-nav__link">
+      <a href="../../../events/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1627,7 +1629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jobs/" class="md-nav__link">
+      <a href="../../../jobs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1648,7 +1650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cache/" class="md-nav__link">
+      <a href="../../../cache/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1669,7 +1671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mail/" class="md-nav__link">
+      <a href="../../../mail/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1690,7 +1692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../auto-api/" class="md-nav__link">
+      <a href="../../../auto-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1711,7 +1713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../superdict/" class="md-nav__link">
+      <a href="../../../superdict/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1732,7 +1734,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-entrypoints.md" class="md-nav__link">
+      <a href="../../../cli-entrypoints.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1798,7 +1800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../release-notes/" class="md-nav__link">
+      <a href="../../../release-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1819,7 +1821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mkdocs-help/" class="md-nav__link">
+      <a href="../../../mkdocs-help/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1867,27 +1869,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#querybuilder" class="md-nav__link">
+  <a href="#throw-from-controller" class="md-nav__link">
     <span class="md-ellipsis">
-      QueryBuilder
+      Throw From Controller
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#other" class="md-nav__link">
+  <a href="#api-response-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Other
+      API Response Example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#raw-queries-without-table-modules" class="md-nav__link">
+  <a href="#source-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Raw Queries without Table Modules
+      Source Code
     </span>
   </a>
   
@@ -1908,28 +1910,63 @@
                   
 
 
-<h1 id="database-queries">Database Queries<a class="headerlink" href="#database-queries" title="Permanent link">&para;</a></h1>
-<h2 id="querybuilder">QueryBuilder<a class="headerlink" href="#querybuilder" title="Permanent link">&para;</a></h2>
-<p>xyz</p>
-<h2 id="other">Other<a class="headerlink" href="#other" title="Permanent link">&para;</a></h2>
-<p>Maybe raw queries against an actual table module?</p>
-<h2 id="raw-queries-without-table-modules">Raw Queries without Table Modules<a class="headerlink" href="#raw-queries-without-table-modules" title="Permanent link">&para;</a></h2>
-<p>You can query database tables without a pre-defined SQLAlchemy table class.</p>
-<div class="highlight"><pre><span></span><code><span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT</span>
-<span class="s2">        *</span>
-<span class="s2">    FROM</span>
-<span class="s2">        sometable</span>
-<span class="s2">    WHERE</span>
-<span class="s2">        -- Parameterization works, or can just use somekey = &#39;somevalue&#39;, but is less secure</span>
-<span class="s2">        somekey = :v</span>
-<span class="s2">&quot;&quot;&quot;</span>
-<span class="n">params</span><span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;parameterized value here&#39;</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">uvicore</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;myapp&#39;</span><span class="p">)</span>
+<h1 id="invalidcredentials">InvalidCredentials<a class="headerlink" href="#invalidcredentials" title="Permanent link">&para;</a></h1>
+<p>Convenience wrapper around <code>HTTPException</code> with a 401 and a <code>Invalid Credentials</code> message.  If you need more control use the main <a href="../http-exception/">HTTPException</a></p>
+<h2 id="throw-from-controller"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m5.41 21 .71-4h-4l.35-2h4l1.06-6h-4l.35-2h4l.71-4h2l-.71 4h6l.71-4h2l-.71 4h4l-.35 2h-4l-1.06 6h4l-.35 2h-4l-.71 4h-2l.71-4h-6l-.71 4h-2M9.53 9l-1.06 6h6l1.06-6h-6Z"/></svg></span> Throw From Controller<a class="headerlink" href="#throw-from-controller" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uvicore</span>
+<span class="kn">from</span> <span class="nn">uvicore.http</span> <span class="kn">import</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">uvicore.http.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">NotAuthenticated</span>
+<span class="kn">from</span> <span class="nn">uvicore.http.routing</span> <span class="kn">import</span> <span class="n">ApiRouter</span><span class="p">,</span> <span class="n">Controller</span>
+
+<span class="nd">@uvicore</span><span class="o">.</span><span class="n">controller</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="n">ApiRouter</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># This is caught by the except Exception as e: below</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+
+            <span class="c1"># This is something we threw, but is also passed to the</span>
+            <span class="c1"># except Exception as e: below as well</span>
+            <span class="k">if</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># Simple</span>
+                <span class="k">raise</span> <span class="n">InvalidCredentials</span><span class="p">()</span>
+
+                <span class="c1"># Or Full Params</span>
+                <span class="k">raise</span> <span class="n">InvalidCredentials</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="s1">&#39;Detail Here&#39;</span><span class="p">,</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">},</span>
+                    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;optional&#39;</span><span class="p">:</span> <span class="s1">&#39;dict of headers&#39;</span><span class="p">}</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
 </code></pre></div>
-<p>Can also use <code>fetchone()</code> and <code>execute()</code> for INSERTS, UPDATES and DELETES</p>
+<h2 id="api-response-example"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m5.41 21 .71-4h-4l.35-2h4l1.06-6h-4l.35-2h4l.71-4h2l-.71 4h6l.71-4h2l-.71 4h4l-.35 2h-4l-1.06 6h4l-.35 2h-4l-.71 4h-2l.71-4h-6l-.71 4h-2M9.53 9l-1.06 6h6l1.06-6h-6Z"/></svg></span> API Response Example<a class="headerlink" href="#api-response-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;status_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Invalid Credentials&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Invalid Credentials&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;exception&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;extra&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="source-code"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m5.41 21 .71-4h-4l.35-2h4l1.06-6h-4l.35-2h4l.71-4h2l-.71 4h6l.71-4h2l-.71 4h4l-.35 2h-4l-1.06 6h4l-.35 2h-4l-.71 4h-2l.71-4h-6l-.71 4h-2M9.53 9l-1.06 6h6l1.06-6h-6Z"/></svg></span> Source Code<a class="headerlink" href="#source-code" title="Permanent link">&para;</a></h2>
+<p>See the <a href="https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/__init__.py">Source Code</a> on Github</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InvalidCredentials</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Invalid Credentials Exception&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+        <span class="n">detail</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">extra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Invalid Credentials&#39;</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="n">detail</span><span class="p">,</span>
+            <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
 
 
 
@@ -1976,12 +2013,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
-        <script src="../../files/custom.js"></script>
+        <script src="../../../files/custom.js"></script>
       
     
   </body>
