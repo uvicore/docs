@@ -1,0 +1,2037 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Fullstack Async Web, API and CLI Python Framework">
+      
+      
+      
+        <link rel="canonical" href="https://uvicore.io/cache/">
+      
+      
+        <link rel="prev" href="../jobs/">
+      
+      
+        <link rel="next" href="../mail/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.13">
+    
+    
+      
+        <title>Cache - Uvicore - Fullstack Async Python</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../files/style.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cache" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Uvicore - Fullstack Async Python" class="md-header__button md-logo" aria-label="Uvicore - Fullstack Async Python" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Uvicore - Fullstack Async Python
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cache
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/uvicore/framework" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    uvicore/framework
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Uvicore
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../features/" class="md-tabs__link">
+        
+  
+    
+  
+  Features
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../getting-started/installation/" class="md-tabs__link">
+          
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../http/" class="md-tabs__link">
+          
+  
+  HTTP
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cli/" class="md-tabs__link">
+          
+  
+  CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../database/config/" class="md-tabs__link">
+          
+  
+  Database
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../service-providers/" class="md-tabs__link">
+          
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../events/" class="md-tabs__link">
+          
+  
+  Digging Deeper
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../release-notes/" class="md-tabs__link">
+          
+  
+  Epologue
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Uvicore - Fullstack Async Python" class="md-nav__button md-logo" aria-label="Uvicore - Fullstack Async Python" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg>
+
+    </a>
+    Uvicore - Fullstack Async Python
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/uvicore/framework" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    uvicore/framework
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Uvicore
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/directory-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Directory Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    HTTP
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            HTTP
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/api/routing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Routing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/api/model-router/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Model Router
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/api/exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exceptions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/api/file-upload/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File Upload
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Web
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Web
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/web/routing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Routing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/web/views/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Views
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/web/controllers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/web/exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exceptions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            CLI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Console Commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/writing-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Writing Commands
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/python-entrypoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Entrypoints
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Database
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Database
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/tables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Tables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/queries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/orm-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ORM Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/orm-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ORM Model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/orm-querybuilder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ORM Query Builder
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/orm-pydantic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pydantic
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service-providers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Providers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ioc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../request-lifecycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Request Lifecycle
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Digging Deeper
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Digging Deeper
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jobs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jobs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Cache
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Cache
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stores
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expiration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mail/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mail
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auto-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Auto API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../superdict/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SuperDict
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli-entrypoints.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    None
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Epologue
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Epologue
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mkdocs-help/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mkdocs and Material
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stores
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expiration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="cache">Cache<a class="headerlink" href="#cache" title="Permanent link">&para;</a></h1>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Uvicore comes with a built-in caching system capable of connecting to any number of backend storage services.  Uvicore currently ships with <code>Redis</code> and <code>In App Memory</code> caching backends.  Additional backend drivers can easily be created by the community.</p>
+<p>The caching system is generally used to cache expensive database queries or other data lookups.  But of course, you are free to use it for any arbitrary key/value storage.  Just remember, cache is not a database, it expires unless you define otherwise.  Even still, it should be considered volatile.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>Most of uvicore's configuration is set to sensible defaults with quick and easy <code>.env</code> file overrides.</p>
+<p>By default, caching is set to use the <code>array</code> store.  This means you can start using caching right away without any further configuration.</p>
+<p>If you want to switch to a <code>Redis</code> backend caching system, simply edit your <code>.env</code> file and configure these simple values
+<div class="highlight"><pre><span></span><code># Cache redis connection
+REDIS_CACHE_HOST=127.0.0.1
+REDIS_CACHE_PORT=6379
+REDIS_CACHE_DB=2
+
+# Cache configuration
+CACHE_STORE=redis
+CACHE_EXPIRE=600
+</code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code>.env</code> file tweaks are all you need to get started.  You are good to go.</p>
+<p>If you want to dig deeper into the configuration, keep reading...</p>
+</div>
+<p>All cache configuration is done at the running application level.  This means your <code>config/app.py</code> config.  In that file you will notice this entry
+<div class="highlight"><pre><span></span><code>    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Cache Configuration</span>
+    <span class="c1"># If no cache config defined, the default of &#39;array&#39; caching will be used</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;CACHE_STORE&#39;</span><span class="p">,</span> <span class="s1">&#39;array&#39;</span><span class="p">),</span>  <span class="c1"># redis, array</span>
+        <span class="s1">&#39;stores&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;redis&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;uvicore.cache.backends.redis.Redis&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;connection&#39;</span><span class="p">:</span> <span class="s1">&#39;cache&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;CACHE_PREFIX&#39;</span><span class="p">,</span> <span class="s1">&#39;acme.appstub::cache/&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;seconds&#39;</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="s1">&#39;CACHE_EXPIRE&#39;</span><span class="p">,</span> <span class="mi">600</span><span class="p">),</span>  <span class="c1"># 0=forever</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+</code></pre></div>
+This entire top-level <code>cache</code> config key is optional.  If not defined, caching is defaulted to using the <code>array</code> store.  Caching can never be "disabled", because other packages you depend on may be using a ton of cache calls.  The default of <code>array</code> ensures those calls function properly even if you don't have Redis or some other backend available.</p>
+<p>In this example, the <code>stores</code> Dict contains one cache store by a named key <code>redis</code>.  The <code>default</code> string defines which store is used when you make a call to <code>uvicore.cache</code> without explicitly defining which store to use.  Simply adjusting your <code>.env</code> with <code>CACHE_STORE=redis</code> ensures all calls to cache will now be using the <code>redis</code> store.</p>
+<p>The <code>driver</code> section defines the backend python adapter that handles redis caching, in this case, the built-in <code>uvicore.cache.backends.redis.Redis</code> python module.  Any community member can create a cache compatible backend by examining that module and adhering to the <code>CacheInterface</code>.</p>
+<p>The <code>prefix</code> section defines the prefix added to each key that is saved to cache.  Good for Redis if you have dozens of apps using cache.  This prefix is also how <code>cache.flush()</code> can delete all cache entries it "owns" without flushing the entire Redis database.</p>
+<p>The <code>seconds</code> are the default expiration given to each cache key.  Cache is generally meant to expire.  If you don't ever want key/values to expire, set <code>seconds: 0</code>.  This config defines the default behavior of <code>cache.put()</code> and other save methods.  You can also override each individual call using the optional seconds parameter <code>cache.put('mykey', 'myvalue', seconds=50)</code></p>
+<p>The <code>connection</code> key is pointing to a redis database connection key which is defined in your packages <code>config/package.py</code> configuration.  All packages created from the <a href="/installation/">Uvicore Installer</a> already contain a <code>cache</code> redis connection key.  All you have to do is ensure your <code>.env</code> has the proper values to override it.
+<div class="highlight"><pre><span></span><code>    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Redis Connections</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="s1">&#39;redis&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;REDIS_DEFAULT&#39;</span><span class="p">,</span> <span class="s1">&#39;wiki&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;connections&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;wiki&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;REDIS_WIKI_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="s1">&#39;REDIS_WIKI_PORT&#39;</span><span class="p">,</span> <span class="mi">6379</span><span class="p">),</span>
+                <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="s1">&#39;REDIS_WIKI_DB&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;REDIS_WIKI_PASSWORD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;cache&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;REDIS_CACHE_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="s1">&#39;REDIS_CACHE_PORT&#39;</span><span class="p">,</span> <span class="mi">6379</span><span class="p">),</span>
+                <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="s1">&#39;REDIS_CACHE_DB&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">env</span><span class="p">(</span><span class="s1">&#39;REDIS_CACHE_PASSWORD&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+</code></pre></div></p>
+<h2 id="stores">Stores<a class="headerlink" href="#stores" title="Permanent link">&para;</a></h2>
+<p>Uvicore ships with 2 backend cache stores, <code>Redis</code> and <code>Array</code>.  The community (that means YOU) may easily create other stores like memcache.</p>
+<p>The <code>array</code> store simply stores cached data in the running apps memory.  Array store does have full TTL expiry!  It should act just like redis cache except that it is in your running apps memory.  When the app dies, cache is gone forever.  This means cache entries with no expiry (seconds=0) will disappear when the app stops. Array is best used for testing or when you import another uvicore package that uses caching, but you don't have redis and don't really care about the cache.</p>
+<h2 id="expiration">Expiration<a class="headerlink" href="#expiration" title="Permanent link">&para;</a></h2>
+<p>All values inserted to the cache store always use the config expire TTL seconds.
+This means all keys will automatically delete themselves.  You can override each insert operation using the optional <code>seconds=</code> parameter.  Using <code>seconds=0</code> means the key
+will NEVER expire.  If you want every key to persist forever, update your config seconds to 0.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>You can obtain a cache instance in multiple ways.  The easiest and <strong>recommended</strong> method is to simply use <code>uvicore.cache</code> since <code>import uvicore</code> is most likely already at the top of every file you will use.
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uvicore</span>
+<span class="n">uvicore</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Or</span>
+
+<span class="kn">import</span> <span class="nn">uvicore.cache</span>
+<span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>You can optionally get the cache instance from the <a href="/ioc/">IoC</a> either by <code>uvicore.ioc.make</code> or by simply importing the cache manager.  In either case, you must manually <code>connect()</code> to start using the cache.
+<div class="highlight"><pre><span></span><code><span class="c1"># These options require you to run .connect().  If .connect() has no parameters, the default</span>
+<span class="c1"># cache store is used from your config.  You may also specify the store with .connect(&#39;redis&#39;)</span>
+<span class="kn">from</span> <span class="nn">uvicore.cache.manager</span> <span class="kn">import</span> <span class="n">Manager</span> <span class="k">as</span> <span class="n">Cache</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">Cache</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+<span class="c1"># Or using .make()</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">uvicore</span><span class="o">.</span><span class="n">ioc</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;cache&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</code></pre></div></p>
+<p>Use an alternate store other than the default defined in your config
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s1">&#39;redis&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Get one or more values from cache
+<div class="highlight"><pre><span></span><code><span class="c1"># Get a single value by key</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get a dictionary of multiple key value pairs if requesting multiple keys</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">])</span>
+</code></pre></div></p>
+<p>Get one or more values from cache with a default value if not exists.  If key does not exist return a DEFAULT value, but do NOT set that default back to the cache store.
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;missing1&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;default if not found&#39;</span><span class="p">)</span>
+
+<span class="c1"># Works with multiple key value pairs.  Returned dictionary will either have the data</span>
+<span class="c1"># for each key, or use the default value</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;missing1&#39;</span><span class="p">,</span> <span class="s1">&#39;key1&#39;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;not found&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>The <code>.remember()</code> method will get one or more values if exist, if not, it will set the default to the cache store and return it.  Different that <code>.get()</code> with a <code>default=</code> because <code>.remember()</code> will set the default in the cache store.  This is the <strong>recommended</strong> method to automatically cache expensive database queries or lookups into cache.  Works with callbacks!
+<div class="highlight"><pre><span></span><code><span class="c1"># Single key value</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">remember</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;default key3&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multiple key value returns.  If any one does not exist, the default is SET in the cache store</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">remember</span><span class="p">([</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">],</span> <span class="s1">&#39;default value&#39;</span><span class="p">)</span>
+
+<span class="c1"># Using custom TTL seconds</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">remember</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;default value&#39;</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Default can be a callback.  This is ideal for retrieving a value from cache if exists.  If not</span>
+<span class="c1"># exist, run a complex query and set the queries results into the cache.</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">wiki_posts</span><span class="p">():</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">Post</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">remember</span><span class="p">(</span><span class="s1">&#39;all_posts&#39;</span><span class="p">,</span> <span class="n">wiki_posts</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Check if a single cache key exists
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Put a single key value in cache
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;value1&#39;</span><span class="p">)</span>
+
+<span class="c1"># If no seconds is passed, uses default TTL seconds from config</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Put multiple key value pairs into cache
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">put</span><span class="p">({</span>
+    <span class="s1">&#39;key3&#39;</span><span class="p">:</span> <span class="s1">&#39;value 3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;key4&#39;</span><span class="p">:</span> <span class="s1">&#39;value 4&#39;</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="c1"># with optional seconds= parameter</span>
+</code></pre></div></p>
+<p>Pull one or more values from cache and delete after retrieval. Like get, but
+once retrieved, cache entry is DELETED.
+<div class="highlight"><pre><span></span><code><span class="c1"># Single pull</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multiple</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">pull</span><span class="p">([</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">])</span>
+</code></pre></div></p>
+<p>Add a single value only if not exists.  Like put, but will not overwrite an existing value.
+<div class="highlight"><pre><span></span><code><span class="c1"># Return true if success (meaning key did not exist and we added it), otherwise</span>
+<span class="c1"># false for already exists</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;value1&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Touch a key.  This alters the last access time of a key but does not retrieve the value.
+If <code>seconds=</code> are passed it will RESET the TTL to the given seconds.
+<div class="highlight"><pre><span></span><code><span class="c1"># Update the last access time, but do NOT modify the TTL</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Update the last access time and reset the TTL to seconds=</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Returns true if key exists and we touched or modified the TTL.  False if key does not exist.</span>
+</code></pre></div></p>
+<p>Increment a key.  If key does not exist, it will create it.  Increment returns the current value after the increment
+<div class="highlight"><pre><span></span><code><span class="c1"># Uses default TTL seconds</span>
+<span class="n">new_int</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Custom TTL seconds expire</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Custom increment integer</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">increment</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Forget (delete) one or more keys
+<div class="highlight"><pre><span></span><code><span class="c1"># A single key</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">forget</span><span class="p">(</span><span class="s1">&#39;key1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multiple keys</span>
+<span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">forget</span><span class="p">([</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;key2&#39;</span><span class="p">])</span>
+</code></pre></div></p>
+<p>Delete all cache keys.  This is "redis safe" as it only deletes keys in the redis database
+that begin with the cache prefix defined in your config.  It does NOT delete all keys in your database!
+<div class="highlight"><pre><span></span><code><span class="k">await</span> <span class="n">cache</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+        <script src="../files/custom.js"></script>
+      
+    
+  </body>
+</html>

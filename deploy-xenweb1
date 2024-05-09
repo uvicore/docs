@@ -1,0 +1,8 @@
+# Quick temporary deploy until pipeline is in place
+
+
+mkdocs build
+rsync -vaP site/ linweb1:/var/www/uvicore.io/
+rsync -vaP ~/Code/uvicore/framework/bin/uvicore-installer linweb1:/var/www/uvicore.io/uvicore-installer
+
+

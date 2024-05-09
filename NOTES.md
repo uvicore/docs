@@ -1,4 +1,37 @@
-slogan
+# Notes
+
+
+## TODO
+
+REMEMBER: Docs are also a SELLING TOOL!!!
+
+
+## Screenshot specs
+
+- i3, from exact split, move over 2 arrows
+- stock konsole, increase font 3lrrx
+
+
+## Example Application
+
+We use ~/Code/wiki which is an `acme/wiki` uvicore app for all examples
+
+
+
+
+### Installation
+
+The Installation page need screenshots of WHAT
+./uvicore looks like
+./uvicore wiki welcome looks like
+and what ./uvicore http serve looks like
+how home page + swagger /welcome
+
+
+
+
+
+# Slogan
 
 The Fullstack Asynchronous Web, API and CLI Python Framework
 

@@ -60,17 +60,22 @@ After the database extras have been installed you must update your `config.packa
 
 ## Admonitions
 
-https://squidfunk.github.io/mkdocs-material/reference/admonitions/#supported-types
+https://squidfunk.github.io/mkdocs-material/reference/admonitions/
 
 !!! note
-    Note here
-    and here
+    This is the `!!! note` admonition
 
----
+!!! abstract
+    This is the `!!! abstract` admonition
+
+!!! info
+    This is the `!!! info` admonition
+
+!!! info "Custom Title Here"
+    This is the `!!! info "Custom Title Here"` admonition
 
 !!! tip
-    Tip here - NO title
-    and here
+    This is the `!!! tip` admonition with a code block
 
     ```python
     def hi():
@@ -90,9 +95,7 @@ https://squidfunk.github.io/mkdocs-material/reference/admonitions/#supported-typ
 
 ---
 
-!!! info "with title here"
-    Info here
-    and here
+
 
 ---
 

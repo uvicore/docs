@@ -1,0 +1,78 @@
+/*Analogous Color Swatch
+https://htmlcolorcodes.com/color-picker/
+#2094f3
+#202af3
+#7f20f3
+#E920F3
+#F32094
+#f3202b
+#F37F20
+#0B7AD5
+#94F320
+#2BF320
+*/
+
+/* If you want full width material design */
+/* .md-grid {
+    max-width: 100% !important;
+} */
+
+
+/* .md-sidebar--secondary {
+    margin-left: 100%;
+} */
+
+/* Inline code */
+.md-typeset code {
+    color: #F32094
+}
+
+/* Reset multi-line code back to default */
+.md-typeset pre code {
+    color: var(--md-code-fg-color)
+}
+
+
+/* Hide side nav header title */
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_4_label.md-nav__link {
+    display: none;
+}
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_3_label.md-nav__link {
+    display: none;
+}
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_5_label.md-nav__link {
+    display: none;
+}
+
+
+/* Make all h1 and h2 twemoji colored */
+h1 .twemoji, h2 .twemoji {
+    color: #2094f3;
+}
+
+h3 .twemoji {
+    color: #F37F20;
+}
+
+
+/* Copyright and Made with Mkdocs */
+.md-footer {
+    display: none;
+}
+
+/* Page title and page slogan */
+.page-title {
+    color: #2094f3;
+    font-size: 500%;
+}
+.page-slogan {
+    font-size: 120%;
+    font-style: italic;
+}
+
+/* Per page section slogan */
+.section-slogan {
+    color: #0B7AD5;
+    font-size: 120%;
+    font-weight: bold;
+}

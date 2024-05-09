@@ -151,3 +151,19 @@ async def get(id_or_name: str, tenant: str, coin: str, json: bool):
         # Python exit() with any value means "error" in bash exit code speak!
         exit(e.detail)
 ```
+
+Required Options
+
+```python
+@command()
+@option('--topic', required=True, help='Topic ID')
+@option('--revision', required=True, help='Revision I')
+async def cli(topic: int, revision: int):
+    """Train a Topic Revision"""
+    try:
+        dump('Do it')
+
+    except SmartException as e:
+        # Python exit() with any value means "error" in bash exit code speak!
+        exit(e.detail)
+```

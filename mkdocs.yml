@@ -1,45 +1,43 @@
-site_name: Uvicore - Fullstack Async Python
-site_description: The Fullstack Async Web, API and CLI Python Framework
-copyright: Copyright 2023 Matthew Reschke
-
-# Repository
-repo_name: uvicore/framework
-repo_url: https://github.com/uvicore/framework
-edit_uri: ''
-
-# Serving
-dev_addr: '0.0.0.0:8034'
-
-
 # Navigation
 nav:
-  - Getting Started:          # Getting Started
-    - index.md                #   Welcome to Uvicore
-    - installation.md
-    - configuration.md
-    - directory-structure.md
-    - deployment.md
-  - -API-:
-    - api/router.md
-    - api/model-router.md
-    - api/exceptions.md
-  - -Web-:
-    - web/routing.md
-    - web/views.md
-    - web/controllers.md
-    - web/exceptions.md
-  - -CLI-:
+  - Uvicore: index.md
+  - Features: features/index.md
+  - Getting Started:
+    - getting-started/installation.md
+    - getting-started/directory-structure.md
+    - getting-started/configuration.md
+    - getting-started/deployment.md
+  - HTTP:
+    - http/index.md
+    - API:
+      - http/api/routing.md
+      - http/api/model-router.md
+      - http/api/file-upload.md
+    - Web:
+      - http/web/routing.md
+      - http/web/views.md
+      - http/web/controllers.md
+    - Exceptions:
+      - http/exceptions/concepts.md
+      - http/exceptions/handlers.md
+      - http/exceptions/http-exception.md
+      - http/exceptions/not-found.md
+      - http/exceptions/permission-denied.md
+      - http/exceptions/not-authenticated.md
+      - http/exceptions/invalid-credentials.md
+  - CLI:
     - cli/index.md
+    - cli/commands.md
     - cli/writing-commands.md
     - cli/python-entrypoints.md
-  - -Database-:
-    - config.md
-    - tables.md
-    - queries.md
-    - orm-basics.md
-    - orm-model.md
-    - orm-querybuilder.md
-    - orm-pydantic.md
+  - Database:
+    - database/config.md
+    - database/tables.md
+    - database/queries.md
+    - database/orm-basics.md
+    - database/orm-model.md
+    - database/orm-querybuilder.md
+    - database/orm-pydantic.md
   - Architecture:
     - service-providers.md
     - ioc.md
@@ -47,6 +45,7 @@ nav:
     - bootstrap.md
   - Digging Deeper:
     - events.md
+    - jobs.md
     - cache.md
     - mail.md
     - auto-api.md
@@ -57,33 +56,57 @@ nav:
     - mkdocs-help.md
 
 
+
+
+
+
+
+site_name: Uvicore - Fullstack Async Python
+site_description: The Fullstack Async Web, API and CLI Python Framework
+site_url: https://uvicore.io
+#copyright: Copyright 2024 Matthew Reschke
+
+# Repository
+repo_name: uvicore/framework
+repo_url: https://github.com/uvicore/framework
+edit_uri: ''
+
+# Serving
+dev_addr: '0.0.0.0:8034'
+
+
 # Plugins
 plugins:
-  - search
+  search: null
+  # - tags Nah
+
 
 # Markdown Extensions
 markdown_extensions:
-  - extra
-  - admonition
-  - pymdownx.superfences
-  - pymdownx.details
-  - pymdownx.tabbed
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - footnotes
-  - attr_list
-  - codehilite:
-      guess_lang: false
+  extra: null
+  admonition: null
+  pymdownx.superfences: null
+  pymdownx.details: null
+  pymdownx.tabbed: null
+  pymdownx.emoji:
+    emoji_index: !!python/name:materialx.emoji.twemoji
+    emoji_generator: !!python/name:materialx.emoji.to_svg
+  pymdownx.tasklist:
+    custom_checkbox: true
+  footnotes: null
+  attr_list: null
+  md_in_html: null
+  codehilite: null
+  markdown.extensions.codehilite:
+    guess_lang: false
       #use_pygments: true
       #noclasses: true
-  - meta
-  #- nl2br
-  - sane_lists
-  - toc:
-      permalink: true
+  meta: null
+  # nl2br: null
+  sane_lists: null
+  toc:
+    permalink: true
+
 
 # Theme and Colors
 theme:
@@ -111,16 +134,17 @@ theme:
     code: Roboto Mono
   #favicon: assets/favicon.png
   features:
-    - navigation.instant
+    #- navigation.instant
     - navigation.tabs
   icon:
-    logo: fontawesome/solid/bong
+    logo: fontawesome/solid/code
     repo: fontawesome/brands/github
 extra_css:
   #- style-dark.css # Set pygments_style: monokai
   #- style-light.css # Comment out pygments_style
-  - style.css
-
+  - files/style.css
+extra_javascript:
+  - files/custom.js
 
 # Extra CSS and Javascript
 #extra_css:
