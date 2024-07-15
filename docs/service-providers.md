@@ -1,3 +1,3 @@
 # Service Providers
 
-Your packages service provider is located at `services/yourapp.py`
+Your packages service provider is located at `package/provider.py`

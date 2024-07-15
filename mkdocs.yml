@@ -6,7 +6,7 @@ nav:
     - getting-started/installation.md
     - getting-started/directory-structure.md
     - getting-started/configuration.md
-    - getting-started/deployment.md
+    # - getting-started/deployment.md
   - HTTP:
     - http/index.md
     - API:
@@ -52,8 +52,9 @@ nav:
     - superdict.md
     - cli-entrypoints.md
   - Epologue:
-    - release-notes.md
-    - mkdocs-help.md
+    - epologue/release-notes.md
+    - epologue/mkdocs-help.md
+    - epologue/upgrade-0.1-to-0.2.md
 
 
 

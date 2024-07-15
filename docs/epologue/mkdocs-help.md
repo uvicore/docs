@@ -18,10 +18,6 @@
 
 [View Composers](/view-composers/)
 
-## Common names
-
-yourname.yourapp
-
 
 
 ## Common paragraphs

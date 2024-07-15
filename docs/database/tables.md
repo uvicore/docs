@@ -18,9 +18,9 @@ Tables may be stored in separate files located in `database/tables/*`.  You may 
 !!! warning "init file"
     Be sure to add your new table to the `database/tables/__init__.py`
 
-The schematic includes many commented examples of how to use the table, a sort of auto-documentation.
+The schematic includes many commented examples of how to use the table, some quick inline documentation.
 
-A basic `posts` table looks like this
+A basic "wiki" `posts` table looks like this
 ```python
 import uvicore
 import sqlalchemy as sa
@@ -39,7 +39,7 @@ class Posts(Table):
     name = 'posts'
 
     # Connection for this database from your config file
-    connection = 'yourapp'
+    connection = 'wiki'
 
     # SQLAlchemy Table definition as a list (exclude name and metadata)
     # This will be converted into an actual SQLAlchemy Table() instance
@@ -68,11 +68,11 @@ If you are using the Uvicore ORM (optional as the database stands alone as a que
 
 ```python
 # ...
-from yourname.yourapp.database.tables import posts as table
+from acme.wiki.database.tables import posts as table
 
 @uvicore.model()
 class Post(Model['Post'], metaclass=ModelMetaclass):
-    """Yourapp Posts"""
+    """Wiki Posts"""
 
     # Database table definition
     # Optional as some models have no database table
@@ -88,18 +88,18 @@ If you are using the Uvicore ORM (optional as the database stands alone as a que
 
 ```python
 # ...
-from yourname.yourapp.database.tables import posts as table
+from acme.wiki.database.tables import posts as table
 
 # Get related table names with proper prefixes
 users = uvicore.db.tablename('auth.users')
 
 @uvicore.model()
 class Post(Model['Post'], metaclass=ModelMetaclass):
-    """Yourapp Posts"""
+    """Wiki Posts"""
 
     # Database table definition
     # Optional as some models have no database table
-    __connection__ = 'yourapp'
+    __connection__ = 'wiki'
     __tablename__ = 'posts'
     __table__ = [
         sa.Column('id', sa.Integer, primary_key=True),

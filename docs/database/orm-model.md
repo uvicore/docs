@@ -15,7 +15,7 @@ The OpenAPI docs will provide an automatic example for request and response resu
 ```python
 @uvicore.model()
 class Post(Model['Post'], metaclass=ModelMetaclass):
-    """Yourapp Posts"""
+    """Wiki Posts"""
 
     # Pydantic configuration override
     class Config:

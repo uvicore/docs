@@ -2,247 +2,252 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://uvicore.io/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/auto-api/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/bootstrap/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/cache/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/events/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/ioc/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/jobs/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/mail/</loc>
-         <lastmod>2024-05-09</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://uvicore.io/mkdocs-help/</loc>
-         <lastmod>2024-05-09</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://uvicore.io/release-notes/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/request-lifecycle/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/service-providers/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/superdict/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/todo/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/cli/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/cli/built-in-commands/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/cli/commands/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/cli/python-entrypoints/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/cli/writing-commands/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/config/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/orm-basics/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/orm-model/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/orm-pydantic/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/orm-querybuilder/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/queries/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/database/tables/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://uvicore.io/epologue/mkdocs-help/</loc>
+         <lastmod>2024-07-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://uvicore.io/epologue/release-notes/</loc>
+         <lastmod>2024-07-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://uvicore.io/epologue/upgrade-0.1-to-0.2/</loc>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/features/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/getting-started/configuration/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/getting-started/deployment/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/getting-started/directory-structure/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/getting-started/installation/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/api/NOTES/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/api/exceptions/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/api/file-upload/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/api/model-router/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/api/routing/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/concepts/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/handlers/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/http-exception/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/invalid-credentials/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/not-authenticated/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/not-found/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/exceptions/permission-denied/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/web/controllers/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/web/exceptions/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/web/routing/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://uvicore.io/http/web/views/</loc>
-         <lastmod>2024-05-09</lastmod>
+         <lastmod>2024-07-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

@@ -45,25 +45,25 @@ Uvicore uses your `config/package.py` configuration file to store connection str
 config = {
     # ...
     'database': {
-        'default': env('DATABASE_DEFAULT', 'yourapp'),
+        'default': env('DATABASE_DEFAULT', 'wiki'),
         'connections': {
             # SQLite Example
-            # 'yourapp': {
+            # 'wiki': {
             #     'driver': 'sqlite',
             #     'database': ':memory',
             #     'prefix': None,
             # },
 
             # MySQL Example
-            'yourapp': {
-                'driver': env('DB_YOURAPP_DRIVER', 'mysql'),
-                'dialect': env('DB_YOURAPP_DIALECT', 'pymysql'),
-                'host': env('DB_YOURAPP_HOST', '127.0.0.1'),
-                'port': env.int('DB_YOURAPP_PORT', 3306),
-                'database': env('DB_YOURAPP_DB', 'yourapp'),
-                'username': env('DB_YOURAPP_USER', 'yourdbuser'),
-                'password': env('DB_YOURAPP_PASSWORD', 'password'),
-                'prefix': env('DB_YOURAPP_PREFIX', None),
+            'wiki': {
+                'driver': env('DB_WIKI_DRIVER', 'mysql'),
+                'dialect': env('DB_WIKI_DIALECT', 'pymysql'),
+                'host': env('DB_WIKI_HOST', '127.0.0.1'),
+                'port': env.int('DB_WIKI_PORT', 3306),
+                'database': env('DB_WIKI_DB', 'wiki'),
+                'username': env('DB_WIKI_USER', 'username'),
+                'password': env('DB_WIKI_PASSWORD', 'password'),
+                'prefix': env('DB_WIKI_PREFIX', None),
             },
         },
     },

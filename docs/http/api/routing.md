@@ -1,5 +1,35 @@
 # API Routing
 
+## FIXME
+:material-auto-fix: FIXME
+
+- Route groups and complex group based permissions
+
+examples to organize
+```python
+        # Passing in existing methods
+        def posts():
+            return response.Text('Route /posts here')
+        route.get('/posts', posts)
+
+        # If your controller has an __init__ with params
+        route.controller('contact', options={'param': 'one'})
+
+        # Groups as a Decorator
+        @route.group(prefix='/admin')
+        def admin():
+            @route.get('/profile')
+            def profile():
+                return response.Text('Route /admin/profile here')
+
+        # Groups as a List of existing methods
+        # tokens and themes methods not defined for brevity
+        route.group(prefix='/settings', routes=[
+            route.get('/tokens', token_settings),
+            route.get('/theme', theme_settings),
+        ])
+```
+
 
 ## :material-pound: Routing Basics
 
@@ -56,7 +86,7 @@ import uvicore
 from uvicore.http.routing import ApiRouter, Controller
 
 @uvicore.controller()
-class Welcome(Controller):
+class Topics(Controller):
 
     def register(self, route: ApiRouter):
         """Register API Controller Endpoints"""
@@ -67,10 +97,22 @@ class Welcome(Controller):
             return {'welcome': 'to uvicore API!'}
 ```
 
+---
 
 
 
 
+
+## :material-pound: Overriding Packages Routes
+
+When consuming other developers packages, you may want to override some of their routes with your own.  For example, if you are building a CMS which includes a 3rd party `blog` package which contains a `/search` route named `blog.search` and you want to replace it with your own search page.
+
+Because all of your route names are automatically `prefixed` with your package, you must disable the auto-prefixer for your own custom search override.  This will allow you to define the entire route path and name.
+
+```python
+# Your CMS package wants to override the blog packages search route
+@route.get('/search', name='blog.search', autoprefix=False)
+```
 
 ---
 
@@ -108,58 +150,9 @@ route.controller(Tags)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 ## END OF NEW DOCS, OLD BELOW
 
 :material-auto-fix: FIXME
-
-
-
-## New notes to move around
-
-These are accurate
-
-The auto model router already has `model.crud` style permissions attached and will require auth as long as you have some api auth middleware enabled.  If you have auth middleware enabled but you still want autoapi routes to be public, or to use a single permission, override it with the options argument on `.include()`
-
-This will wipe out all scopes, meaning all auto endpoints are now PUBLIC
-```python
-# Include dynamic model CRUD API endpoints (the "auto API")!
-# These routes are automatically protected by model.crud style permissions.
-@route.group()
-def autoapi():
-    route.include(ModelRouter, options={
-        'scopes': []
-    })
-```
-
-This will set all to just 'authenticated', so the `model.crud` scopes are wiped out.
-```python
-# Include dynamic model CRUD API endpoints (the "auto API")!
-# These routes are automatically protected by model.crud style permissions.
-@route.group()
-def autoapi():
-    route.include(ModelRouter, options={
-        'scopes': ['authenticated']
-    })
-```
-
-This will append this scope to the existing auto `model.crud` scopes. And endpoints are only allows if user has ALL permissions, ie: both `['allowcrud', 'posts.read']` (unless your `admin`, it always wins)
-```python
-@route.group(scopes=['allowcrud'])
-def autoapi():
-    route.include(ModelRouter)
-```
 
 
 
@@ -179,75 +172,14 @@ Obsolete below this line
 
 
 
-
-
-
-
-
-
-
-
-## Routing Basics
-
-Uvicore separates web and api routes into two files located in the `http/routes` directory.  These route files are loaded from your packages `Service Provider`. Dual routers allow for separate middleware and authentication mechanisms for web and api endpoints.  Route middleware and authentication is located in your packages `config/app.py` file.
-
-All routes are defined inside the routes `register()` method. There are multiple ways to define route endpoints including method passing, decorators, groups and controllers.
-
-**Basic Routing Example**
-```python
-import uvicore
-from uvicore.http import response
-from uvicore.http.routing import Routes, WebRouter
-
-@uvicore.routes()
-class Web(Routes):
-
-    def register(self, route: WebRouter):
-        """Register Web Route Endpoints"""
-
-        # Define controller base path
-        route.controllers = 'app.http.controllers'
-
-        # Decorators
-        @route.get('/users')
-        def users():
-            return response.Text('Route /usres here')
-
-        # Passing in existing methods
-        def posts():
-            return response.Text('Route /posts here')
-        route.get('/posts', posts)
-
-        # Including controllers
-        from app1.http.controllers.home import Home
-        route.controller(Home)
-
-        # Including controllers as strings using route.controllers path above
-        route.controller('about')  # Assumes app1.http.controllers.home.Home class
-
-        # If your controller has an __init__ with params
-        route.controller('contact', options={'param': 'one'})
-
-        # Groups as a Decorator
-        @route.group(prefix='/admin')
-        def admin():
-            @route.get('/profile')
-            def profile():
-                return response.Text('Route /admin/profile here')
-
-        # Groups as a List of existing methods
-        # tokens and themes methods not defined for brevity
-        route.group(prefix='/settings', routes=[
-            route.get('/tokens', token_settings),
-            route.get('/theme', theme_settings),
-        ])
-
-```
-
-
 ## Route Prefixes and Names
 
-All routes are automatically given a route prefix which you define in `config/package.py`.  This prefix allows consuming developes of your package to alter each packages base URI to fit their needs.  For example, if you wrote a `wiki` app you probably want a simple `/` prefix for all routes.  If a developer consumes your wiki as a package inside their own app, they may override your wiki `config/package.py` and alter the prefix to `/wiki`.
+
+FIXME, this is WEB specific, make a new one, better that is API specific
+List out actual API route names
+
+
+All routes are automatically given a route prefix which you define in `config/http.py`.  This prefix allows consuming developes of your package to alter each packages base URI to fit their needs.  For example, if you wrote a `wiki` app you probably want a simple `/` prefix for all routes.  If a developer consumes your `wiki` as a package inside their own app, they may override your wiki `config/http.py` and alter the prefix to `/wiki`.
 
 Because of this route prefix, URL paths should never be referenced in views and controllers as they are subject to change and your links will break.  Instead you should always reference the `route name`.
 
@@ -296,13 +228,4 @@ def admin():
 ```
 
 
-## Overriding Packages Routes
 
-If you are consuming another developers package you may want to override some of their routes with your own.  For example, if you are building a CRM which includes another developers `blog` packages.  The `blog` packages has their own `/search` route which has a name of `blog.search`.  You want to write a custom CRM search page that overrides the blog search page.
-
-Because all of your route names are automatically `prefixed` with your package name and because all route prefixes are automatically added with your package prefix, you must disable the auto-prefixer for the search route.  This will allow you to define the entire route path and name.
-
-```python
-# Your CRM package wants to override the blog packages search route
-@route.get('/search', name='blog.search', autoprefix=False)
-```

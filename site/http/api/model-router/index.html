@@ -337,7 +337,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../release-notes/" class="md-tabs__link">
+        <a href="../../../epologue/release-notes/" class="md-tabs__link">
           
   
   Epologue
@@ -703,6 +703,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    API Model Router
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -712,6 +723,34 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#organize-me" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organize Me
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1743,7 +1782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../release-notes/" class="md-nav__link">
+      <a href="../../../epologue/release-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1764,11 +1803,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mkdocs-help/" class="md-nav__link">
+      <a href="../../../epologue/mkdocs-help/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Mkdocs and Material
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../epologue/upgrade-0.1-to-0.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrade 0.1 to 0.2
   </span>
   
 
@@ -1805,6 +1865,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#organize-me" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organize Me
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1819,6 +1896,32 @@
 
 
 <h1 id="api-model-router">API Model Router<a class="headerlink" href="#api-model-router" title="Permanent link">&para;</a></h1>
+<h2 id="organize-me">Organize Me<a class="headerlink" href="#organize-me" title="Permanent link">&para;</a></h2>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 5.6 5 7l1.4-2.5L5 2l2.5 1.4L10 2 8.6 4.5 10 7 7.5 5.6m12 9.8L22 14l-1.4 2.5L22 19l-2.5-1.4L17 19l1.4-2.5L17 14l2.5 1.4M22 2l-1.4 2.5L22 7l-2.5-1.4L17 7l1.4-2.5L17 2l2.5 1.4L22 2m-8.66 10.78 2.44-2.44-2.12-2.12-2.44 2.44 2.12 2.12m1.03-5.49 2.34 2.34c.39.37.39 1.02 0 1.41L5.04 22.71c-.39.39-1.04.39-1.41 0l-2.34-2.34c-.39-.37-.39-1.02 0-1.41L12.96 7.29c.39-.39 1.04-.39 1.41 0Z"/></svg></span> FIXME</p>
+<p>The auto model router already has <code>model.crud</code> style permissions attached and will require auth as long as you have some api auth middleware enabled.  If you have auth middleware enabled but you still want autoapi routes to be public, or to use a single permission, override it with the options argument on <code>.include()</code></p>
+<p>This will wipe out all scopes, meaning all auto endpoints are now PUBLIC
+<div class="highlight"><pre><span></span><code><span class="c1"># Include dynamic model CRUD API endpoints (the &quot;auto API&quot;)!</span>
+<span class="c1"># These routes are automatically protected by model.crud style permissions.</span>
+<span class="nd">@route</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">autoapi</span><span class="p">():</span>
+    <span class="n">route</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="n">ModelRouter</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;scopes&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">})</span>
+</code></pre></div></p>
+<p>This will set all to just 'authenticated', so the <code>model.crud</code> scopes are wiped out.
+<div class="highlight"><pre><span></span><code><span class="c1"># Include dynamic model CRUD API endpoints (the &quot;auto API&quot;)!</span>
+<span class="c1"># These routes are automatically protected by model.crud style permissions.</span>
+<span class="nd">@route</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">autoapi</span><span class="p">():</span>
+    <span class="n">route</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="n">ModelRouter</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;scopes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;authenticated&#39;</span><span class="p">]</span>
+    <span class="p">})</span>
+</code></pre></div></p>
+<p>This will append this scope to the existing auto <code>model.crud</code> scopes. And endpoints are only allows if user has ALL permissions, ie: both <code>['allowcrud', 'posts.read']</code> (unless your <code>admin</code>, it always wins)
+<div class="highlight"><pre><span></span><code><span class="nd">@route</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">scopes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;allowcrud&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">autoapi</span><span class="p">():</span>
+    <span class="n">route</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="n">ModelRouter</span><span class="p">)</span>
+</code></pre></div></p>
 
 
 
