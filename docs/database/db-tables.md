@@ -1,4 +1,17 @@
-# Database Tables
+# DB Tables
+
+
+## :material-pound: Tables vs Models
+
+Unlike some frameworks, Uvicore creates a distinction between tables and models.
+
+The table is the exact SQLAlchemy table, the same table you see in MySQL/Postgres.  The table can be directly queried using Uvicore's [DB Query Builder](/database/db-queries/)
+
+The model is a higher level abstraction on the table which may have slightly different column names (understore vs camelCase) and may contain additional "computed" columns.
+
+
+
+
 
 
 Uvicore provides two methods to define your SQLAlchemy tables.

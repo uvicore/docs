@@ -1,4 +1,4 @@
-# Database Queries
+# DB Queries
 
 ## QueryBuilder
 

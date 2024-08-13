@@ -31,13 +31,17 @@ nav:
     - cli/writing-commands.md
     - cli/python-entrypoints.md
   - Database:
-    - database/config.md
-    - database/tables.md
-    - database/queries.md
-    - database/orm-basics.md
-    - database/orm-model.md
-    - database/orm-querybuilder.md
-    - database/orm-pydantic.md
+    - database/index.md
+    - Database:
+      - database/db-config.md
+      - database/db-tables.md
+      - database/db-migrations.md
+      - database/db-queries.md
+    - ORM:
+      - database/orm-basics.md
+      - database/orm-model.md
+      - database/orm-querybuilder.md
+      - database/orm-pydantic.md
   - Architecture:
     - service-providers.md
     - ioc.md

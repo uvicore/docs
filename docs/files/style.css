@@ -33,17 +33,22 @@ https://htmlcolorcodes.com/color-picker/
 }
 
 
-/* Hide side nav header title */
-html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_4_label.md-nav__link {
-    display: none;
-}
+/* Hide Getting Started nav header title */
 html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_3_label.md-nav__link {
     display: none;
 }
+/* Hide HTTP nav header title */
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_4_label.md-nav__link {
+    display: none;
+}
+/* Hide CLI nav header title */
 html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_5_label.md-nav__link {
     display: none;
 }
-
+/* Hide Database nav header title */
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_6_label.md-nav__link {
+    display: none;
+}
 
 /* Make all h1 and h2 twemoji colored */
 h1 .twemoji, h2 .twemoji {

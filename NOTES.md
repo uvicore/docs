@@ -15,8 +15,14 @@ REMEMBER: Docs are also a SELLING TOOL!!!
 ## Example Application
 
 We use ~/Code/wiki which is an `acme/wiki` uvicore app for all examples
+    do NOT use yourapp anywhere, go remove them all with grep
 
 
+## Hard to Remember
+
+* camelCase vs PascalCase
+* LINK - [Uvicore CLI](/cli/)
+    * [DB Query Builder](/database/db-queries/)
 
 
 ### Installation

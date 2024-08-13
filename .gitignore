@@ -8,7 +8,7 @@
 # Sames goes for files
 
 # MKDOCS Specifically
-./site/
+#./site/
 
 # OS Files
 .DS_Store
