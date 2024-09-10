@@ -51,4 +51,5 @@ Using the ORM is optional but provides a great Object Relational Mapping abstrac
 
 ## :material-pound: Query Builder vs ORM
 
+:material-auto-fix: FIXME
 

@@ -56,22 +56,41 @@ config = {
 
             # MySQL Example
             'wiki': {
-                'driver': env('DB_WIKI_DRIVER', 'mysql'),
-                'dialect': env('DB_WIKI_DIALECT', 'pymysql'),
+                'dialect': env('DB_WIKI_DIALECT', 'mysql'),
+                'sync_driver': env('DB_WIKI_SYNC_DRIVER', 'pymysql'),
+                'async_driver': env('DB_WIKI_ASYNC_DRIVER', 'aiomysql'),
                 'host': env('DB_WIKI_HOST', '127.0.0.1'),
                 'port': env.int('DB_WIKI_PORT', 3306),
                 'database': env('DB_WIKI_DB', 'wiki'),
                 'username': env('DB_WIKI_USER', 'username'),
                 'password': env('DB_WIKI_PASSWORD', 'password'),
                 'prefix': env('DB_WIKI_PREFIX', None),
+                # All options are passed directly to the specified driver.
+                'sync_driver_options': {
+                    'ssl': env.bool('DB_WIKI_SSL', False),
+                },
+                'async_sync_driver_options': {
+                    'ssl': env.bool('DB_WIKI_SSL', False),
+                }
             },
         },
     },
     # ...
 }
 ```
+The `options` dictionary are values passed directly to the `driver` connection.  The default `pymysql` dialect in `encode/databases` is `aiomysql` which accepts an SSL parameter among others.
+
 !!! note
     The reason configs are referenced from `config/package.py` instead of `config/app.py` is because `config/package.py` is meant to be overridden by any developer consuming your app as a package inside their own app.  The package consumer gets to change where your package stores data.  Devs can also override using their `.env` file so be sure to use `env('XYZ')` in your configs.
+
+
+## :material-pound: Drivers and Dialects
+
+Uvicore uses [encode/databases](https://github.com/encode/databases) as an async layer just before SQLAlchemy Core.  Therefore Uvicore is subject to all drivers and dialects supported by `encode/databases`
+
+- Driver: `mysql`
+    - Dialects:
+        - asdf
 
 
 ## :material-pound: View from CLI

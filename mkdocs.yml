@@ -42,23 +42,28 @@ nav:
       - database/orm-model.md
       - database/orm-querybuilder.md
       - database/orm-pydantic.md
+    - Recipes:
+      - database/recipes/planetscale.md
+
   - Architecture:
-    - service-providers.md
-    - ioc.md
-    - request-lifecycle.md
-    - bootstrap.md
+    - architecture/service-providers.md
+    - architecture/ioc.md
+    - architecture/request-lifecycle.md
+    - architecture/bootstrap.md
   - Digging Deeper:
-    - events.md
-    - jobs.md
-    - cache.md
-    - mail.md
-    - auto-api.md
-    - superdict.md
-    - cli-entrypoints.md
+    - deeper/events.md
+    - deeper/jobs.md
+    - deeper/cache.md
+    - deeper/mail.md
+    - deeper/superdict.md
   - Epologue:
     - epologue/release-notes.md
-    - epologue/mkdocs-help.md
-    - epologue/upgrade-0.1-to-0.2.md
+    - Changelog:
+      - epologue/changelog/0.3.0.md
+    - Upgrade:
+      - epologue/upgrade/from-0.1-to-0.2.md
+      - epologue/upgrade/from-0.2-to-0.3.md
+
 
 
 
