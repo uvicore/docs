@@ -1,2 +1,2 @@
 poetry run mkdocs build
-cp ~/Code/uvicore/framework/bin/uvicore-installer ./site/
+#cp ~/Code/uvicore/framework/bin/uvicore-installer ./site/
