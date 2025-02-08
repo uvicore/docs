@@ -113,7 +113,7 @@ import uvicore.cache
 cache.get('key1')
 ```
 
-You can optionally get the cache instance from the [IoC](/ioc/) either by `uvicore.ioc.make` or by simply importing the cache manager.  In either case, you must manually `connect()` to start using the cache.
+You can optionally get the cache instance from the [IoC](/deeper/ioc/) either by `uvicore.ioc.make` or by simply importing the cache manager.  In either case, you must manually `connect()` to start using the cache.
 ```python
 # These options require you to run .connect().  If .connect() has no parameters, the default
 # cache store is used from your config.  You may also specify the store with .connect('redis')

@@ -6,12 +6,33 @@ NO, decided to take the plunge into SQLAlchemy 2.0 instead
 
 
 
+## add to sa 2.0 stuff
+
+no longer works, as row is now a tuple
+errors with 'tuple indices must be integers or slices, not str'
+        for row in results:
+            ros[row['key']] = dict(row._mapping)
+
+use row.key instead of row['key']
+
+
+See https://docs.sqlalchemy.org/en/20/changelog/migration_14.html#change-4710-core
+example, use 'id' in row._mapping now instead of 'id' in row
+
+
+
+
 ## OLD
 
 
 The ONLY breaking change from 0.2 to 0.3 was the `config/database.py` database connection configuration.
 
 Prior to 0.3, the `driver` and `dialect` were reversed. Meaning the `driver` was actually the `dialect`, and the `dialect` was actually the `driver`.  An oversight on initial Uvicore 0.1 development.
+
+* :material-auto-fix: FIXME
+
+NOTE, this sync_driver stuff is all wrong, I autodetect now
+
 
 Along with this we also realized that we need two separate drivers.  One for synchronous connectivity and one for asynchronous connectivity.  This is due to that fact that Uvicore 0.3.0 still uses SQLAlchemy 1.4 which does not support Aync very well for features like create, drop, seed, reseed of the database.
 

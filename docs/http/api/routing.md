@@ -33,7 +33,7 @@ examples to organize
 
 ## :material-pound: Routing Basics
 
-Uvicore separates web and api routes into two files located in the `http/routes` directory.  These route files are loaded from your packages `Service Provider`. Dual routers allow for separate middleware and authentication mechanisms for web and api endpoints.  Route middleware and authentication is located in your packages `config/http.py` file.
+Uvicore separates web and api routes into two files located in the `http/routes` directory.  These route files are loaded from your [Package Provider](/deeper/provider/). Dual routers allow for separate middleware and authentication mechanisms for web and api endpoints.  Route middleware and authentication is located in your packages `config/http.py` file.
 
 All routes are defined inside the routes `register()` method. There are multiple ways to define route endpoints including method passing, decorators, groups and controllers.
 

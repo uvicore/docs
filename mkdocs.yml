@@ -20,6 +20,7 @@ nav:
     - Exceptions:
       - http/exceptions/concepts.md
       - http/exceptions/handlers.md
+      - http/exceptions/smart.md
       - http/exceptions/http-exception.md
       - http/exceptions/not-found.md
       - http/exceptions/permission-denied.md
@@ -44,18 +45,20 @@ nav:
       - database/orm-pydantic.md
     - Recipes:
       - database/recipes/planetscale.md
-
-  - Architecture:
-    - architecture/service-providers.md
-    - architecture/ioc.md
-    - architecture/request-lifecycle.md
-    - architecture/bootstrap.md
+    - Contributor Notes:
+      - database/contrib/flow.md
+      - database/contrib/scope.md
   - Digging Deeper:
+    - deeper/modular.md
+    - deeper/provider.md
+    - deeper/ioc.md
     - deeper/events.md
     - deeper/jobs.md
     - deeper/cache.md
     - deeper/mail.md
     - deeper/superdict.md
+    - Contributor Notes:
+      - deeper/contrib/bootstrap.md
   - Epologue:
     - epologue/release-notes.md
     - Changelog:

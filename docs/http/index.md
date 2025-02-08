@@ -17,4 +17,4 @@ Uvicore's [Web Router](./web/routing) use the amazing and blazing fast **[Starle
 
 In the end, even FastAPI is actually Starlette under the hood.  So the real "star" of the HTTP show here in Uvicore is **Tom Christie's Starlette and we LOVE it!**  Blazing Fast uWSGI!
 
-Uvicore makes working with both Web and API routes seamless and integrates extra functionality like RBAC permission control, automatic model routing and Inversion of Control power!
+Uvicore makes working with both Web and API routes seamless and integrates extra functionality like RBAC permission control, automatic [API Model Router](/http/api/model-router/) and [IoC](/deeper/ioc/) power!

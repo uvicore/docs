@@ -44,7 +44,7 @@ You may define events in two ways.
 
 ### :material-pound: :material-pound: Class Based Events
 
-Class based events not only provide a stricter interface, but they also bind themselves to the [IoC](/architecture/ioc/) allowing you to view all Class based events using the `./uvicore event list` CLI as long as that file has been `imported` in your packages provider.
+Class based events not only provide a stricter interface, but they also bind themselves to the [IoC](/deeper/ioc/) allowing you to view all Class based events using the `./uvicore event list` CLI as long as that file has been `imported` in your packages provider.
 
 The benifits of an event class are that you can force the payload requirements
 using the class `__init__()` constructor.  An event class performs NO work.  It

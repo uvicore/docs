@@ -1,20 +1,83 @@
 # Notes
 
 
+
+## Document Status
+
+**Other Pages**
+
+- [x] Home Page
+- [ ] Features (partial)
+
+**Going down the list of all uvicore core modules**
+
+- [ ] auth
+- [ ] cache
+- [ ] configuration
+    - 100% reviewed again 2025-02-08, its DONE!
+- [ ] console
+- [ ] container
+- [ ] contracts
+- [ ] database
+- [ ] events
+- [ ] exceptions
+    - I added SmartException in `http/exceptions/smart/` but did NOT test the 'Throw from Controller' part.  Double check the code works.
+    - Also add to the `/cli` section ?
+- [ ] factories ?
+- [ ] foundation
+- [ ] http
+- [ ] http_client
+- [ ] jobs
+- [ ] logging
+- [ ] mail
+- [ ] orm
+- [ ] package
+- [ ] redis
+- [ ] support
+- [ ] templating
+- [ ] typing
+
+**Other**
+
+- [ ] Changelog for 0.3
+- [ ] Upgrade from 0.2 to 0.3
+
+
+
+
 ## TODO
 
 REMEMBER: Docs are also a SELLING TOOL!!!
+
+DB query builder has NO insert() capabilities, you can do it manually like so for now
+```python
+            query = uvicore.db.table('audit_queue').insert()
+            values = {
+                'client_id': client_id,
+                'last_ro_detail_audit_transformed_at': datetime.strptime('2000-01-01 00:00:00', "%Y-%m-%d %H:%M:%S"),
+                'last_count_summary_audit_transformed_at': datetime.strptime('2000-01-01 00:00:00', "%Y-%m-%d %H:%M:%S"),
+            }
+            values[last_audit_field] = last_audit_date
+            # await(uvicore.db.query()
+            #     .table('audit_queue')
+            #     .create(values)
+            # )
+            await uvicore.db.insertone(query, values)
+
+```
+
 
 
 ## Screenshot specs
 
 - i3, from exact split, move over 2 arrows
 - stock konsole, increase font 3lrrx
+- I believe I used online https://gifcap.dev/ to record screen to gif
 
 
 ## Example Application
 
-We use ~/Code/wiki which is an `acme/wiki` uvicore app for all examples
+We use `~/Code/wiki` which is an `acme/wiki` uvicore app for all examples
     do NOT use yourapp anywhere, go remove them all with grep
 
 
@@ -39,9 +102,24 @@ how home page + swagger /welcome
 
 # Slogan
 
+## Github Description
+The Full Stack Asynchronous Python Framework with the performance of FastAPI and the elegance of Laravel! - https://uvicore.io
+
+
+## CLI Output
+
+The Fullstack Async Web, API and CLI Python Framework
+
+
+
+## Other Ideas
+
+
 The Fullstack Asynchronous Web, API and CLI Python Framework
 
 The Fullstack Asynchronous API+Web+CLI Python Framework
+
+The Full Stack Asynchronous Python Framework with the performance of FastAPI and the elegance of Laravel!
 
 Uvicore
     = Dual Routers based on Starlette and FastAPI
@@ -99,18 +177,34 @@ Asynchronous Python Web, API and CLI Fullstack Framework
 
 ## Common Links
 
-[Service Provider](/service-providers/)
-[Pydantic](/orm-pydantic/)
+[Modular Concept](/deeper/modular/)
+
+[Package Provider](/deeper/provider/)
+[Pydantic](/database/orm-pydantic/)
 [Uvicore CLI](/cli/)
-[SuperDict](/superdict/)
+[SuperDict](/deeper/superdict/)
 
-[IoC](/ioc/)
+automatic [API Model Router](/http/api/model-router/)
 
-[Uvicore Installer](/installation/)
+[IoC](/deeper/ioc/)
+
+[Uvicore Installer](/getting-started/installation/)
 
 [encode/databases](https://github.com/encode/databases)
 
+[FastAPI](https://github.com/fastapi/fastapi)
+
+[Starlette](https://github.com/encode/starlette)
+
+[Jinja](https://github.com/pallets/jinja)
+
 [SQLAlchemy Core](https://docs.sqlalchemy.org/en/13/core/tutorial.html)
+
+[SQLAlchemy](https://www.sqlalchemy.org/)
+
+[SQLAlchemy Core](https://docs.sqlalchemy.org/en/20/core/)
+
+[AsyncClick](https://github.com/python-trio/asyncclick)
 
 [View Composers](/view-composers/)
 
@@ -146,6 +240,16 @@ After the database extras have been installed you must update your `config.packa
         # ...
     }),
 ```
+
+!!! warning
+    This section is for developers who whish to contribute to Uvicore source code. To understand how this module works under the hood!
+
+
+!!! note "See The Code on Github"
+    - [Exceptions](https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/__init__.py)
+    - [Handlers](https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/handlers.py)
+    - [Status Code Constants](https://github.com/uvicore/framework/blob/master/uvicore/http/status.py)
+
 
 
 
