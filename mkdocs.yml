@@ -36,24 +36,34 @@ nav:
     - Database:
       - database/db-config.md
       - database/db-tables.md
-      - database/db-migrations.md
       - database/db-queries.md
+      - database/db-sa-queries.md
+      - database/db-sa-raw.md
     - ORM:
       - database/orm-basics.md
       - database/orm-model.md
       - database/orm-querybuilder.md
       - database/orm-pydantic.md
+    - database/seeding.md
     - Recipes:
       - database/recipes/planetscale.md
     - Contributor Notes:
       - database/contrib/flow.md
       - database/contrib/scope.md
   - Digging Deeper:
+    - deeper/index.md
+    - Events:
+      - deeper/events/index.md
+      - deeper/events/builtin.md
+      - deeper/events/defining.md
+      - deeper/events/dispatching.md
+      - deeper/events/listening.md
+      - deeper/events/handling.md
     - deeper/modular.md
     - deeper/provider.md
     - deeper/ioc.md
-    - deeper/events.md
     - deeper/jobs.md
+    - deeper/templating.md
     - deeper/cache.md
     - deeper/mail.md
     - deeper/superdict.md

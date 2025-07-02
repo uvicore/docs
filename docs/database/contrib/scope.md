@@ -1,29 +1,31 @@
 # Proper Scope
 
+!!! warning
+    This section is for contributing developers of the uvicore source code. Or for folks who just wish to learn how uvicore works under the hood!
 
-## :material-pound: Flow
 
-- Engine is a global object created just once for a particular database server
-    - PASS - Db class is singleton with self._engines by metakey!
-- MetaData is also global
-    - Having a single MetaData object for an entire application is the most common case, represented as a module-level variable in a single place in an application, often in a “models” or “dbschema” type of package
-    - PASS - Db class is singleton with self._metadatas by metakey!
-- Result object should live inside the conenct() block and never outside
-    - PASS - db.fetchall() uses with engine.connect() and result.all() as return
+## :material-pound: SQLAlchemy Engine
 
-Be sure to close all connections, they are SMALL scope
-Because the Connection creates an open resource against the database, we want to limit our use of this object to a specific context.
+According to the SQLAlchemy Core documentation, the `engine` (from `create_engine`) should be a global/singleton object created just once for a particular database server/connection.
 
-```python
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
-with engine.connect() as conn:
-    # SMALL scope for .connect() dies after with
-    # do NOT return "Result" object, its SMALL scope as well
-    result = conn.execute(text("select 'hello world'"))
-    print(result.all())
-```
+This is achieved in Uvicore because the [Db](https://github.com/uvicore/framework/blob/master/uvicore/database/db.py) module is bound as a `singleton` in the [IoC](/deeper/ioc/)
 
-ALSO the Result should be INSIDE the connection block, SMALL scope as well
-    "The result of our SELECT was returned in an object called Result that will be
-    discussed later. For the moment we’ll add that it’s best to use this object
-    within the “connect” block, and to not use it outside of the scope of our connection."
+After uvicore is fully booted, all packages DB connections are organized and sync or async engines are created for them and stored in the DB singleton and accessible at `uvicore.db.engines`!
+
+
+
+## :material-pound: SQLAlchemy Metadata
+
+According to the SQLAlchemy Core documentation, each unique connections `Metadata` should also be a global/singleton object.
+
+This is achieved in Uvicore similar to the `engine` above.  The DB module is a singleton and on boot, creates unique `Metadata` objects for each unique connection accessible at `uvicore.db.metadatas`.  As each SQLAlchemy `table` is created from your packages, they are associated with the proper `Metadata` automatically.
+
+
+## :material-pound: SQLAlchemy Connect and Results
+
+According to the SQLAlchemy Core documentation, each query [engine] connection and the `Results` of that query should be scoped inside the `connect` block.  This means the SQLAlchemy `Results` object is not returned from the execution method directly.
+
+Uvicore handles this in all of the helper execution classes inside [db.py](https://github.com/uvicore/framework/blob/master/uvicore/database/db.py) (all, fetchall, first, fetchone, one, one_or_none, scalars, scalar, scalar_one, scalar_one_or_none etc...).  The only exception to this rule is the generic `db.execute()` method which does return the `sa.CursorResult` directly as it is up to the caller to handle results and scope properly.
+
+All of this means SQLAlchemy's `.connect() or .begin()` is scoped to just the query execution itself.  There is no need to manually open or close a connection.
+

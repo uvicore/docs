@@ -1,7 +1,7 @@
 # Bootstrap Sequence
 
 !!! warning
-    This section is for developers who whish to contribute to Uvicore source code. To understand how this module works under the hood!
+    This section is for contributing developers of the uvicore source code. Or for folks who just wish to learn how uvicore works under the hood!
 
 ## :material-pound: Flow
 

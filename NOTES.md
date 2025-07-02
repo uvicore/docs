@@ -1,6 +1,25 @@
 # Notes
 
 
+db methods to document
+
+.execute
+.all - Get many records from query. Returns empty List if no records found
+.fetchall -  Alias to .all()
+.first - Get one (first/top) record from query. Returns None if no records found
+.fetchone - Alias to .first()
+.one - Get one record from query. Throws Exception if no data found or querying more than one record
+.one_or_none - Get one record from query.  Returns None if no record found.  Throws Exception of querying more than one record
+.scalars - Get many scalar values from query.  Returns empty List if no records found. If selecting multiple columns, returns List of FIRST column only.
+.scalar - Get a single scalar value from query. Returns None if no record found.  Returns first (top) if more than one record found
+.scalar_one - Get a single scalar value from query.  Throws Exception if no data found or if querying more than one record
+.scalar_one_or_none - Get a single scalar value from query.  Returns None if no record found.  Throws Exception if querying more than one record
+
+.insertmany - Bulk insert many rows, returning bulk primary keys (for databases that support INSERT..RETURNING)
+.insertone - Insert one row, returning the one rows PK (as a tuple in case of dual PKs)
+
+
+
 
 ## Document Status
 
@@ -19,6 +38,8 @@
 - [ ] container
 - [ ] contracts
 - [ ] database
+    - Fix notes about SA 1.4 now
+    - Fix PlanetScale config exmaple, its different for aiomysql vs pymysql...
 - [ ] events
 - [ ] exceptions
     - I added SmartException in `http/exceptions/smart/` but did NOT test the 'Throw from Controller' part.  Double check the code works.
@@ -65,6 +86,19 @@ DB query builder has NO insert() capabilities, you can do it manually like so fo
             await uvicore.db.insertone(query, values)
 
 ```
+
+
+# Apostrophe
+
+- If you want to keep it singular and show OWNERSHIP then its 's
+    - Ex: It is defined in your package's `db.py` file
+    - Ex: Uvicore's own `ORM`
+    - The family's house burt down
+- No apostrophe (pacakges, connections) means plural, more than one
+    - There are many families at school
+- If word already ends in s already (plural or singluar) and you want to show ownership
+    - The Jess's house burnt down
+
 
 
 
@@ -188,6 +222,16 @@ automatic [API Model Router](/http/api/model-router/)
 
 [IoC](/deeper/ioc/)
 
+[Uvicore CLI](/cli/)
+
+[ORM](/database/orm-basics/)
+[Query Builder](/database/db-queries/)
+[SQLAlchemy Query Builder](/database/db-sa-queries/)
+
+[ORM vs Query Builder vs RAW SQL](/database/#orm-vs-query-builder-vs-raw)
+
+[Configuration System](/getting-started/configuration/)
+
 [Uvicore Installer](/getting-started/installation/)
 
 [encode/databases](https://github.com/encode/databases)
@@ -198,7 +242,7 @@ automatic [API Model Router](/http/api/model-router/)
 
 [Jinja](https://github.com/pallets/jinja)
 
-[SQLAlchemy Core](https://docs.sqlalchemy.org/en/13/core/tutorial.html)
+[SQLAlchemy Core](https://docs.sqlalchemy.org/en/20/core/)
 
 [SQLAlchemy](https://www.sqlalchemy.org/)
 
@@ -242,7 +286,7 @@ After the database extras have been installed you must update your `config.packa
 ```
 
 !!! warning
-    This section is for developers who whish to contribute to Uvicore source code. To understand how this module works under the hood!
+    This section is for contributing developers of the uvicore source code. Or for folks who just wish to learn how uvicore works under the hood!
 
 
 !!! note "See The Code on Github"

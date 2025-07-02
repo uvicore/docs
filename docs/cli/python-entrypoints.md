@@ -39,17 +39,23 @@ specifically made for this `setuptools entrypoints`
 import os
 import sys
 import uvicore
-from uvicore.console import group
-from myapp.package import bootstrap
+from vtcman.package import bootstrap
 from uvicore.support.module import load
+from uvicore.console import click, group
 
 # Bootstrap the Uvicore application from the console entrypoint
 app = bootstrap.Application(is_console=True)()
 
 # Define a new asyncclick group
 @group()
-def cli():
-    pass
+@click.pass_context
+async def cli(ctx):
+
+    # Console startup event dispatcher
+    await uvicore.ioc.make('uvicore.console.events.command.Startup')().codispatch()
+
+    # Console shutdown even dispatcher
+    ctx.call_on_close(uvicore.ioc.make('uvicore.console.events.command.Shutdown')().codispatch)
 
 # Dynamically add in all commands from this package matching this command_group
 command_group='myapp'

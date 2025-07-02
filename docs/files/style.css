@@ -17,7 +17,6 @@ https://htmlcolorcodes.com/color-picker/
     max-width: 100% !important;
 } */
 
-
 /* .md-sidebar--secondary {
     margin-left: 100%;
 } */
@@ -32,6 +31,14 @@ https://htmlcolorcodes.com/color-picker/
     color: var(--md-code-fg-color)
 }
 
+/* Fix nested navs bottom pading */
+.md-nav__link {
+    padding-bottom: 10px;
+}
+
+li.md-nav__item.md-nav__item--nested {
+    padding-bottom: 10px !important;
+}
 
 /* Hide Getting Started nav header title */
 html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_3_label.md-nav__link {
@@ -49,9 +56,12 @@ html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.m
 html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_6_label.md-nav__link {
     display: none;
 }
-
+/* Hide Digging Deeper nav header title */
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_7_label.md-nav__link {
+    display: none;
+}
 /* Hide Epologue nav header title */
-html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_9_label.md-nav__link {
+html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.md-grid div.md-sidebar.md-sidebar--primary div.md-sidebar__scrollwrap div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list li.md-nav__item.md-nav__item--active.md-nav__item--section.md-nav__item--nested label#__nav_8_label.md-nav__link {
     display: none;
 }
 

@@ -1,44 +1,64 @@
 # DB Configuration
 
-Uvicore utilizes [encode/databases](https://github.com/encode/databases) as an async adapter for [SQLAlchemy Core](https://docs.sqlalchemy.org/en/13/core/tutorial.html) (core is the query builder only, NO SQLAlchemy ORM).  This was in place before SQLAlchemy 1.4 came out, which is now async.  At some point Uvicore will be updated to remove the `encode/databases` dependency.  Keep in mind that Uvicore does NOT utilize SQLAlchemy for an ORM as Uvicore has a custom [Pydantic](/orm-pydantic/) based ORM that is more fluent and elegant.
+Database configuration is defined in your package's `config/database.py` file.
 
-Because Uvicore database utilizes [SQLAlchemy Core](https://docs.sqlalchemy.org/en/13/core/tutorial.html), Uvicore supports any database engine that SQLAlchemy supports including MySQL, PostgreSQL, MSSQL etc...
+Within this file you may specify none, one or more database connections using various backends, dialects and drivers.
+
+Due to the nature of Uvicore's [Configuration System](/getting-started/configuration/) any consumer of your package can tweak your package's connection strings within their own app.  They may prefer `aiomysql` vs `pymysql` and even add a prefix to all database tables.
+
+
+---
 
 
 ## :material-pound: Dependencies
 
-In order to use the database layer with Uvicore you must first ensure you have installed the `database` extras from the framework.  This is by default already included in the `uvicore-installer`.
+Uvicore utilizes the async [SQLAlchemy Core 2.0](https://docs.sqlalchemy.org/en/20/core/) for most database connections and therefore supports all databases, dialects and drivers that SQLAlchemy does!
+
+When running the [Uvicore Installer](/getting-started/installation/), if you answered `Yes` to installing Database tools, then Uvicore already comes [SQLAlchemy Core 2.0](https://docs.sqlalchemy.org/en/20/core/) and a few common DBAL libraries like `aiomysql`, `aiosqlite` and `asyncpg`.
+
+
+If you answered `No` to Database tools and would like to add them manually...
+
+Ensure you have installed the `database` extras from the framework.
 ```
 # Poetry pyproject.toml
-uvicore = {version = "0.1.*", extras = ["database", "redis", "web"]}
+uvicore = {version = "0.3.*", extras = ["database", "redis", "web"]}
 
 # Pipenv Pipfile
-uvicore = {version = "==0.1.*", extras = ["database", "redis", "web"]}
+uvicore = {version = "==0.3.*", extras = ["database", "redis", "web"]}
 
 # requirements.txt
-uvicore[database,redis,web] == 0.1.*
+uvicore[database,redis,web] == 0.3.*
 ```
 
-After the database extras have been installed you must update your `config.package.py` `dependencies` OrderedDict in `config/package.py`
+After the database extras have been installed you must update your `config/dependencies.py` `dependencies` to include the `uvicore.database` provider
 ```python
     'dependencies': OrderedDict({
-        'uvicore.foundation': {
-            'provider': 'uvicore.foundation.services.Foundation',
-        },
         # ...
         'uvicore.database': {
             'provider': 'uvicore.database.services.Database',
         },
-        # ...
+        # Optional if you will be using Uvicore's ORM!
+        # 'uvicore.orm': {
+        #     'provider': 'uvicore.orm.package.provider.Orm',
+        # },
+        #
     }),
 ```
 
 Notice the ORM dependency does not need to be defined.  Uvicore can use a raw query builder level database access layer without an ORM.
 
 
+---
+
+
 ## :material-pound:  Connection Strings
 
-Uvicore uses your `config/database.py` [which is included from `package.py`] configuration file to store connection strings. Add the proper connection, be sure to use the `.env` file along with the `env()` helper to keep your secrets out of git.
+Uvicore uses your package's `config/database.py` to store connection strings.
+
+
+!!! tip
+    When defining connections be sure to wrap all values in `env()` so users can overwrite the values from their own `.env` and help keep secrets out of git!
 
 ```python
 
@@ -49,48 +69,68 @@ config = {
         'connections': {
             # SQLite Example
             # 'wiki': {
-            #     'driver': 'sqlite',
-            #     'database': ':memory',
-            #     'prefix': None,
+            #     'backend': env('DB_WIKI_BACKEND', 'sqlalchemy'),
+            #     'dialect': env('DB_WIKI_DIALECT', 'sqlite'),
+            #     'driver': env('DB_WIKI_DRIVER', 'aiosqlite'),
+            #     'database': env('DB_WIKI_DB', ':memory:'),
+            #     'prefix': env('DB_WIKI_PREFIX', None),
+            #     # If 'url' is defined using sqlalchemy backend,
+            #     # it will be used instead of deriving one from the properties above.
+            #     'url': '',
             # },
 
             # MySQL Example
             'wiki': {
+                'backend': 'sqlalchemy',
                 'dialect': env('DB_WIKI_DIALECT', 'mysql'),
-                'sync_driver': env('DB_WIKI_SYNC_DRIVER', 'pymysql'),
-                'async_driver': env('DB_WIKI_ASYNC_DRIVER', 'aiomysql'),
+                'driver': env('DB_WIKI_DRIVER', 'aiomysql'),
                 'host': env('DB_WIKI_HOST', '127.0.0.1'),
                 'port': env.int('DB_WIKI_PORT', 3306),
-                'database': env('DB_WIKI_DB', 'wiki'),
-                'username': env('DB_WIKI_USER', 'username'),
-                'password': env('DB_WIKI_PASSWORD', 'password'),
+                'database': env('DB_WIKI_DB', 'appstub'),
+                'username': env('DB_WIKI_USER', 'root'),
+                'password': env('DB_WIKI_PASSWORD', 'techie'),
                 'prefix': env('DB_WIKI_PREFIX', None),
-                # All options are passed directly to the specified driver.
-                'sync_driver_options': {
-                    'ssl': env.bool('DB_WIKI_SSL', False),
-                },
-                'async_sync_driver_options': {
-                    'ssl': env.bool('DB_WIKI_SSL', False),
-                }
+                'url': '',
+                # If 'url' is defined using sqlalchemy backend,
+                # it will be used instead of deriving one from the properties above.
+                # All options passed directly as **kwargs to the backends connect, create_pool,
+                # create_engine or other backend specific create methods
+                # Example enable SSL using pymysql driver
+                # 'options': {
+                #     'ssl_ca': '/etc/ssl/certs/ca-certificates.crt',
+                # },
+                # Example enable SSL using aiomysql driver
+                # 'options': {
+                #     'ssl': True
+                # }
             },
         },
     },
     # ...
 }
 ```
-The `options` dictionary are values passed directly to the `driver` connection.  The default `pymysql` dialect in `encode/databases` is `aiomysql` which accepts an SSL parameter among others.
-
-!!! note
-    The reason configs are referenced from `config/package.py` instead of `config/app.py` is because `config/package.py` is meant to be overridden by any developer consuming your app as a package inside their own app.  The package consumer gets to change where your package stores data.  Devs can also override using their `.env` file so be sure to use `env('XYZ')` in your configs.
+The `options` dictionary are values passed directly to the `driver` creation.  In the case of SQLAlchemy, this would be the `connect_args` parameter of `create_engine()`
 
 
-## :material-pound: Drivers and Dialects
+---
 
-Uvicore uses [encode/databases](https://github.com/encode/databases) as an async layer just before SQLAlchemy Core.  Therefore Uvicore is subject to all drivers and dialects supported by `encode/databases`
 
-- Driver: `mysql`
-    - Dialects:
-        - asdf
+## :material-pound: Backends, Drivers and Dialects
+
+Uvicore's database config section is geared towards SQLAlchemy.  But there is nothing stopping you from adding other connection properties that may be useful to your specific driver (mongodb, snowflake etc...).
+
+The 3 main properties that dictate the backend and drivers to use are
+
+- A `backend` specifies the primary abstraction library.  Uvicore defaults to the `sqlalchemy` backend.  In the future Uvicore may support other backends.
+- A `dialect` is passed to SQLAlchemy to denote the type of database such as `mysql`, `sqlite`, `postgres`.
+- A `driver` is the DBAL used by SQLAlchemy to talk to the database, such as `aiomysql`, `aiosqlite`, `asyncpg` and `pymysql`.
+
+For the default `sqlalchemy` backend, you may use any compatible dialect defined here [https://docs.sqlalchemy.org/en/20/dialects/](https://docs.sqlalchemy.org/en/20/dialects/) As for SQLAlchemy drivers, there are many for each dialect which are also referenced in the link above.
+
+If you were to use a 3rd party dialect like `snowflake-sqlalchemy` you may utilize the `url` property to specify the exact connection URL directly.  Or you can use the [IoC](/deeper/ioc/) and provide an override for the entire `uvicore.database.db.Db` class and overload the `init()` method!
+
+
+---
 
 
 ## :material-pound: View from CLI
