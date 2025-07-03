@@ -67,6 +67,7 @@ nav:
     - deeper/ioc.md
     - deeper/jobs.md
     - deeper/templating.md
+    - deeper/http-client.md
     - deeper/cache.md
     - deeper/mail.md
     - deeper/superdict.md

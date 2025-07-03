@@ -33,17 +33,17 @@ uvicore[database,redis,web] == 0.3.*
 
 After the database extras have been installed you must update your `config/dependencies.py` `dependencies` to include the `uvicore.database` provider
 ```python
-    'dependencies': OrderedDict({
-        # ...
-        'uvicore.database': {
-            'provider': 'uvicore.database.services.Database',
-        },
-        # Optional if you will be using Uvicore's ORM!
-        # 'uvicore.orm': {
-        #     'provider': 'uvicore.orm.package.provider.Orm',
-        # },
-        #
-    }),
+dependencies = OrderedDict({
+    # ...
+    'uvicore.database': {
+        'provider': 'uvicore.database.services.Database',
+    },
+    # Optional if you will be using Uvicore's ORM!
+    # 'uvicore.orm': {
+    #     'provider': 'uvicore.orm.package.provider.Orm',
+    # },
+    # ...
+})
 ```
 
 Notice the ORM dependency does not need to be defined.  Uvicore can use a raw query builder level database access layer without an ORM.
