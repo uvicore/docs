@@ -17,6 +17,9 @@ nav:
       - http/web/routing.md
       - http/web/views.md
       - http/web/controllers.md
+    - Middleware:
+      - http/middleware/concepts.md
+      - http/middleware/authentication.md
     - Exceptions:
       - http/exceptions/concepts.md
       - http/exceptions/handlers.md

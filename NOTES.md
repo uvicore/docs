@@ -120,7 +120,13 @@ We use `~/Code/wiki` which is an `acme/wiki` uvicore app for all examples
 * camelCase vs PascalCase
 * LINK - [Uvicore CLI](/cli/)
     * [DB Query Builder](/database/db-queries/)
-* :material-auto-fix: FIXME
+* fixme
+:material-auto-fix: FIXME
+:material-auto-fix: Content Coming Soon...
+
+
+
+
 
 ### Installation
 

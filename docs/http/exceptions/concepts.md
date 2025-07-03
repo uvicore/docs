@@ -1,6 +1,6 @@
 # Concepts
 
-In uvicore, Web and API endpoints are separated based on dual routers.  Each engine has it's own set of middleware, exceptions and other configurations.  Because of this separation you can define exception handlers for each route engine in your `config/http.py` under `web.exception` and `api.exception`.
+In Uvicore, Web and API endpoints are separated based on dual routers.  Each engine has it's own set of middleware, exceptions and other configurations.  Because of this separation you can define exception handlers for each route engine in your `config/http.py` under `web.exception` and `api.exception`.
 
 !!! note "See The Code on Github"
     - [Exceptions](https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/__init__.py)
