@@ -5,7 +5,7 @@ Uvicore comes with a built-in caching system capable of connecting to any number
 The caching system is generally used to cache expensive database queries or other data lookups.  But of course, you are free to use it for any arbitrary key/value storage.  Just remember, cache is not a database, it expires unless you define otherwise.  Even still, it should be considered volatile.
 
 
-## Configuration
+## :material-pound: Configuration
 
 Most of uvicore's configuration is set to sensible defaults with quick and easy `.env` file overrides.
 
@@ -83,23 +83,22 @@ The `connection` key is pointing to a redis database connection key which is def
 
 
 
-## Stores
+
+## :material-pound: Stores
 
 Uvicore ships with 2 backend cache stores, `Redis` and `Array`.  The community (that means YOU) may easily create other stores like memcache.
 
 The `array` store simply stores cached data in the running apps memory.  Array store does have full TTL expiry!  It should act just like redis cache except that it is in your running apps memory.  When the app dies, cache is gone forever.  This means cache entries with no expiry (seconds=0) will disappear when the app stops. Array is best used for testing or when you import another uvicore package that uses caching, but you don't have redis and don't really care about the cache.
 
 
-
-## Expiration
+## :material-pound: Expiration
 
 All values inserted to the cache store always use the config expire TTL seconds.
 This means all keys will automatically delete themselves.  You can override each insert operation using the optional `seconds=` parameter.  Using `seconds=0` means the key
 will NEVER expire.  If you want every key to persist forever, update your config seconds to 0.
 
 
-
-## Usage
+## :material-pound: Usage
 
 You can obtain a cache instance in multiple ways.  The easiest and **recommended** method is to simply use `uvicore.cache` since `import uvicore` is most likely already at the top of every file you will use.
 ```python
@@ -124,10 +123,16 @@ cache = Cache.connect()
 cache = uvicore.ioc.make('cache').connect()
 ```
 
+
+### :material-pound: :material-pound: Change Stores
+
 Use an alternate store other than the default defined in your config
 ```python
 await cache.store('redis').get('key1')
 ```
+
+
+### :material-pound: :material-pound: Get
 
 Get one or more values from cache
 ```python
@@ -147,28 +152,8 @@ await cache.get('missing1', default='default if not found')
 await cache.get(['missing1', 'key1'], default='not found')
 ```
 
-The `.remember()` method will get one or more values if exist, if not, it will set the default to the cache store and return it.  Different that `.get()` with a `default=` because `.remember()` will set the default in the cache store.  This is the **recommended** method to automatically cache expensive database queries or lookups into cache.  Works with callbacks!
-```python
-# Single key value
-await cache.remember('key1', 'default key3')
 
-# Multiple key value returns.  If any one does not exist, the default is SET in the cache store
-await cache.remember(['key1', 'key2'], 'default value')
-
-# Using custom TTL seconds
-await cache.remember('key1', 'default value', seconds=60)
-
-# Default can be a callback.  This is ideal for retrieving a value from cache if exists.  If not
-# exist, run a complex query and set the queries results into the cache.
-async def wiki_posts():
-    return await Post.query().get()
-await cache.remember('all_posts', wiki_posts)
-```
-
-Check if a single cache key exists
-```python
-await cache.has('key1')
-```
+### :material-pound: :material-pound: Put
 
 Put a single key value in cache
 ```python
@@ -187,6 +172,19 @@ await cache.put({
 # with optional seconds= parameter
 ```
 
+
+### :material-pound: :material-pound: Add
+
+Add a single value only if not exists.  Like put, but will not overwrite an existing value.
+```python
+# Return true if success (meaning key did not exist and we added it), otherwise
+# false for already exists
+await cache.add('key1', 'value1')
+```
+
+
+### :material-pound: :material-pound: Pull
+
 Pull one or more values from cache and delete after retrieval. Like get, but
 once retrieved, cache entry is DELETED.
 ```python
@@ -197,36 +195,30 @@ await cache.pull('key1')
 await cache.pull(['key1', 'key2'])
 ```
 
-Add a single value only if not exists.  Like put, but will not overwrite an existing value.
+
+
+### :material-pound: :material-pound: Remember
+
+The `.remember()` method will get one or more values if exist, if not, it will set the default to the cache store and return it.  Different that `.get()` with a `default=` because `.remember()` will set the default in the cache store.  This is the **recommended** method to automatically cache expensive database queries or lookups into cache.  Works with callbacks!
 ```python
-# Return true if success (meaning key did not exist and we added it), otherwise
-# false for already exists
-await cache.add('key1', 'value1')
+# Single key value
+await cache.remember('key1', 'default key3')
+
+# Multiple key value returns.  If any one does not exist, the default is SET in the cache store
+await cache.remember(['key1', 'key2'], 'default value')
+
+# Using custom TTL seconds
+await cache.remember('key1', 'default value', seconds=60)
+
+# Default can be a callback.  This is ideal for retrieving a value from cache if exists.  If not
+# exist, run a complex query and set the queries results into the cache.
+async def wiki_posts():
+    return await Post.query().get()
+await cache.remember('all_posts', wiki_posts)
 ```
 
-Touch a key.  This alters the last access time of a key but does not retrieve the value.
-If `seconds=` are passed it will RESET the TTL to the given seconds.
-```python
-# Update the last access time, but do NOT modify the TTL
-await cache.touch('key1')
 
-# Update the last access time and reset the TTL to seconds=
-await cache.touch('key1', seconds=60)
-
-# Returns true if key exists and we touched or modified the TTL.  False if key does not exist.
-```
-
-Increment a key.  If key does not exist, it will create it.  Increment returns the current value after the increment
-```python
-# Uses default TTL seconds
-new_int = await cache.increment('key1')
-
-# Custom TTL seconds expire
-await cache.increment('key1', seconds=60)
-
-# Custom increment integer
-await cache.increment('key1', 10)
-```
+### :material-pound: :material-pound: Forget (delete)
 
 Forget (delete) one or more keys
 ```python
@@ -241,4 +233,43 @@ Delete all cache keys.  This is "redis safe" as it only deletes keys in the redi
 that begin with the cache prefix defined in your config.  It does NOT delete all keys in your database!
 ```python
 await cache.flush()
+```
+
+
+### :material-pound: :material-pound: Has Key
+
+Check if a single cache key exists
+```python
+await cache.has('key1')
+```
+
+
+
+### :material-pound: :material-pound: Touch
+
+Touch a key.  This alters the last access time of a key but does not retrieve the value.
+If `seconds=` are passed it will RESET the TTL to the given seconds.
+```python
+# Update the last access time, but do NOT modify the TTL
+await cache.touch('key1')
+
+# Update the last access time and reset the TTL to seconds=
+await cache.touch('key1', seconds=60)
+
+# Returns true if key exists and we touched or modified the TTL.  False if key does not exist.
+```
+
+
+### :material-pound: :material-pound: Increment
+
+Increment a key.  If key does not exist, it will create it.  Increment returns the current value after the increment
+```python
+# Uses default TTL seconds
+new_int = await cache.increment('key1')
+
+# Custom TTL seconds expire
+await cache.increment('key1', seconds=60)
+
+# Custom increment integer
+await cache.increment('key1', 10)
 ```

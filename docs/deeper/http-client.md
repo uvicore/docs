@@ -31,13 +31,17 @@ dependencies = OrderedDict({
 Basic usage is to make the HTTP Client form the IoC and use it like so
 
 ```python
-http = uvicore.ioc.make('aiohttp')
-url = 'https://petstore3.swagger.io/api/v3/pet/findByStatus?status=available'
-async with http.get(url) as r:
-    if r.status == 200:
-        dump(r)
-        dump(await r.text())
-        dump(await r.json())
+import uvicore
+from uvicore.support.dumper import dump, dd
+
+async def some_async_method():
+    http = uvicore.ioc.make('aiohttp')
+    url = 'https://petstore3.swagger.io/api/v3/pet/findByStatus?status=available'
+    async with http.get(url) as r:
+        if r.status == 200:
+            dump(r)
+            dump(await r.text())
+            dump(await r.json())
 ```
 
 
@@ -92,7 +96,7 @@ async def http_get(url: str, *, json: bool = True, basic_auth: str = None) -> tu
 
 ## :material-pound: Example Simple SugarCRM Client
 
-Just a basic example of building your own SugarCRM client class to login and interact with the Sugar API.  This example shows `GET` method only, but you get the point.  This code saves the login token to a temp file to re-use it.  If the token expires, the get request will attempt to login again.
+Just a basic example of building your own SugarCRM client class to login and interact with the Sugar API.  This example shows `GET` method only, but you "get" the point :)  This code saves the login token to a temp file to re-use it.  If the token expires, the `GET` request will attempt to login once before failing.
 
 ```python
 import uvicore
