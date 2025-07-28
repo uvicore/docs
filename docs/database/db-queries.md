@@ -126,7 +126,6 @@ SQLAlchemy Table object properties and columns
 
 ```python
 from app1.database.tables.posts import Posts
-Posts.table
 post = Posts.table.c
 
 results = (await uvicore.db.query('app1')
@@ -141,7 +140,6 @@ You can also use SQLAlchemy expressions in wheres and other clauses
 
 ```python
 from app1.database.tables.posts import Posts
-Posts.table
 post = Posts.table.c
 
 results = (await uvicore.db.query('app1')
@@ -149,6 +147,13 @@ results = (await uvicore.db.query('app1')
     .where(post.id > 2)  # Notice an actual comparison instead of 3 parameters
     .order_by(post.title, 'DESC')
     .get()
+)
+
+# Example count distinct column
+count = (await uvicore.db.query().table('app1')
+    .select(sa.func.count(sa.distinct(post.creator_id)))
+    .where('creator_id', 1)
+    .scalar()
 )
 
 ```
@@ -178,6 +183,46 @@ Selecting specific columns
 posts = (await uvicore.db.query()
     .table('posts')
     .select('id', 'title')
+    .get()
+)
+```
+
+
+---
+
+
+## :material-pound: .count()
+
+Count rows that would be returned from a query
+
+```python
+
+# Ex: select count(*) from posts where creator_id = 1
+count = await uvicore.db.query().table('posts').where('creator_id', 1).count()
+
+# Ex: select count(distinct creator_id) from posts where creator_id = 1
+count = await uvicore.db.query().table('posts').select('creator_id').where('creator_id', 1).distinct().count()
+
+# Ex: select count(distinct creator_id) from posts where creator_id = 1
+# But using raw sa.func
+from app1.database.tables.posts import Posts
+post = Posts.table.c
+count = await uvicore.db.query().table('posts').select(sa.func.count(sa.distinct(post.creator_id))).where('creator_id', 1).scalar()
+```
+
+
+---
+
+
+## :material-pound: .distinct()
+
+Use `.distinct()` on any query to add distinctness to the results
+
+```python
+posts = (await uvicore.db.query()
+    .table('posts')
+    .select('creator_id')
+    .distinct()
     .get()
 )
 ```
@@ -283,6 +328,7 @@ posts = (await uvicore.db.query()
     .one_or_none()
 )
 ```
+
 
 ---
 
