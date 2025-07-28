@@ -49,6 +49,7 @@ nav:
       - database/orm-pydantic.md
     - database/seeding.md
     - Recipes:
+      - database/recipes/snowflake.md
       - database/recipes/planetscale.md
     - Contributor Notes:
       - database/contrib/flow.md
