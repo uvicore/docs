@@ -82,6 +82,7 @@ nav:
     - deeper/templating.md
     - deeper/http-client.md
     - deeper/cache.md
+    - deeper/redis.md
     - deeper/mail.md
     - deeper/superdict.md
     - Contributor Notes:
