@@ -30,8 +30,9 @@ Added comprehensive documentation for HTTP web development:
 
 ## 0.4
 
-A focused, **non-breaking** release hardening the database and ORM layers.
+A **breaking** release that modernizes the web stack and hardens the database and ORM layers.
 
+- **Modernized web stack** - upgraded to **Pydantic v2**, **FastAPI 0.137** and **Starlette 1.3**.  This is breaking for application code: model `update_forward_refs()` removal (forward refs now rebuilt centrally), explicit defaults on optional Pydantic fields, `on_event` → lifespan `Startup`/`Shutdown` events, `@validator` → `@field_validator`, and serialization renames (`.dict()` → `.model_dump()`).
 - **[Inline table definitions](../database/db-tables.md#tables-inline-on-the-model)** - define a model's schema directly on the model with `__connection__` + `__tablename__` + a raw `__table__` list, no separate `Table` class required.
 - **Expanded query operators** - `ilike`/`!ilike`, `between`/`!between`, `<>`, `not in`, `not like`, and explicit `is` / `is not`, all case-insensitive and whitespace tolerant.
 - **Cross-database robustness** - validated against real Postgres, MySQL and MariaDB, with portable auto-increment primary keys, type-safe `find()`, and `postgres`/`postgresql` dialect normalization.
