@@ -1,14 +1,175 @@
 # Upgrade 0.3 to 0.4
 
-Good news, **0.4 is a non-breaking, additive release for application code.**  Your existing models, tables, query builders and configs continue to work unchanged.  This page simply highlights what you can now *adopt*, plus a couple of behavior improvements worth knowing about.
+!!! danger "0.4 is a breaking release"
+    Unlike earlier 0.4 previews, the shipping **0.4.0** upgrades the entire web stack:
+    **Pydantic v1 → v2**, **FastAPI 0.115 → 0.137**, and **Starlette 0.45 → 1.3**.  Pydantic v2
+    is the headline, FastAPI dropped Pydantic v1 entirely (in 0.126) so the two move together.
+    There is no "do nothing" path this time, **plan to read this whole page before you bump.**
 
-See the [0.4 Changelog](../changelog/0.4.md) for the full list.
+The good news: Uvicore's own layer absorbs most of the churn.  Your `Field()` definitions,
+relations, tables, query builder, configs, seeders and Guard/scopes are **unchanged**.  The
+breakage clusters in a handful of predictable spots, listed below worst-first.
+
+See the [0.4 Changelog](../changelog/0.4.md) for the full feature list.
 
 ---
 
-## Nothing Required
+## Required Steps
 
-There are no forced migration steps.  If you do nothing, your 0.3 app runs on 0.4 as-is.
+These will stop your app from booting or running until addressed.
+
+### 1. Remove `update_forward_refs()` from your models
+
+In Pydantic v2 `update_forward_refs()` is an alias for `model_rebuild()`, which eagerly builds a
+model's **entire** related-model schema graph.  Called at the bottom of each model file (mid
+import-cascade), it raises `PydanticUndefinedAnnotation` before the sibling models exist.
+
+Uvicore now rebuilds **every registered model once, centrally**, after all model modules are
+imported (see `database/package/bootstrap.py`), so the per-file call is both broken and redundant.
+Delete it.  **Keep** `from __future__ import annotations` and the bottom-of-file relation imports,
+those are still required so the forward references can resolve.
+
+```python
+# acme/wiki/models/post.py
+from __future__ import annotations          # <-- KEEP (makes relations forward refs)
+from uvicore.orm import Model, ModelMetaclass, Field, BelongsTo
+
+@uvicore.model()
+class Post(Model['Post'], metaclass=ModelMetaclass):
+    __tableclass__ = table.Posts
+    id: Optional[int]   = Field('id', primary=True, read_only=True)
+    creator: Optional[User] = Field(None, relation=BelongsTo('acme.wiki.models.user.User'))
+
+from acme.wiki.models.user import User  # isort:skip      # <-- KEEP (resolves the forward ref)
+# Post.update_forward_refs()             <-- DELETE: Uvicore rebuilds models for you now
+```
+
+### 2. Add explicit defaults to your own `Optional` Pydantic models
+
+Pydantic v2 no longer treats `Optional[x]` as implicitly defaulting to `None`, an optional field
+with no default is now **required** and raises `ValidationError`.  This affects the plain Pydantic
+models you write yourself (request/response bodies, DTOs).
+
+```python
+from pydantic import BaseModel
+
+class SearchQuery(BaseModel):
+    term: str
+    limit: Optional[int]          # v1: optional  |  v2: REQUIRED -> ValidationError
+    limit: Optional[int] = None   # v2 fix: add the explicit default
+```
+
+!!! note "Your ORM models are exempt"
+    Uvicore's `ModelMetaclass` defaults every ORM field to `None` for you (models are populated
+    from partial DB rows), so your `Field(...)` definitions need **no** changes.  This step is only
+    about hand-written `BaseModel` subclasses.
+
+### 3. Replace `on_event` startup/shutdown hooks
+
+Starlette 1.0 removed `on_event`/`add_event_handler` from the application, so
+`@uvicore.app.http.on_event("startup")` no longer exists.  Listen to Uvicore's HTTP server events
+instead (typically from your provider's `boot()`):
+
+```python
+# Before (0.3)
+@uvicore.app.http.on_event('startup')
+async def startup():
+    ...
+
+# After (0.4)
+from uvicore.http.events.server import Startup, Shutdown
+
+async def on_http_startup(event):
+    ...
+
+Startup.listen(on_http_startup)     # or Startup.listen('acme.wiki.events.listeners.on_http_startup')
+Shutdown.listen(on_http_shutdown)
+```
+
+### 4. Port custom validators
+
+Pydantic v1 `@validator` / `@root_validator` are superseded by `@field_validator` /
+`@model_validator` (different signatures and return semantics).
+
+```python
+# Before
+from pydantic import validator
+@validator('slug')
+def lower(cls, v): return v.lower()
+
+# After
+from pydantic import field_validator
+@field_validator('slug')
+@classmethod
+def lower(cls, v): return v.lower()
+```
+
+### 5. Fix removed Pydantic imports
+
+If any of your code imports these, they were moved or deleted in v2:
+
+| Pydantic v1 | Pydantic v2 |
+|---|---|
+| `from pydantic.generics import GenericModel` | `class X(BaseModel, Generic[T])` (BaseModel is generic) |
+| `from pydantic.typing import ...` | the stdlib `typing` module |
+| `from pydantic.fields import ModelField` | `FieldInfo` (different shape) via `Model.model_fields` |
+| custom type `__get_validators__` / `__modify_schema__` | `__get_pydantic_core_schema__` / `__get_pydantic_json_schema__` |
+
+---
+
+## Deprecations
+
+These still work but emit `PydanticDeprecatedSince20` warnings, migrate when convenient.
+
+- **Serialization methods:** `.dict()` → `.model_dump()`, `.json()` → `.model_dump_json()`,
+  `.copy()` → `.model_copy()`, `.parse_obj()` → `.model_validate()`, `.construct()` →
+  `.model_construct()`.
+- **Model config:** the inner `class Config:` → `model_config = ConfigDict(...)`.  Several keys
+  were renamed: `schema_extra` → `json_schema_extra`, `orm_mode` → `from_attributes`,
+  `allow_population_by_field_name` → `populate_by_name`.
+- **Response classes:** `response.ORJSON` / `response.UJSON` are deprecated upstream in FastAPI but
+  still re-exported.
+
+```python
+# Before
+class DeleteQuery(BaseModel):
+    where: Optional[dict] = None
+    class Config:
+        schema_extra = {"example": {"where": {"id": 1}}}
+
+# After
+from pydantic import ConfigDict
+class DeleteQuery(BaseModel):
+    where: Optional[dict] = None
+    model_config = ConfigDict(json_schema_extra={"example": {"where": {"id": 1}}})
+```
+
+---
+
+## Behavioral Changes To Watch
+
+No error, but the output or behavior shifts:
+
+- **Stricter validation/coercion.** Pydantic v2 is less forgiving about loose type coercion and
+  unexpected types when constructing models from input.
+- **JSON output differs.** `model_dump()` handles `None`/nested values differently than v1
+  `.dict()`, and FastAPI now generates **OpenAPI 3.1** (was 3.0).  Any test that asserts an exact
+  response body or `openapi.json` structure will need updating.  Field metadata you set via
+  `Field()` (`read_only`, `write_only`, `sortable`, …) still appears in the schema (as `readOnly`,
+  `writeOnly`, and the `x-tra` extension block).
+- **Python floor.** FastAPI 0.137 requires **Python ≥ 3.10**.  Uvicore already required 3.10, so
+  compliant apps are unaffected.
+
+---
+
+## What Is *Not* Affected
+
+To keep the scope honest, these public surfaces are unchanged in 0.4:
+
+- The uvicore **`Field()` API** — `primary`, `read_only`, `write_only`, `description`,
+  `min_length`/`max_length`, `relation=...`, `callback=`, etc.
+- **All relation types** (`BelongsTo`, `HasOne/Many`, `BelongsToMany`, the `Morph*` family).
+- **Tables**, the **ORM query builder**, **seeders**, **config files**, and **Guard / auth scopes**.
 
 ---
 
@@ -66,3 +227,15 @@ Postgres connections now work whether you set `dialect` to `postgres` or `postgr
 # Both of these now work identically
 'dialect': env('DB_WIKI_DIALECT', 'postgresql'),
 ```
+
+---
+
+!!! tip "Upgrade tips"
+    - **Delete `update_forward_refs()`** from every model, keep `from __future__ import annotations`
+      and the bottom-of-file relation imports.
+    - **Add `= None`** to optional fields in your own `BaseModel` classes (ORM models are handled
+      for you).
+    - **Swap `on_event`** for `Startup.listen()` / `Shutdown.listen()`.
+    - **Port** `@validator` → `@field_validator`, `class Config` → `model_config`, and
+      `.dict()`/`.json()` → `.model_dump()`/`.model_dump_json()`.
+    - Re-check any test that asserts exact JSON or OpenAPI output, v2 + OpenAPI 3.1 shift the shape.
