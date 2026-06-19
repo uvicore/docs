@@ -1,59 +1,85 @@
+---
+title: Dispatching Events
+---
+
 # Dispatching Events
 
-You can fire off (dispatch) an event in a few different ways.  Where
-you fire off the event is up to your own code.  With the Wiki events
-example above the proper place may be in your controller, model or job that
-Creates and Deletes wiki posts.  Wherever the location, firing off an event
-is simple.
+Dispatching is how you *fire off* an event so that every registered listener
+runs.  Where you dispatch is entirely up to you, with the wiki `Created` event
+from [Defining Events](defining.md) the natural home might be your controller,
+model or a background job, anywhere a post is actually created.  Wherever it
+lives, firing the event is a one liner.
+
+Every event is either **synchronous** or **asynchronous**, and Uvicore gives you
+a matching method for each:
+
+- **`dispatch()`** - synchronous, runs listeners in order and returns.
+- **`dispatch_async()`** - asynchronous, must be `await`ed.
+- **`codispatch()`** - a friendly alias for `dispatch_async()`, also `await`ed.
 
 !!! note
-    Events are defined as either synchronous or asynchronous.
-    Uvicore provides the synchronous `diaptch()` method and the asynchronous `codispatch()` method.
+    Choose the method that matches how your event is declared (`is_async`) and
+    where you are calling from.  Async dispatch is tolerant, if a listener happens
+    to be a plain synchronous function, Uvicore runs it safely in a threadpool so
+    it never blocks your event loop.
 
+---
 
-### Dispatch Class Based Events
+## Dispatching Class Based Events
 
-Dispatch using `events.dispatch()` or `events.codispatch()`
+Pass an **instance** of your event class to `events.dispatch()` (or its async
+sibling):
 
 ```python
 from uvicore import events
-from acme.wiki.events import Created
+from acme.wiki.events.post import Created
 
-# Using the events.dispatch() method to pass in the class instance
+# Synchronous
 events.dispatch(Created(post))
+
+# Asynchronous
 await events.codispatch(Created(post))
 ```
 
-Dispatch using the instantiated class `.dispatch()` or `.codispatch()` methods
+Or skip the global and use the event instance's own built-in methods, they do
+exactly the same thing:
 
 ```python
-# Or by using the event classes build-in .dispatch() method
 Created(post).dispatch()
 await Created(post).codispatch()
 ```
 
-Dispatch using string dot notation.  Since we defined the Class in the same path, Uvicore will detect the class and Instantiate it with the Dictionary payload as **kwargs into the constructor!
+You can also dispatch by string, even for a class based event.  Because the
+class lives at that exact module path, Uvicore detects it, instantiates it, and
+passes your dictionary into the constructor as `**kwargs`:
+
 ```python
-# Or by using the event classes build-in .dispatch() method
 events.dispatch('acme.wiki.events.post.Created', {'post': post})
 await events.codispatch('acme.wiki.events.post.Created', {'post': post})
 ```
 
+---
 
-### Dispatch String Based Events
+## Dispatching String Based Events
 
 String based events work with or without a matching event class.
 
-You can simply have an event named `xyz` and dispatch it with `events.dispatch('xyz', {'payload1': 'test'})`
+If there is **no** class at that path, that is perfectly fine, the event still
+dispatches and every listener still fires:
 
-If however you name your class like so `acme.wiki.events.post.Created` AND there happens to be an event Class with the same python module path, that event class will be used. It will be Instantiated, and the dictionary will be passed to the constructor as **kwargs.
+```python
+from uvicore import events
+events.dispatch('xyz', {'payload1': 'test'})
+```
 
+If there **is** a class at that exact module path (like
+`acme.wiki.events.post.Created`), the dispatcher quietly upgrades the call,
+instantiating the class and passing your dictionary to its constructor as
+`**kwargs`.  This is what makes it painless to start with a string today and
+promote it to a class later, your dispatch and listener code never changes:
 
 ```python
 from uvicore import events
 events.dispatch('acme.wiki.events.post.Created', {'post': post})
 await events.codispatch('acme.wiki.events.post.Created', {'post': post})
 ```
-
-
-

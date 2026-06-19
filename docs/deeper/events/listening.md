@@ -1,48 +1,28 @@
+---
+title: Listening to Events
+---
+
 # Listening to Events
 
+Registering and dispatching events accomplishes nothing if no one is listening.
+A **listener** ties an event to a handler (a callback) that runs when the event
+is dispatched.
 
-Registering and then dispatching events does nothing if there is no one listening.
-Listeners define callbacks that are executed when an event is dispatched.
-
-The best place to register your event listeners is in your package provider `register()` method which has a shortcut of `self.events`
+The best place to register your listeners is your package provider's
+`register()` method, which conveniently exposes the dispatcher as `self.events`.
 
 !!! tip
-    Your event `.listen(), .listener(), .handle(), .handler() and .call()` are all alias of each other.  Use whichever verbiage makes the most sense to you.
+    The listener methods `listen()`, `listener()`, `handle()`, `handler()` and
+    `call()` are all aliases of one another.  Use whichever verbiage reads best to
+    you.  (Note that `subscribe()` is *not* an alias, it registers a bulk
+    [subscription](#registering-a-subscriber) instead.)
 
+---
 
-### Listening to Class Based Events
+## Listening to Class Based Events
 
-```python
-from acme.wiki.events.post import Created as OnPostCreated
-
-@uvicore.provider()
-class Wiki(Provider):
-    def register(self) -> None:
-
-        # Register event listeners
-
-        # Use a callback.
-        # .listen(), .listener(), .handle(), .handler() and .call() are all aliases
-        OnPostCreated.listen(self.NotifyUsers)
-        OnPostCreated.listener(self.NotifyUsers)
-        OnPostCreated.handle(self.NotifyUsers)
-        OnPostCreated.handler(self.NotifyUsers)
-        OnPostCreated.call(self.NotifyUsers)
-
-        # Use a string based handler which Uvicore will instantiate for you
-        OnPostCreated.listen('acme.wiki.listeners.NotifyUsers')
-        # Or call it the handler folder
-        OnPostCreated.handler('acme.wiki.handlers.NotifyUsers')
-
-```
-
-### Listening to String Based Events
-
-
-**From within your Provider**
-
-Your package provider already has `self.events` available to you!
-
+A class based event carries its own listener methods, so you register a handler
+right off the event class:
 
 ```python
 from acme.wiki.events.post import Created as OnPostCreated
@@ -51,89 +31,131 @@ from acme.wiki.events.post import Created as OnPostCreated
 class Wiki(Provider):
     def register(self) -> None:
 
-        # Register event listeners
+        # Use a callback.  listen / listener / handle / handler / call are aliases.
+        OnPostCreated.listen(self.notify_users)
 
-        # Use a local method (function) as the callback
-        self.events.listen('acme.wiki.post.Created', self.NotifyUsers)
-
-        # Use a listener class as the callback
-        self.events.listen('acme.wiki.post.Created', 'acme.wiki.listeners.NotifyUsers')
+        # Or hand it a string path to a handler class, Uvicore will import and
+        # instantiate it for you.
+        OnPostCreated.listen('acme.wiki.handlers.NotifyUsers')
 ```
 
-**From anywhere in Code**
+See [Handling Events](handling.md) for what `self.notify_users` and the
+`NotifyUsers` class actually look like.
 
-If not in your package provider, you can simply use `uvicore.events` or `from uvicore import events` etc...
+---
+
+## Listening to String Based Events
+
+**From within your provider** you already have `self.events` available:
+
+```python
+@uvicore.provider()
+class Wiki(Provider):
+    def register(self) -> None:
+
+        # A local method (function) as the callback
+        self.events.listen('acme.wiki.post.Created', self.notify_users)
+
+        # A handler class (string path) as the callback
+        self.events.listen('acme.wiki.post.Created', 'acme.wiki.handlers.NotifyUsers')
+```
+
+**From anywhere else in your code**, use the `uvicore.events` global:
 
 ```python
 from uvicore import events
-events.listen('acme.wiki.post.Created', self.my_handler)
-events.subscribe('acme.wiki.listeners.HttpEventSubscription')
+events.listen('acme.wiki.post.Created', my_handler)
 ```
-
 
 !!! info
-    For string based handlers, the `acme.wiki.listeners.NotifyUsers` class is defined as a
-    string in dot notation.  The event system will automatically instantiate
-    and call the class `handle()` method during dispatch.
+    When you pass a string path like `acme.wiki.handlers.NotifyUsers`, the event
+    system imports it, instantiates the class, and calls the instance during
+    dispatch.  That means your handler class needs a `__call__()` method, see
+    [Class Handlers](handling.md#class-handlers).
 
+---
 
-### Listening to Multiple Events
+## Listening with the Decorator
 
-**Listen to multiple events**
+`listen()` (and all its aliases) doubles as a **decorator** when you don't pass a
+handler.  This is the cleanest way to wire up a standalone function, and it works
+with a single event or a list:
 
 ```python
-from acme.wiki.events.post import Created as OnPostCreated
+import uvicore
 
+@uvicore.events.handle([
+    'uvicore.console.events.command.Startup',
+    'uvicore.console.events.command.PytestStartup',
+    'uvicore.http.events.server.Startup',
+])
+async def on_startup(event):
+    # Spin up a shared resource once the app starts
+    ...
+```
+
+This decorator form is exactly how the framework's own packages (like the HTTP
+client) bootstrap shared resources on startup and tear them down on shutdown.
+
+---
+
+## Setting a Priority
+
+Every listener method accepts a keyword `priority` (default `50`).  Listeners run
+sorted by priority **ascending**, so **lower numbers run first**:
+
+```python
+# Bootstrap the console late, after most other services have booted
+AppEvents.Booted.listen(bootstrap.Console, priority=90)
+```
+
+---
+
+## Listening to Multiple Events
+
+Pass a list to register one handler against several events at once:
+
+```python
 @uvicore.provider()
 class Wiki(Provider):
-
     def register(self) -> None:
 
-        # Register event listeners
-
-        # Use a local method (function) as the callback
         self.events.listen([
             'acme.wiki.post.Created',
             'acme.wiki.post.Deleted',
-        ], self.NotifyUsers)
-
-        # Use a string based handler
-        self.events.listen([
-            'acme.wiki.post.Created',
-            'acme.wiki.post.Deleted',
-        ], 'acme.wiki.listeners.NotifyUsers')
+        ], self.notify_users)
 ```
 
+---
 
-### Listening to wildcard events
+## Listening to Wildcard Events
+
+Use a `*` to listen to a whole family of events.  Wildcards are matched as a
+regular expression search against each dispatched event name, so they work at the
+end *or* in the middle of a name:
 
 ```python
-from acme.wiki.events.post import Created as OnPostCreated
-
 @uvicore.provider()
 class Wiki(Provider):
     def register(self) -> None:
 
-        # Register event listeners
+        # Every foundation event
+        self.events.listen('uvicore.foundation.events.*', self.notify_users)
 
-        # Use a local method (function) as the callback
-        self.events.listen('uvicore.foundation.events.*', self.NotifyUsers)
-
-        # Use a listener class as the callback
-        self.events.listen('uvicore.foundation.events.*', 'acme.wiki.listeners.NotifyUsers')
-
-        # The * wildcard also works in the middle of an event name
-        self.events.listen('acme.wiki.models.*.Deleted', self.LogDeletions)
+        # The * also works in the middle of a name
+        self.events.listen('acme.wiki.models.*.Deleted', self.log_deletions)
 ```
 
+---
 
-### Registering a subscriber
+## Registering a Subscriber
 
-A subscription is an all-in-one class which listens to one or more events and
-also contains the handlers for each event.  Notice we are not defining the
-event to listen to here.  We simply define the subscription class.  See
-[Handling Events](handling.md) for what these classes look like.
+A **subscription** is an all-in-one class that both lists the events to watch
+*and* holds the handlers for each.  Notice you do not name the event here, the
+subscription declares its own interests internally.  See
+[Handling Events](handling.md#subscriptions) for the class itself.
+
 ```python
-# From service provider register() method
+# From your service provider's register() method
 self.events.subscribe('acme.wiki.listeners.HttpEventSubscription')
 ```
