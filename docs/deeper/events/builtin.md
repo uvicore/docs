@@ -4,7 +4,7 @@ Uvicore dispatches several events that you may fine useful in your application.
 
 
 
-## :material-pound: Foundation Events
+## Foundation Events
 
 Application bootstrap has registered all package service providers.
 
@@ -31,7 +31,7 @@ events.listen('uvicore.foundation.events.app.Booted', my_handler)
 
 
 
-## :material-pound: HTTP Server Events
+## HTTP Server Events
 
 HTTP Server has been started.  This is the Starlette startup async event.
 
@@ -56,7 +56,7 @@ events.listen('uvicore.http.events.server.Shutdown', my_handler)
 
 
 
-## :material-pound: Console (CLI) Events
+## Console (CLI) Events
 
 Console is starting up.  Runs before console command.
 

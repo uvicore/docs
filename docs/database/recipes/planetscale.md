@@ -7,9 +7,9 @@ PlanetScale looks and feels [mostly] like any other MySQL database, with a singl
 PlanetScale requires an SSL connection
 
 
-## :material-pound: SSL
+## SSL
 
-The `options` dictionary in the `config/database.py` are values passed directly to the `dialect` connection.  The default `pymysql` dialect in `encode/databases` is `aiomysql` which accepts an SSL parameter among others.
+PlanetScale is a MySQL database, so the `dialect` is `mysql` and the `driver` is a MySQL driver such as the default async `aiomysql`.  The `options` dictionary is passed straight through to that driver, and `aiomysql` accepts an `ssl` parameter.
 
 Example `config/database.py` PlanetScale SSL Connection
 
@@ -19,8 +19,9 @@ Example `config/database.py` PlanetScale SSL Connection
 
         # PlanetScale MySQL SSL Connection
         'ps': {
-            'driver': 'mysql',
-            'dialect': 'pymysql',
+            'backend': 'sqlalchemy',
+            'dialect': 'mysql',
+            'driver': 'aiomysql',
             'host': 'aws.connect.psdb.cloud',
             'port': 3306,
             'database': 'mydb',
@@ -34,6 +35,9 @@ Example `config/database.py` PlanetScale SSL Connection
         }
     }
 ```
+
+!!! tip
+    Remember `dialect` is the *type* of database (`mysql`) and `driver` is the *library* used to talk to it (`aiomysql`, `pymysql`...).  Don't swap them.  See [DB Configuration](../db-config.md#backends-drivers-and-dialects) for the full explanation.
 
 !!! note
     PlanetScale seems a bit more strict on RESERVED words.  So be sure to wrap all columns in backticks -  \`mycolumn\`

@@ -1,6 +1,6 @@
 # Upgrade 0.2 to 0.3
 
-## :material-pound: Database Driver vs Dialect
+## Database Driver vs Dialect
 
 Prior to 0.3, the `driver` and `dialect` were reversed. Meaning the `driver` was actually the `dialect`, and the `dialect` was actually the `driver`.  An oversight on initial Uvicore 0.1 development.
 
@@ -14,7 +14,7 @@ Edit your `config/database.py` and ensure it looks something like this
 # ...
 ```
 
-## :material-pound: Deprecated db Methods
+## Deprecated db Methods
 
 The following `uvicore.db` methods were deprecated as connections are automatic
 - `db.connect()`
@@ -23,7 +23,7 @@ The following `uvicore.db` methods were deprecated as connections are automatic
 - `db.database()`
 
 
-## :material-pound: Return of db.execute() now a sa.CursorResult
+## Return of db.execute() now a sa.CursorResult
 
 The return of `db.execute()` is now a `sa.CursorResult`
 
@@ -32,13 +32,13 @@ The return of `db.execute()` is now a `sa.CursorResult`
 - Getting columns from query results changed from `results[0].keys()` to `results[0]._mapping.keys`
 
 
-## :material-pound: SQLAlchemy 2.0 select() Changes
+## SQLAlchemy 2.0 select() Changes
 
 All `sa.select()` does not use [] anymore, but infinite args
 
 
 
-## :material-pound: SQLAlchemy 2.0 RowProxy is now a Row
+## SQLAlchemy 2.0 RowProxy is now a Row
 
 RowProxy is no longer a “proxy”; is now called Row and behaves like an enhanced named tuple
 

@@ -1,18 +1,18 @@
 # DB Query Builder
 
-Uvicore provides [3 Layers](/database/#the-3-layers) of database access.  Here we discuss Uvicore's own custom Database Query Builder!
+Uvicore provides [3 Layers](index.md#the-3-layers) of database access.  Here we discuss Uvicore's own custom Database Query Builder!
 
-Generally the [ORM](/database/orm-basics/) is the best way to utilize and query your tables.  But if you decide an ORM is to abstract, this simple query builder may be for you.
+Generally the [ORM](orm-basics.md) is the best way to utilize and query your tables.  But if you decide an ORM is to abstract, this simple query builder may be for you.
 
-If you find Uvicore's query builder to be too limiting you can dive straight into the power of [SQLAlchemy's Query Builder](/database/db-sa-queries/) instead.
+If you find Uvicore's query builder to be too limiting you can dive straight into the power of [SQLAlchemy's Query Builder](db-sa-queries.md) instead.
 
 !!! note
-    A prerequisite to using Uvicore's Query Builder is to define your [DB Tables](/database/db-tables/).  If you prefer zero table definitions, then [SQLAlchemy RAW SQL](/database/db-sa-raw/) may be for you!
+    A prerequisite to using Uvicore's Query Builder is to define your [DB Tables](db-tables.md).  If you prefer zero table definitions, then [SQLAlchemy RAW SQL](db-sa-raw.md) may be for you!
 
 
 ---
 
-## :material-pound: Results
+## Results
 
 Results are returned as either a `List[Row]`, an empty List `[]`, single `Row` or as `None`.
 
@@ -67,25 +67,35 @@ list
 ---
 
 
-## :material-pound: Operators
+## Operators
 
-The `.where()` and `or_where()` clauses accept the following operators
+The `.where()`, `.or_where()`, `.filter()` and `.or_filter()` clauses accept the following operators.  Operators are case-insensitive and whitespace tolerant, so `NOT IN`, `not in` and `!in` are all equivalent.
 
 - `=` and `==` are interchangeable and mean equals
-- `!=` not equal
+- `!=` and `<>` are interchangeable and mean not equal
 - `>` greater than
 - `>=` greater than or equal to
 - `<` less than
-- `like` contains
-- `!like` does not contain
+- `<=` less than or equal to
 - `in` SQL IN statement
-- `!in` SQL NOT IN statement
+- `!in` (or `not in`) SQL NOT IN statement
+- `like` contains (case sensitivity is database dependent)
+- `!like` (or `not like`) does not contain
+- `ilike` case-insensitive contains (portable across databases)
+- `!ilike` (or `not ilike`) case-insensitive does not contain
+- `between` SQL BETWEEN, value is a `[low, high]` list
+- `!between` (or `not between`) SQL NOT BETWEEN
+- `is` / `is null` IS NULL (value is `None`)
+- `is not` / `is not null` IS NOT NULL
+
+!!! tip
+    `like` is case-sensitive on some databases (Postgres) but case-insensitive on others (SQLite, MySQL with the default collation).  Use `ilike` whenever you want case-insensitive matching to behave the same everywhere.
 
 
 ---
 
 
-## :material-pound: Specifying a Connection
+## Specifying a Connection
 
 The `default` database connection defined in env `DATABASE_DEFAULT` is used if no alternate is provided.  Use the CLI `./uvicore db connections` to see a list of all connections.
 
@@ -105,7 +115,7 @@ posts = await uvicore.db.query('wiki').table('posts').get()
 ---
 
 
-## :material-pound: Strings vs Actual Table Properties
+## Strings vs Actual Table Properties
 
 The query builder allow you to use `strings` for all tables, select columns, wheres, order bys etc...
 
@@ -162,7 +172,7 @@ count = (await uvicore.db.query().table('app1')
 ---
 
 
-## :material-pound: .get() / .all() / .fetchall()
+## .get() / .all() / .fetchall()
 
 The `.get()`, `.all()` and `.fetchall()` methods are used to get one or more records.
 
@@ -191,7 +201,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-## :material-pound: .count()
+## .count()
 
 Count rows that would be returned from a query
 
@@ -214,7 +224,7 @@ count = await uvicore.db.query().table('posts').select(sa.func.count(sa.distinct
 ---
 
 
-## :material-pound: .distinct()
+## .distinct()
 
 Use `.distinct()` on any query to add distinctness to the results
 
@@ -231,7 +241,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-## :material-pound: .find()
+## .find()
 
 The `.find()` method is used to get a single record, generally by the PK, but accepts any other field.
 
@@ -277,7 +287,7 @@ post = (await uvicore.db.query('app1')
 ---
 
 
-## :material-pound: .first() / .fetchone()
+## .first() / .fetchone()
 
 The `.first()` and `.fetchone()` methods are used to get ONE record, the first/top record from the query results.
 
@@ -295,7 +305,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-## :material-pound: .one()
+## .one()
 
 The `.one()` method is used to get one record from query or an `Exception` if not found.
 
@@ -314,7 +324,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-### :material-pound: :material-pound: .one_or_none()
+### .one_or_none()
 
 The `.one_or_none()` method is used to get one record from query or `None` if nothing found.
 
@@ -333,7 +343,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-## :material-pound: .scalars()
+## .scalars()
 
 The `.scalars()` (plural) method is used to get one column from ALL rows in results.
 
@@ -352,7 +362,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-### :material-pound: :material-pound: .scalar()
+### .scalar()
 
 The `.scalar()` method is used to get one column from one row.
 
@@ -371,7 +381,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-### :material-pound: :material-pound: .scalar_one()
+### .scalar_one()
 
 The `.scalar_one()` method is used to get one column from one row or an `Exception` if not found.
 
@@ -390,7 +400,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-### :material-pound: :material-pound: .scalar_one_or_none()
+### .scalar_one_or_none()
 
 The `.scalar_one_or_none()` method is used to get one column from one row or `None` if nothing found.
 
@@ -409,7 +419,7 @@ posts = (await uvicore.db.query()
 ---
 
 
-## :material-pound: .where()
+## .where()
 
 The default chained `.where()` clauses are AND statements.
 
@@ -460,7 +470,7 @@ posts = (await uvicore.db.query('app1')
 ```
 
 
-### :material-pound: :material-pound: Where NULL
+### Where NULL
 
 Where NULL
 
@@ -498,7 +508,7 @@ posts = (await uvicore.db.query('app1')
 )
 ```
 
-### :material-pound: :material-pound: Where IN
+### Where IN
 
 Where IN
 
@@ -519,7 +529,7 @@ posts = (await uvicore.db.query('app1')
 )
 ```
 
-### :material-pound: :material-pound: Where Like
+### Where Like
 
 Where Like
 
@@ -545,7 +555,53 @@ posts = (await uvicore.db.query('app1')
 ---
 
 
-## :material-pound: .where_or()
+## .or_where()
 
-FIXME
+Where chained `.where()` clauses are combined with **AND**, `.or_where()` lets you build an **OR** group.  Because an OR needs at least two conditions to make sense, `.or_where()` takes a **list** of tuples (each a 2 or 3 element `(column, value)` or `(column, operator, value)`), and those conditions are OR'd together.
+
+A simple OR group, `id = 1 OR id = 7`
+
+```python
+posts = (await uvicore.db.query('app1')
+    .table('posts')
+    .or_where([
+        ('id', 1),
+        ('id', 7),
+    ])
+    .get()
+)
+```
+
+Each condition may specify its own operator
+
+```python
+posts = (await uvicore.db.query('app1')
+    .table('posts')
+    .or_where([
+        ('id', '<', 2),
+        ('id', '>', 6),
+    ])
+    .get()
+)
+```
+
+### Combining .where() and .or_where()
+
+When you use both, your `.where()` clauses form one **AND** group, your `.or_where()` clauses form one **OR** group, and the two groups are joined with **AND**.  In other words you get `(all the wheres) AND (any of the or_wheres)`.
+
+```python
+# WHERE owner_id = 2 AND (id = 1 OR id = 5)
+posts = (await uvicore.db.query('app1')
+    .table('posts')
+    .where('owner_id', 2)
+    .or_where([
+        ('id', 1),
+        ('id', 5),
+    ])
+    .get()
+)
+```
+
+!!! note
+    `.or_where()` is a single OR group that is AND'd with your `.where()` clauses, it is not a way to OR one extra condition onto a preceding `.where()`.  If you need `a OR b` at the top level with nothing else, put both conditions in the `.or_where()` list and skip `.where()` entirely.
 

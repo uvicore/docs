@@ -1,6 +1,6 @@
 # Upgrade 0.1 to 0.2
 
-## :material-pound: New Service Directory
+## New Service Directory
 
 - Rename the old `./services` directory to `./package`
 - Change `./package/bootstrap.py` from `def application` to a `class Application`

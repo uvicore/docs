@@ -7,13 +7,13 @@
 Uvicore comes with 2 main Exception handlers.  One for Web Routes and one for API Routes.  You can override these handlers and present errors any way that you like!
 
 
-## :material-pound: No StackTrace in Production
+## No StackTrace in Production
 
 If the raised error has the `exception=` parameter populated, the exception is ONLY added to the handler if `debug=True` is set in your `config/app.py` config.  These are usually the direct results of the `try...except` stack trace and will be stripped by uvicore for your safety while in production mode.  Never set `debug=True` in production!
 
 
 
-## :material-pound: Default API Exception Handler
+## Default API Exception Handler
 
 The default API exception handler is defined in `config/http.py` is
 ```python
@@ -36,7 +36,7 @@ Which returns a JSON error response like so:
 }
 ```
 
-## :material-pound: Custom API Exception Handlers
+## Custom API Exception Handlers
 
 To provide your own API handler, create your own method anywhere in your package, for example `exceptions/handlers.py`.  Then simply change your `config/app.py` `api.exceptions` to point to this new location.
 
@@ -65,7 +65,7 @@ async def api(request: Request, e: HTTPException) -> response.JSON:
 ```
 
 
-## :material-pound: Default Web Exception Handler
+## Default Web Exception Handler
 
 The default Web exception handler is defined in `config/http.py` is
 ```python
@@ -80,7 +80,7 @@ The default Web exception handler will attempt to locate and render a `Jinja2` t
 
 
 
-## :material-pound: Custom Web Exception Handlers
+## Custom Web Exception Handlers
 
 To create custom error pages, there is no need to touch `config/app.py` `web.exceptions` config option.  Instead simply create a `http/views/errors/404.j2` and `http/views/errors/catch_all.j2` file in your package and the default Web exception handler will return your new template.  All packages "view paths" are combined and merged.  This means if packageA had a custom `errors/404.j2` and your running app didn't, it would use packageA.  If you created the `errors/404.j2`, your package would win since it is always defined last.  Everything in Uvicore can be overridden, configs, assets, templates, connections etc... Last package defined generally wins in all override battles.
 

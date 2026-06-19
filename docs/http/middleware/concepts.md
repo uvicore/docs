@@ -6,7 +6,7 @@ All of the built in middleware is defined in `uvicore.http.middleware`.  Because
 
 
 
-## :material-pound: Usage
+## Usage
 
 Middleware for both Web and API routes is enabled and configured from your package's `config/http.py` file.
 
@@ -104,7 +104,7 @@ web = {
 ```
 
 
-## :material-pound: Adding your own Middleware
+## Adding your own Middleware
 
 As you can see from the `config/http.py` examples above, all middleware configurations contain a `module` property, example: `'module': 'uvicore.http.middleware.CORS'`.  This is the actual python code that contains the middleware itself.
 
@@ -184,7 +184,7 @@ api = {
 
 
 
-## :material-pound: Debugging Middleware
+## Debugging Middleware
 
 Uvicore's `dump()` and `dd()` functions do not work in middleware and cause Internal Server Errrors.
 

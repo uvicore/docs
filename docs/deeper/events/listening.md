@@ -10,7 +10,7 @@ The best place to register your event listeners is in your package provider `reg
     Your event `.listen(), .listener(), .handle(), .handler() and .call()` are all alias of each other.  Use whichever verbiage makes the most sense to you.
 
 
-### :material-pound: Listening to Class Based Events
+### Listening to Class Based Events
 
 ```python
 from acme.wiki.events.post import Created as OnPostCreated
@@ -36,7 +36,7 @@ class Wiki(Provider):
 
 ```
 
-### :material-pound: Listening to String Based Events
+### Listening to String Based Events
 
 
 **From within your Provider**
@@ -77,7 +77,7 @@ events.subscribe('acme.wiki.listeners.HttpEventSubscription')
     and call the class `handle()` method during dispatch.
 
 
-### :material-pound: Listening to Multiple Events
+### Listening to Multiple Events
 
 **Listen to multiple events**
 
@@ -105,7 +105,7 @@ class Wiki(Provider):
 ```
 
 
-### :material-pound: Listening to wildcard events
+### Listening to wildcard events
 
 ```python
 from acme.wiki.events.post import Created as OnPostCreated
@@ -127,12 +127,12 @@ class Wiki(Provider):
 ```
 
 
-### :material-pound: Registering a subscriber
+### Registering a subscriber
 
 A subscription is an all-in-one class which listens to one or more events and
 also contains the handlers for each event.  Notice we are not defining the
 event to listen to here.  We simply define the subscription class.  See
-[Handling Events](#handling-events) for what these classes look like.
+[Handling Events](handling.md) for what these classes look like.
 ```python
 # From service provider register() method
 self.events.subscribe('acme.wiki.listeners.HttpEventSubscription')

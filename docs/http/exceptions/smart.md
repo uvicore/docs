@@ -10,7 +10,7 @@ If running from the CLI, then it uses Pythons built in Exception.
     The parameters are slightly different than the HTTPException in that the `detail` and `status_code` parameters are reversed.
 
 
-## :material-pound: Why Use a SmartException?
+## Why Use a SmartException?
 
 Think about the Job concept.  Where the CLI and API are simply entrypoints into the actual work.  The work itself lives in a Job, not in a controller or command.  If the Job is dispatched from an API and errors, the error should morph into a proper HTTP error.  But if the Job is dispatched from a CLI, then it should throw a basic non HTTP based exception.
 
@@ -18,7 +18,7 @@ Naturally you could catch the Jobs exception at either end of the entrypoint and
 
 
 
-## :material-pound: Throw From Controller
+## Throw From Controller
 
 ```python
 import uvicore
@@ -53,7 +53,7 @@ class Test(Controller):
 ```
 
 
-## :material-pound: API Response Example
+## API Response Example
 
 Actual exception
 ```json
@@ -78,7 +78,7 @@ Manually raised exception
 ```
 
 
-## :material-pound: Source Code
+## Source Code
 
 See the [Source Code](https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/__init__.py) on Github
 

@@ -3,7 +3,7 @@
 The most generic exception, which gives you full control over all parameters.
 
 
-## :material-pound: Throw From Controller
+## Throw From Controller
 
 ```python
 import uvicore
@@ -38,7 +38,7 @@ class Test(Controller):
 ```
 
 
-## :material-pound: API Response Example
+## API Response Example
 
 Actual exception
 ```json
@@ -63,7 +63,7 @@ Manually raised exception
 ```
 
 
-## :material-pound: Source Code
+## Source Code
 
 See the [Source Code](https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/__init__.py) on Github
 

@@ -7,7 +7,7 @@ Uvicore uses [asyncclick](https://pypi.org/project/asyncclick/) to provide elega
 
 All uvicore packages come with a `./uvicore` CLI.
 
-This CLI allow you to interact with your packages CLI commands, Uvicore's [Built-In Commands](built-in-commands), and any other commands provided by packages you depend on.
+This CLI allow you to interact with your packages CLI commands, Uvicore's [Built-In Commands](built-in-commands.md), and any other commands provided by packages you depend on.
 
 ```bash
 ./uvicore

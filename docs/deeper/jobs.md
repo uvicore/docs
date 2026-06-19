@@ -1,9 +1,16 @@
+---
+title: Jobs
+---
+
 # Jobs
 
-* :material-auto-fix: FIXME
-description
+A Job encapsulates a single unit of work, training a model, generating a report, processing an upload, into one tidy, reusable class.  Jobs keep your routes and commands thin by giving heavy or reusable logic a proper home, and they can be dispatched **synchronously or asynchronously** from anywhere in your app.
 
-## :material-pound: Defining a Job
+If you have used Laravel's Jobs, the idea is the same, though Uvicore jobs run inline (sync or `await`ed) rather than on a queue worker.
+
+---
+
+## Defining a Job
 
 Create a `jobs` folder (or whatever name you like) and create a job file, example `jobs/train.py`
 
@@ -25,7 +32,7 @@ class Train(Job):
 ```
 
 
-## :material-pound: Dispatch the Job
+## Dispatch the Job
 
 You can dispatch sync or async jobs like so
 

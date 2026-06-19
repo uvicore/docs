@@ -1,6 +1,6 @@
 # Release Notes
 
-## :material-pound: 0.1
+## 0.1
 
 Initial public beta release of Uvicore.
 
@@ -9,13 +9,32 @@ Used in production by a few internal companies, running a few dozen APIs and bas
 Not 100% feature complete.  The web at large would have many requests for enhancement.
 
 
-## :material-pound: 0.2
+## 0.2
 
 Refactor of the "service" concept. The word `service` removed in favor or `package`, `provider`, and `registers`.
 
-See [Upgrade 0.1 to 0.2](/epologue/upgrade/from-0.1-to-0.2/) for details.
+See [Upgrade 0.1 to 0.2](upgrade/from-0.1-to-0.2.md) for details.
 
 
-## :material-pound: 0.3
+## 0.3
 
 Removed the async `encode/databases` wrapper and upgraded `SQLAlchemy` from from 1.4 up to the new async SQLAlchemy 2.0.
+
+### Documentation Improvements
+
+Added comprehensive documentation for HTTP web development:
+- New [HTTP Web Guide](../http/web/index.md) covering web controllers, views, routing, and templates
+- Expanded [Controllers](../http/web/controllers.md) documentation with real-world examples
+- Enhanced [Views](../http/web/views.md) documentation with template patterns and best practices
+
+
+## 0.4
+
+A focused, **non-breaking** release hardening the database and ORM layers.
+
+- **[Inline table definitions](../database/db-tables.md#tables-inline-on-the-model)** - define a model's schema directly on the model with `__connection__` + `__tablename__` + a raw `__table__` list, no separate `Table` class required.
+- **Expanded query operators** - `ilike`/`!ilike`, `between`/`!between`, `<>`, `not in`, `not like`, and explicit `is` / `is not`, all case-insensitive and whitespace tolerant.
+- **Cross-database robustness** - validated against real Postgres, MySQL and MariaDB, with portable auto-increment primary keys, type-safe `find()`, and `postgres`/`postgresql` dialect normalization.
+- **ORM fixes** - multiple `*Many` includes no longer cartesian-multiply, `HasMany` `delete()`/`set()` now work, and the auto-API create endpoint is fixed.
+
+See the [0.4 Changelog](changelog/0.4.md) and [Upgrade 0.3 to 0.4](upgrade/from-0.3-to-0.4.md) for details.

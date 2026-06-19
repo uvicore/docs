@@ -47,5 +47,5 @@ x = (Mail()
 await x.send()
 ```
 
-
-FIXME.  Add docs on route background tasks.  How to send email using starlette background on a route.
+!!! tip
+    Sending an email inside an HTTP route blocks the response until the mail is sent.  To send it *after* the response is returned, hand the work to a Starlette background task or dispatch a [Job](jobs.md).

@@ -4,24 +4,24 @@
     This section is for contributing developers of the uvicore source code. Or for folks who just wish to learn how uvicore works under the hood!
 
 
-## :material-pound: SQLAlchemy Engine
+## SQLAlchemy Engine
 
 According to the SQLAlchemy Core documentation, the `engine` (from `create_engine`) should be a global/singleton object created just once for a particular database server/connection.
 
-This is achieved in Uvicore because the [Db](https://github.com/uvicore/framework/blob/master/uvicore/database/db.py) module is bound as a `singleton` in the [IoC](/deeper/ioc/)
+This is achieved in Uvicore because the [Db](https://github.com/uvicore/framework/blob/master/uvicore/database/db.py) module is bound as a `singleton` in the [IoC](../../deeper/ioc.md)
 
 After uvicore is fully booted, all packages DB connections are organized and sync or async engines are created for them and stored in the DB singleton and accessible at `uvicore.db.engines`!
 
 
 
-## :material-pound: SQLAlchemy Metadata
+## SQLAlchemy Metadata
 
 According to the SQLAlchemy Core documentation, each unique connections `Metadata` should also be a global/singleton object.
 
 This is achieved in Uvicore similar to the `engine` above.  The DB module is a singleton and on boot, creates unique `Metadata` objects for each unique connection accessible at `uvicore.db.metadatas`.  As each SQLAlchemy `table` is created from your packages, they are associated with the proper `Metadata` automatically.
 
 
-## :material-pound: SQLAlchemy Connect and Results
+## SQLAlchemy Connect and Results
 
 According to the SQLAlchemy Core documentation, each query [engine] connection and the `Results` of that query should be scoped inside the `connect` block.  This means the SQLAlchemy `Results` object is not returned from the execution method directly.
 

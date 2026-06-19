@@ -44,7 +44,7 @@ database = {
         'sf': {
             'backend': 'sqlalchemy',
             'dialect': env('DB_WIKI_DIALECT', 'snowflake'),
-            'account': env('DB_WIKI_ACCOUNBT', ''),
+            'account': env('DB_WIKI_ACCOUNT', ''),
             'database': env('DB_WIKI_DB', ''),
             'schema': env('DB_WIKI_SCHEMA', ''),
             'warehouse': env('DB_WIKI_WAREHOUSE', ''),

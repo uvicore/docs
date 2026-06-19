@@ -9,7 +9,7 @@ In Uvicore, Web and API endpoints are separated based on dual routers.  Each eng
 
 
 
-## :material-pound: Exceptions vs Handlers
+## Exceptions vs Handlers
 
 - `Exceptions` contains the message and body of the error
 - `Handlers` present the error in different formats

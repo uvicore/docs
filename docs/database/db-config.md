@@ -4,17 +4,17 @@ Database configuration is defined in your package's `config/database.py` file.
 
 Within this file you may specify none, one or more database connections using various backends, dialects and drivers.
 
-Due to the nature of Uvicore's [Configuration System](/getting-started/configuration/) any consumer of your package can tweak your package's connection strings within their own app.  They may prefer `aiomysql` vs `pymysql` and even add a prefix to all database tables.
+Due to the nature of Uvicore's [Configuration System](../getting-started/configuration.md) any consumer of your package can tweak your package's connection strings within their own app.  They may prefer `aiomysql` vs `pymysql` and even add a prefix to all database tables.
 
 
 ---
 
 
-## :material-pound: Dependencies
+## Dependencies
 
 Uvicore utilizes the async [SQLAlchemy Core 2.0](https://docs.sqlalchemy.org/en/20/core/) for most database connections and therefore supports all databases, dialects and drivers that SQLAlchemy does!
 
-When running the [Uvicore Installer](/getting-started/installation/), if you answered `Yes` to installing Database tools, then Uvicore already comes [SQLAlchemy Core 2.0](https://docs.sqlalchemy.org/en/20/core/) and a few common DBAL libraries like `aiomysql`, `aiosqlite` and `asyncpg`.
+When running the [Uvicore Installer](../getting-started/installation.md), if you answered `Yes` to installing Database tools, then Uvicore already comes [SQLAlchemy Core 2.0](https://docs.sqlalchemy.org/en/20/core/) and a few common DBAL libraries like `aiomysql`, `aiosqlite` and `asyncpg`.
 
 
 If you answered `No` to Database tools and would like to add them manually...
@@ -36,7 +36,7 @@ After the database extras have been installed you must update your `config/depen
 dependencies = OrderedDict({
     # ...
     'uvicore.database': {
-        'provider': 'uvicore.database.services.Database',
+        'provider': 'uvicore.database.package.provider.Database',
     },
     # Optional if you will be using Uvicore's ORM!
     # 'uvicore.orm': {
@@ -52,7 +52,7 @@ Notice the ORM dependency does not need to be defined.  Uvicore can use a raw qu
 ---
 
 
-## :material-pound:  Connection Strings
+##  Connection Strings
 
 Uvicore uses your package's `config/database.py` to store connection strings.
 
@@ -115,7 +115,7 @@ The `options` dictionary are values passed directly to the `driver` creation.  I
 ---
 
 
-## :material-pound: Backends, Drivers and Dialects
+## Backends, Drivers and Dialects
 
 Uvicore's database config section is geared towards SQLAlchemy.  But there is nothing stopping you from adding other connection properties that may be useful to your specific driver (mongodb, snowflake etc...).
 
@@ -127,15 +127,15 @@ The 3 main properties that dictate the backend and drivers to use are
 
 For the default `sqlalchemy` backend, you may use any compatible dialect defined here [https://docs.sqlalchemy.org/en/20/dialects/](https://docs.sqlalchemy.org/en/20/dialects/) As for SQLAlchemy drivers, there are many for each dialect which are also referenced in the link above.
 
-If you were to use a 3rd party dialect like `snowflake-sqlalchemy` you may utilize the `url` property to specify the exact connection URL directly.  Or you can use the [IoC](/deeper/ioc/) and provide an override for the entire `uvicore.database.db.Db` class and overload the `init()` method!
+If you were to use a 3rd party dialect like `snowflake-sqlalchemy` you may utilize the `url` property to specify the exact connection URL directly.  Or you can use the [IoC](../deeper/ioc.md) and provide an override for the entire `uvicore.database.db.Db` class and overload the `init()` method!
 
 
 ---
 
 
-## :material-pound: View from CLI
+## View from CLI
 
-From the [Uvicore CLI](/cli/), you can see all deeply merged connection strings for your app and any Uvicore package dependencies that use the DB by running
+From the [Uvicore CLI](../cli/index.md), you can see all deeply merged connection strings for your app and any Uvicore package dependencies that use the DB by running
 ```bash
 ./uvicore db connections
 ```

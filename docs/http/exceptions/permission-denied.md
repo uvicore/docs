@@ -2,7 +2,7 @@
 
 Convenience wrapper around `HTTPException` with a 401 and a `Permission Denied` message.  If you need more control use the main [HTTPException](http-exception.md)
 
-## :material-pound: Throw From Controller
+## Throw From Controller
 
 ```python
 import uvicore
@@ -36,7 +36,7 @@ class Test(Controller):
 
 
 
-## :material-pound: API Response Example
+## API Response Example
 ```json
 {
   "status_code": 401,
@@ -50,7 +50,7 @@ class Test(Controller):
 
 
 
-## :material-pound: Source Code
+## Source Code
 
 See the [Source Code](https://github.com/uvicore/framework/blob/master/uvicore/http/exceptions/__init__.py) on Github
 

@@ -1,14 +1,14 @@
 # Installation
 
 
-## :material-pound: Up and Running in Seconds
+## Up and Running in Seconds
 
 ![](../files/uvicore-installer.gif)
 
 ---
 
 
-## :material-pound: Download the uvicore-installer
+## Download the uvicore-installer
 
 ```bash
 cd ~
@@ -23,7 +23,7 @@ sudo mv uvicore-installer /usr/local/bin
 
 
 
-## :material-pound: Create your App
+## Create your App
 ```bash
 cd ~/Code
 uvicore-installer wiki
@@ -34,7 +34,7 @@ uvicore-installer wiki
 
 
 
-## :material-pound: Load Your Virtualenv
+## Load Your Virtualenv
 ```bash
 cd ~/Code/wiki
 
@@ -53,7 +53,7 @@ cd ~/Code/wiki
 
 
 
-## :material-pound: Install Dependencies
+## Install Dependencies
 ```bash
 # And install the packages using the same environment choice.
 # poetry install
@@ -68,7 +68,7 @@ cd ~/Code/wiki
 
 
 
-## :material-pound: Uvicore CLI
+## Uvicore CLI
 
 Run the `./uvicore` CLI to see all possible options
 ```bash
@@ -81,7 +81,7 @@ Run the `./uvicore` CLI to see all possible options
 
 
 
-## :material-pound: Welcome CLI Example
+## Welcome CLI Example
 
 Run your first `welcome` Async Click CLI stored in `./commands/welcome.py`
 
@@ -95,7 +95,7 @@ Run your first `welcome` Async Click CLI stored in `./commands/welcome.py`
 
 
 
-## :material-pound: Uvicore HTTP Server
+## Uvicore HTTP Server
 
 Run the Uvicore HTTP Web/API Server
 
@@ -106,7 +106,7 @@ Run the Uvicore HTTP Web/API Server
 
 
 
-## :material-pound: Show OpenAPI Docs
+## Show OpenAPI Docs
 
 Visit the following
 

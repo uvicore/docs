@@ -1,320 +1,190 @@
+---
+title: API Model Router
+---
+
 # API Model Router
 
+Here is one of Uvicore's most delightful super-powers: the **Model Router** can generate a full set of REST-style CRUD endpoints for your [ORM models](../../database/orm-basics.md) automatically, complete with OpenAPI metadata, response models and permission scopes.  Register your models, include the router, and you instantly have a rich, query-driven, permission-protected API, no controllers to write.
 
+It's perfect for the large swathe of endpoints that map cleanly onto your data.  And when an endpoint needs real business logic instead, you simply write a [controller](routing.md) for it, the two happily coexist.
 
-## Organize Me
+---
 
-:material-auto-fix: FIXME
+## Enabling the Model Router
 
-The auto model router already has `model.crud` style permissions attached and will require auth as long as you have some api auth middleware enabled.  If you have auth middleware enabled but you still want autoapi routes to be public, or to use a single permission, override it with the options argument on `.include()`
+Include `ModelRouter` from your top-level API routes file, passing it your `auto_api` config.
 
-This will wipe out all scopes, meaning all auto endpoints are now PUBLIC
 ```python
-# Include dynamic model CRUD API endpoints (the "auto API")!
-# These routes are automatically protected by model.crud style permissions.
-@route.group()
-def autoapi():
-    route.include(ModelRouter, options={
-        'scopes': []
-    })
+# acme/wiki/http/routes/api.py
+import uvicore
+from uvicore.http.routing import Routes, ApiRouter, ModelRouter
+
+@uvicore.routes()
+class Api(Routes):
+
+    def register(self, route: ApiRouter):
+        route.controllers = 'acme.wiki.http.api'
+        route.controller('welcome')
+
+        # Generate CRUD endpoints for all your registered models
+        route.include(ModelRouter, options=uvicore.config.app.api.auto_api)
+
+        return route
 ```
 
-This will set all to just 'authenticated', so the `model.crud` scopes are wiped out.
+---
+
+## Configuration
+
+The router's behavior is controlled from your `config/http.py` under `api.auto_api`.
+
 ```python
-# Include dynamic model CRUD API endpoints (the "auto API")!
-# These routes are automatically protected by model.crud style permissions.
-@route.group()
-def autoapi():
-    route.include(ModelRouter, options={
-        'scopes': ['authenticated']
-    })
+# acme/wiki/config/http.py
+'auto_api': {
+    # Only include models matching these wildcards (empty = all registered models)
+    'include': [
+        # 'acme.wiki.models.*'
+    ],
+    # Exclude models matching these wildcards
+    'exclude': [
+        # '*.models.user.*'
+    ],
+    # Override the default per-model CRUD scopes
+    # 'scopes': []
+},
 ```
 
-This will append this scope to the existing auto `model.crud` scopes. And endpoints are only allows if user has ALL permissions, ie: both `['allowcrud', 'posts.read']` (unless your `admin`, it always wins)
+- **`include`** - only generate endpoints for matching models.
+- **`exclude`** - skip matching models.
+- **`scopes`** - override the automatic CRUD permission scopes (see below).
+
+---
+
+## Generated Endpoints
+
+For every included model, Uvicore generates a conventional REST surface:
+
+| Method & Path | Purpose |
+|---------------|---------|
+| `GET /<model>` | List, with rich query-driven filtering |
+| `GET /<model>/{id}` | Fetch a single record by primary key |
+| `POST /<model>` | Create one or many records |
+| `POST /<model>/with_relations` | Create with nested relations |
+| `PUT /<model>/{id}` | Full update (replace) |
+| `PATCH /<model>/{id}` | Partial update |
+| `DELETE /<model>/{id}` | Delete a single record |
+
+Every one of these arrives fully documented in your [OpenAPI docs](openapi.md), with response models and permission scopes already attached.
+
+---
+
+## The Default Permission Model
+
+By default, each model's endpoints are guarded by CRUD-style scopes derived from the table name.  For a `users` model:
+
+| Scope | Required by |
+|-------|-------------|
+| `users.read` | `GET` (list and detail) |
+| `users.create` | `POST` |
+| `users.update` | `PUT` and `PATCH` |
+| `users.delete` | `DELETE` |
+
+This convention maps cleanly onto your [authorization](authorization.md) scopes and keeps permission naming predictable across your whole app.
+
+---
+
+## Overriding Scopes
+
+**Make the whole auto API public** (no permissions required):
+
 ```python
-@route.group(scopes=['allowcrud'])
+route.include(ModelRouter, options={'scopes': []})
+```
+
+**Use one shared scope list for every endpoint** (replaces the CRUD scopes):
+
+```python
+route.include(ModelRouter, options={'scopes': ['authenticated', 'autoapi_user']})
+```
+
+**Set custom scopes per verb:**
+
+```python
+route.include(ModelRouter, options={
+    'scopes': {
+        'create': ['autoapi.create'],
+        'read':   ['autoapi.read'],
+        'update': ['autoapi.update'],
+        'delete': ['autoapi.delete'],
+    }
+})
+```
+
+**Append extra scopes on top of the CRUD defaults** by wrapping the router in a group:
+
+```python
+@route.group(scopes=['authenticated', 'autoapi_user'])
 def autoapi():
     route.include(ModelRouter)
 ```
 
+This keeps each model's default CRUD scopes *and* layers the group's scopes on top, since [guards merge](middleware.md#how-middleware-layers-merge).
 
-# Auto API
+---
 
+## Query Parameters
 
-Uvicore has an automatic CRUD Model Router for API usage which can be enabled in your `http/routes/api.py` like so
+The `GET /<model>` list endpoint is driven entirely by query parameters, which Uvicore translates directly into [ORM Query Builder](../../database/orm-querybuilder.md) operations.  Values are JSON, so spin up complex queries right from the URL.
 
-```python
-# http/routes/api.py
-def register(self, route: ApiRouter):
-    # ...
+| Parameter | Example | Description |
+|-----------|---------|-------------|
+| `include` | `include=creator,comments` | Eager-load relations (dot-nested allowed) |
+| `where` | `where=["creator_id", 1]` | Filter the main query |
+| `or_where` | `or_where=[["id",1],["id",7]]` | OR group of conditions |
+| `filter` | `filter=["status","active"]` | Filter the rows of an included `*Many` relation |
+| `or_filter` | | OR variant of `filter` |
+| `order_by` | `order_by=["id","DESC"]` | Sort the main query |
+| `sort` | | Sort within `*Many` relations |
+| `page` | `page=2` | Page number |
+| `page_size` | `page_size=50` | Records per page (ORM limit/offset) |
 
-    # Include dynamic model CRUD API endpoints (the "auto API")!
-    # These routes are automatically protected by model.crud style permissions.
-    route.include(ModelRouter)
+The `where` family uses a **JSON list** format, not a dict:
 
-    # ...
-```
+```text
+# Field and value (operator defaults to =)
+?where=["creator_id", 1]
 
-For every uvicore model, multiple API endpoints are automatically created to perform CRUD operations on the list of models via `/users` or a single model via `/users/{id}`.  You can see these new routes when viewing the OpenAPI doc endpoint at `http://localhost:5000/api/docs`
+# Field, operator, value
+?where=["id", ">", 5]
+?where=["email", "like", "%example.com"]
+?where=["id", "in", [1, 5, 9]]
 
-
-## Permissions
-
-When a uvicore model is created, a set of `model.crud` style permissions are automatically generated and stored in the `permissions` database table.  For example
-
-| entity      | name        |
-| ----------- | ----------- |
-| users       | users.create|
-| users       | users.read  |
-| users       | users.update|
-| users       | users.delete|
-
-When visiting `GET` `http://localhost:5000/api/users` the user must have the `users.read` scope.  Scopes are the same as these permission strings.
-
-!!! note
-    Permissions and Scopes are the same thing.  You limit all endpoints using the `scopes=[]` List which are linked to the `user/groups/roles` in the database as `permissions`.
-
-Each auto API endpoint is limited by the proper scope.
-
-- `HTTP GET` requires the `users.read` scope.
-- `HTTP POST` requires the `users.create` scope.
-- `HTTP PUT` requires the `users.update` scope.
-- `HTTP PATCH` requires the `users.update` scope.
-- `HTTP DELETE` requires the `users.delete` scope.
-
-
-### Making Some Endpoints Public
-
-If you want some auto API endpoints public and some private, even down to public GET vs POST you should keep the automatic CRUD scopes enabled and instead link UserID 1 (the anonymous user) to a role and link up the proper permissions for that role.  Public users are actually assigned a real uvicore user called anonymous, so user groups, roles and permissions apply to that public anonymous user just like any other user.
-
-
-
-### Make it all Public
-
-If you wanted ALL auto API endpoints to be wide open to the public, with no limiting scopes (permissions) at all, use the `options` parameter and set the `scopes` key to a blank List.
-
-```python
-# http/routes/api.py
-def register(self, route: ApiRouter):
-    # ...
-
-    # Include dynamic model CRUD API endpoints (the "auto API")!
-    # These routes are automatically protected by model.crud style permissions.
-    route.include(ModelRouter, options={
-        'scopes': []
-    })
-
-    # ...
+# Multiple ANDed conditions (a list of lists)
+?where=[["creator_id", 1], ["other", "is", null]]
 ```
 
 !!! tip
-    Although the auto API endpoints now have no scopes themselves, they still obey any higher order `scopes` you may have defined in your top level router or controller files.
+    `LIKE` is case-sensitive on some databases (Postgres) and case-insensitive on others (SQLite, MySQL).  Use the `ilike` operator for portable case-insensitive matching.  See the [ORM Query Builder](../../database/orm-querybuilder.md) for the full operator list.
 
+---
 
+## Relation Includes Are Permission-Checked
 
-### Custom scopes without CRUD scopes
+When a client uses `include` to pull in related models, Uvicore verifies the user is allowed to *read each included entity* too.  So a request can pass the parent model's scope and still be denied if it tries to include a child relation the user lacks `*.read` permission for.  Your authorization is enforced all the way down the object graph, automatically.
 
-If you wanted to remove the automatic CRUD scopes (permissions) from all auto API endpoints and instead define your own List of scopes for all endpoints.
+---
 
-```python
-# http/routes/api.py
-def register(self, route: ApiRouter):
-    # ...
+## When to Use It
 
-    # Include dynamic model CRUD API endpoints (the "auto API")!
-    # These routes are automatically protected by model.crud style permissions.
-    route.include(ModelRouter, options={
-        'scopes': ['authenticated', 'autoapi_user']
-    })
+!!! success "Reach for the Model Router when"
+    - your models map cleanly onto CRUD endpoints
+    - the default permission naming works for you
+    - query-driven list and detail endpoints are enough
 
-    # ...
-```
+!!! note "Prefer hand-written controllers when"
+    - your API isn't CRUD-shaped
+    - you need custom business workflows
+    - each endpoint needs distinct, non-CRUD authorization
+    - you need full control over request and response payloads
 
-Notice these scopes apply to every single endpoint. User must be authenticated and have the `autoapi_user` permission.  They can hit ALL auto API endpoints with all HTTP verbs.
-
-This is only handy if you want to give out ALL functionality to a set of users.  This is not a granular per HTTP verb approach.  To define a custom set of permissions for each HTTP verb use a scopes dictionary instead.  Like so
-
-
-```python
-# http/routes/api.py
-def register(self, route: ApiRouter):
-    # ...
-
-    # Include dynamic model CRUD API endpoints (the "auto API")!
-    # These routes are automatically protected by model.crud style permissions.
-    route.include(ModelRouter, options={
-        'scopes': {
-            'create': ['autoapi.create'],
-            'read': ['autoapi.read'],
-            'update': ['autoapi.update'],
-            'delete': ['autoapi.delete'],
-        }
-    })
-
-    # ...
-```
-
-Although this is granular from an HTTP verb standpoint, it still applies to every single endpoint.
-
-!!! tip
-    Any higher order `scopes` defined in top level routes or controllers are also obeyed
-
-
-### Extend existing CRUD scopes
-
-If you wanted to extend/append your own scopes to the existing automatic `model.crud` styles scopes, wrap it in a `@route.group` decorator
-
-```python
-# http/routes/api.py
-def register(self, route: ApiRouter):
-    # ...
-
-    # Include dynamic model CRUD API endpoints (the "auto API")!
-    # These routes are automatically protected by model.crud style permissions.
-    @route.group(scopes=['authenticated', 'autoapi_user']):
-    def autoapi():
-        route.include(ModelRouter)
-
-    # ...
-```
-Now a user must have the actual CRUD scope (ex: `users.read`) and also the `authenticated` and `autoapi_user` scope.
-
-!!! tip
-    Any higher order `scopes` defined in top level routes or controllers are also obeyed
-
-
-
-
-
-## Notes
-
-Notes from within the model_router.py, moved here
-
-
-**REST Notes**
-```
-
-There are certain verbs which must NOT carry a body/payload.  Instead they act on a single resource defined in the URL.  These verbs are GET/HEAD/DELETE/OPTIONS.  Which means you can only DELETE a /{id} resource, never bulk with some sort of DELETE body payload.  Body in DELETE is technically allowed, but is generally ignored by clients, proxies and should not be used.  Get obviously has no body whatsoever, only URL and possibly queryParameters.
-
-encode/httpx for example does not allow body data on GET/HEAD/DELETE/OPTIONS as expected.
-
-Further, some verbs that do except body payload should still only ever act on a single resource defined in the url /{id}.  Like PUT.  PUT should never do bulk inserts.  PUT acts on a single resource to UPDATE that resource using the URL /{id}.  PUT can have a body/payload, which is the FULL resource to UPDATE.
-
-At first I created my DELETE to accept
-
-https://www.restapitutorial.com/lessons/httpmethods.html
-PUT should be idempotent always, if it increments a counter, its NOT idempotent and POST should be used
-
-GET
-Has NO body/payload
-/user       To get entire collection
-/user/{id}  to get a single item
-queryParams are OK on either / or /{id}
-
-POST - creating, but also a catch-all verb
-Has body/payload
-/user           To create a new user (not idempotent), body can be one or many items
-/user/delete    Custom, can have a body payload with complex query of WHAT to delete
-
-
-
-
-
-https://stackoverflow.com/questions/299628/is-an-entity-body-allowed-for-an-http-delete-request
-https://lists.w3.org/Archives/Public/ietf-http-wg/2020JanMar/0123.html
-https://stackoverflow.com/questions/21863326/delete-multiple-records-using-rest
-
-
-
-
-https://www.mscharhag.com/p/rest-api-design
-https://www.mscharhag.com/api-design/http-post-put-patch
-
-GET
-HEAD
-OPTIONS
-TRACE
-
-
-POST is for new records
-    POST /spaces
-    Not idempotent as it will continue to create new resources
-    If new post, return 200
-    If endpoint has no response but created, return 204 (no content but success)
-
-PUT is for updating existing records whos ID is in the url
-    PUT /spaces/123
-    Not for partial updates, expects the FULL object
-    Idempotent
-
-PATCH
-    PATCH /spaces/123
-    Like PUT, but can be partial object, or could be full, either way
-    Updates only records defined in the partial object
-    {
-        'creator': 4
-    }
-
-    BULK updates?
-    PATCH /spaces?where={"something": "other"}
-    Takes a partial JSON blob, with the data you want to update in BULK
-    {
-        'something': 'new',
-        'title': 'all get the same title'
-    }
-
-DELETE
-    DELETE /spaces/123
-    Deletes one space by ID
-    maybe a new permission string spaces.update_bulk?
-
-    BULK?
-    DELETE /spaces?where={"creator_id": 1}
-    maybe a body with confirm code?
-    {
-        env API_BULK_DELETE_CODE: 1234123412341234123412341234
-        confirm: yes sir code 123423412341234
-    }
-    or maybe a new permission string, spaces.delete_bulk?
-
-```
-
-
-**URL query notes**
-```
-Include
--------
-include=sections.topics
-
-Where AND
-----------
-where={"id": 1}
-where={"id": 1, "name": "test"}
-
-where={"id": [">", 1]}
-
-where={"id": ["in", ["one", "two"]]}
-where={"id": [">", 5], "name": "asdf", "email": ["like", "asdf"]}
-
-
-Where OR
---------
-or_where=(id,1)+(id,3)
-
-Group By
---------
-
-Order By
---------
-order_by=[{"id": "ASC"}, {"name": "DESC"}]
-
-Paging
-------
-page=1
-size=10
-translates to ORM limit and offset
-
-Cache
------
-cache=60  in seconds
-```
+The best apps use both, the Model Router for the bulk of resourceful endpoints, and [controllers](routing.md) for the handful that need a human touch.

@@ -1,87 +1,80 @@
+---
+title: API Routing
+---
+
 # API Routing
 
-## FIXME
-:material-auto-fix: FIXME
+API routes are how you expose your application's data and actions to the world.  In Uvicore they are declared with the `ApiRouter`, but unlike a bare FastAPI project there is no single central app file wiring everything together.  Instead, routes are discovered and merged through the [package and provider](../../deeper/provider.md) lifecycle, which keeps every package self-contained and composable.
 
-- Route groups and complex group based permissions
+Uvicore separates Web and API routes into two files in your `http/routes` directory.  This dual-router design lets your Web and API endpoints have completely separate middleware and authentication, configured in your package's `config/http.py`.
 
-examples to organize
+All routes are defined inside a routes class `register()` method, and there are several elegant ways to declare them: decorators, direct method passing, groups and controllers.
+
+---
+
+## Registering API Routes
+
+Your routes are registered from your [Package Provider](../../deeper/provider.md) during `boot()`.
+
 ```python
-        # Passing in existing methods
-        def posts():
-            return response.Text('Route /posts here')
-        route.get('/posts', posts)
-
-        # If your controller has an __init__ with params
-        route.controller('contact', options={'param': 'one'})
-
-        # Groups as a Decorator
-        @route.group(prefix='/admin')
-        def admin():
-            @route.get('/profile')
-            def profile():
-                return response.Text('Route /admin/profile here')
-
-        # Groups as a List of existing methods
-        # tokens and themes methods not defined for brevity
-        route.group(prefix='/settings', routes=[
-            route.get('/tokens', token_settings),
-            route.get('/theme', theme_settings),
-        ])
+# acme/wiki/package/provider.py
+def register_routes(self) -> None:
+    self.register_http_api_routes(
+        module='acme.wiki.http.routes.api.Api',
+        prefix=self.package.config.api.prefix,
+    )
 ```
 
+Uvicore then imports the routes module, creates an `ApiRouter`, calls your `register()` method, merges any route-level middleware, and adds the finished routes to the API server.
 
-## :material-pound: Routing Basics
+---
 
-Uvicore separates web and api routes into two files located in the `http/routes` directory.  These route files are loaded from your [Package Provider](/deeper/provider/). Dual routers allow for separate middleware and authentication mechanisms for web and api endpoints.  Route middleware and authentication is located in your packages `config/http.py` file.
+## The Main Routes File
 
-All routes are defined inside the routes `register()` method. There are multiple ways to define route endpoints including method passing, decorators, groups and controllers.
+The `http/routes/api.py` file is the root of your API.  Every API route stems from here.  You *can* define endpoints directly in this file, but it is best to organize them into controllers stored in `http/api/`.  Controllers group your routes into logical units, each with its own middleware and auth requirements.
 
-
-### :material-pound::material-pound: Main Routes File
-
-The `http/routes/api.py` file is the main API router file.  All of your API routes stem from this file.  You can define routes directly in this file, however it is best to organize your routes into controllers stored in the `http/api/*` folder.
-
-Controllers help group your routes into logical units, each with their own middleware and auth requirements.
-
-Example of the main API router loading up 3 controllers stored in `http/api/*`
-
-```python title="http/routes/api.py"
+```python
+# acme/wiki/http/routes/api.py
 import uvicore
-from uvicore.http.routing import Routes, ApiRouter
+from uvicore.http.routing import Routes, ApiRouter, ModelRouter
 
 @uvicore.routes()
 class Api(Routes):
 
-    def register(self, route: WebRouter):
-        """Register Web Route Endpoints"""
+    def register(self, route: ApiRouter):
+        """Register API Route Endpoints"""
 
-        # Define controller base path
+        # The base path your controllers are loaded from
         route.controllers = 'acme.wiki.http.api'
 
-        # Include all API Controllers
+        # Include your API controllers
         route.controller('users', prefix='/users')
         route.controller('topics', prefix='/topics')
         route.controller('tags', prefix='/tags')
+
+        # Optionally generate automatic CRUD endpoints from your ORM models
+        route.include(ModelRouter, options=uvicore.config.app.api.auto_api)
+
+        return route
 ```
+
+!!! note
+    Your `routes/api.py` file, your nested controllers and your included controllers all share the same router model.  In Uvicore, a routes file *is* just a controller, and a controller is just a nested router.  It's routers all the way down!
 
 ---
 
+## Controllers
 
-
-
-### :material-pound::material-pound: Controllers
-
-Controllers help group your routes into logical units, each with their own middleware and auth requirements.  Your API controllers are stored in the `http/api/*` folder.
-
-You can generate a new controller from the Uvicore CLI
+Controllers store your endpoints in `http/api/` and keep your routing organized.  Generate one from the CLI:
 
 ```bash
 ./uvicore gen api-controller --help
 ./uvicore gen api-controller topics
 ```
 
-```python title="http/api/topics.py"
+```python
+# acme/wiki/http/api/topics.py
+from typing import Dict
 import uvicore
 from uvicore.http.routing import ApiRouter, Controller
 
@@ -93,139 +86,142 @@ class Topics(Controller):
 
         @route.get('/example1', tags=['Examples'])
         async def example1() -> Dict:
-            """This docstring shows up in openapi"""
-            return {'welcome': 'to uvicore API!'}
+            """This docstring shows up in OpenAPI!"""
+            return {'welcome': 'to the uvicore API!'}
+
+        return route
+```
+
+Always remember to `return route` at the end of every routes and controller class.  Because the whole system is one infinitely-nested router, each piece must hand its router back up the chain.
+
+---
+
+## HTTP Methods
+
+The `ApiRouter` exposes all the standard verbs as both decorators and direct methods:
+
+```python
+route.get(path, endpoint=None, ...)
+route.post(...)
+route.put(...)
+route.patch(...)
+route.delete(...)
+```
+
+Every method accepts the common route options, `name`, `autoprefix`, `middleware`, `auth`, `scopes` and `inherits`, plus the API-specific OpenAPI options that make your [docs](openapi.md) shine: `response_model`, `response_class`, `responses`, `tags`, `summary` and `description`.
+
+---
+
+## Decorator Style vs Direct Style
+
+Prefer decorators?  Great.  Don't like decorators?  That's fine too, pass your endpoint function directly.
+
+```python
+# Decorator style
+@route.get('/posts', tags=['Posts'])
+async def posts():
+    return []
+
+# Direct style (same result)
+async def posts():
+    return []
+
+route.get('/posts', posts, tags=['Posts'])
 ```
 
 ---
 
+## Loading Controllers
 
-
-
-
-## :material-pound: Overriding Packages Routes
-
-When consuming other developers packages, you may want to override some of their routes with your own.  For example, if you are building a CMS which includes a 3rd party `blog` package which contains a `/search` route named `blog.search` and you want to replace it with your own search page.
-
-Because all of your route names are automatically `prefixed` with your package, you must disable the auto-prefixer for your own custom search override.  This will allow you to define the entire route path and name.
+You can include controllers by relative name, full module path, or by importing the class yourself.  When `route.controllers` is set, relative names are resolved against it.
 
 ```python
-# Your CMS package wants to override the blog packages search route
-@route.get('/search', name='blog.search', autoprefix=False)
-```
+# String based (auto-imported)
+route.controllers = 'acme.wiki.http.api'
+route.controller('users')                 # -> acme.wiki.http.api.users.Users
+route.controller('.admin.Users')          # leading dot appends to the base path
+route.controller('acme.wiki.http.api.users.Users')   # full path used as-is
 
----
-
-
-
-
-
-## :material-pound: Digging Deeper
-
-In your `http/routes/api.py` file you can actually load your controllers in two different ways.  One is using 'strings' which automatically locate and import your controller python modules.  The other is by importing those python modules yourself.
-
-```python
-# String based
-route.controllers = 'app.http.controllers'
-route.controller('users')
-route.controller('topics')
-route.controller('tags')
-
-# Module based
+# Module based (you import it)
 from acme.wiki.http.api.users import Users
-from acme.wiki.http.api.topics import Topics
-from acme.wiki.http.api.tags import Tags
 route.controller(Users)
-route.controller(Topics)
-route.controller(Tags)
 ```
 
 ---
 
+## Route Groups
 
-
-
-
-
-
-
-
-## END OF NEW DOCS, OLD BELOW
-
-:material-auto-fix: FIXME
-
-
-
-
-
-
-
-
-
-
-## OBSOLETE WARNING
-
-This document is obsolete now that I refactored the entire routing infrastructure.
-
-Obsolete below this line
-
-
-
-
-## Route Prefixes and Names
-
-
-FIXME, this is WEB specific, make a new one, better that is API specific
-List out actual API route names
-
-
-All routes are automatically given a route prefix which you define in `config/http.py`.  This prefix allows consuming developes of your package to alter each packages base URI to fit their needs.  For example, if you wrote a `wiki` app you probably want a simple `/` prefix for all routes.  If a developer consumes your `wiki` as a package inside their own app, they may override your wiki `config/http.py` and alter the prefix to `/wiki`.
-
-Because of this route prefix, URL paths should never be referenced in views and controllers as they are subject to change and your links will break.  Instead you should always reference the `route name`.
-
-All routes are automatically given a `route name`.  The name is based on your route path (naturally excluding your package wide prefix).  This name is also prefixed with your package name found in `config/package.py`.  For example `wiki.about`, `wiki.admin.profile`.
-
-You can override the automatic name When defining routes, groups and controllers.  Prefixes can be defined on route groups and controllers.
+Reach for `route.group()` when a set of routes shares a common prefix, tags or authorization requirements.  Groups work as a decorator or as a method with a list of routes.
 
 ```python
-# Example app where config/package.py name='wiki'
-
-# Default name based on the path
-@route.get('/user/account')
-def users():
-    return response.Text('Name is wiki.user.account')
-
-# Specifying a custom name
-@route.get('/user/account', name='account')
-def users():
-    return response.Text('Name is wiki.account')
-
-# Group default name based on path
-@route.group(prefix='/admin')
+# As a decorator
+@route.group('/admin', scopes=['authenticated', 'admin'], tags=['Admin'])
 def admin():
-    @route.get('/profile')
-    def profile():
-        return response.Text('Name is wiki.admin.profile')
+    route.controller('users')
 
-# Group with a custom name
-@route.group(prefix='/admin', name='backend')
-def admin():
-    @route.get('/profile')
-    def profile():
-        return response.Text('Name is wiki.backend.profile')
+    @route.get('/health')
+    async def health():
+        return {'ok': True}
 
-# Controllers are by default not given a name prefix
-# Assuming controller has a /home endpoint
-@route.controller('home')  # name will be wiki.home
-
-# Controllers with a prefix are given a name based on the prefix
-# Assuming controller has a /home endpoint
-@route.controller('home', prefix='my')  # name will be wiki.my.home
-
-# Controllers with a custom name
-# Assuming controller has a /home endpoint
-@route.controller('home', name='our')  # name will be wiki.our.home
+# As a method with a list of existing endpoints
+route.group(prefix='/settings', routes=[
+    route.get('/tokens', token_settings),
+    route.get('/theme', theme_settings),
+])
 ```
 
+Nested groups work exactly as you would expect, and group-level [`Guard`](authorization.md) scopes are *merged* with child scopes rather than replacing them.
 
+---
 
+## Prefixes and Route Names
+
+Every API package is mounted under your configured API prefix (typically `/api`), defined in config so consuming apps can change it.
+
+```python
+# acme/wiki/config/http.py
+api = {
+    'prefix': env('API_PREFIX', '/api'),
+}
+```
+
+Each route is also given a **name**, automatically prefixed with your package's short name.  Prefer referencing routes by name rather than by hardcoded URL, paths can change when another app mounts your package under a different prefix, but names are stable.
+
+```python
+@route.get('/welcome')              # auto-named, e.g. wiki.welcome
+async def welcome():
+    ...
+
+@route.get('/welcome', name='greeting')   # custom name (still auto-prefixed)
+async def welcome():
+    ...
+```
+
+### Overriding Another Package's Route
+
+When you consume someone else's package, you may want to replace one of their routes with your own.  Say a 3rd party `blog` package defines a `/search` route named `blog.search` and you want your own search page instead.
+
+Because Uvicore auto-prefixes route names with your own package, you must disable the auto-prefixer to claim the *exact* name and path of the route you are overriding.
+
+```python
+# Override the blog package's search route from your CMS
+@route.get('/search', name='blog.search', autoprefix=False)
+async def search():
+    ...
+```
+
+---
+
+## Inherited Parameter Signatures
+
+The `inherits=` option lets one endpoint reuse another function's signature.  Uvicore leans on this heavily in the [Model Router](model-router.md) so every auto-generated endpoint can share the same rich set of query parameters without repeating the signature on each route.
+
+It's an advanced feature, but a handy one when many of your endpoints share the same query contract.
+
+---
+
+!!! tip "Routing tips"
+    - Keep your top-level `http/routes/api.py` small, lean on controllers for real features.
+    - Reference routes by **name**, not hardcoded URL.
+    - Put shared auth and tagging rules on a **group or controller** instead of repeating them on every endpoint.
+    - Keep the API prefix in config, never baked into controller path strings.

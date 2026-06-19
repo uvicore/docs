@@ -65,13 +65,26 @@ html.js-focus-visible.js body div.md-container main.md-main div.md-main__inner.m
     display: none;
 }
 
-/* Make all h1 and h2 twemoji colored */
+/* Make all h1 and h2 twemoji colored (when manually added via :material-pound:) */
 h1 .twemoji, h2 .twemoji {
     color: #2094f3;
 }
 
 h3 .twemoji {
     color: #F37F20;
+}
+
+/* Automatically prepend a colored # to h2 and h3 headers that don't already have a twemoji */
+h2:not(:has(.twemoji))::before {
+    content: "# ";
+    color: #2094f3;
+    font-weight: bold;
+}
+
+h3:not(:has(.twemoji))::before {
+    content: "## ";
+    color: #F37F20;
+    font-weight: bold;
 }
 
 

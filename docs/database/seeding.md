@@ -5,12 +5,12 @@ Database seeders are defined in your package's `database/seeders/*` files.
 Seeding allow you to populate your database tables with pre-defined data.  Most applications require at least some data to be inserted before the app can function normally.
 
 
-## :material-pound: Creating a Seeder
+## Creating a Seeder
 
 You may use the Uvicore schematic generator to create seeder files automatically, or create it by hand.
 
 !!! note
-    Seeders are best used with the [ORM](/database/orm-basics/), and the examples created with the schematic reflect ORM use cases.  If you are not using the ORM, simply substitute the Model queries below with Uvicore query builder or SQLAlchemy query builder syntax!
+    Seeders are best used with the [ORM](orm-basics.md), and the examples created with the schematic reflect ORM use cases.  If you are not using the ORM, simply substitute the Model queries below with Uvicore query builder or SQLAlchemy query builder syntax!
 
 ```bash
 ./uvicore gen seeder --help
@@ -43,12 +43,12 @@ async def seed():
 ---
 
 
-## :material-pound: Running the Seeders
+## Running the Seeders
 
 !!! danger
     Take caution!  Running the `drop`, `recreate` and `reseed` commands will result in DATA LOSS.  Be careful!
 
-The Uvicore [Uvicore CLI](/cli/) provides the `./uvicore db` commands to help you manage your database seeders.
+The Uvicore [Uvicore CLI](../cli/index.md) provides the `./uvicore db` commands to help you manage your database seeders.
 
 
 - Show all connections
@@ -85,12 +85,12 @@ The Uvicore [Uvicore CLI](/cli/) provides the `./uvicore db` commands to help yo
 ---
 
 
-## :material-pound: Seeder Examples
+## Seeder Examples
 
 Below are some quick examples on some tricky to remember seeder hacks.  For brevity we are only showing the inserts you can use inside your `async def seed()` method
 
 
-### :material-pound: :material-pound: Bulk Insert List[Post]
+### Bulk Insert List[Post]
 
 ```python
 # Issue here is some model fields are required that we don't have yet, like relations.
@@ -105,7 +105,7 @@ await Post.insert([
 ---
 
 
-### :material-pound: :material-pound: Single insert using Model instance
+### Single insert using Model instance
 
 ```python
 # Get relation values for link convenience
@@ -136,7 +136,7 @@ await post.add('attributes', [
 
 
 
-### :material-pound: :material-pound: Bulk insert List[Dict] with child relations
+### Bulk insert List[Dict] with child relations
 
 ```python
 # Get relation values for link convenience
@@ -190,7 +190,7 @@ await Post.insert_with_relations([
 ---
 
 
-### :material-pound: :material-pound: Bulk Insert Using Faker
+### Bulk Insert Using Faker
 
 ```python
 from faker import Faker

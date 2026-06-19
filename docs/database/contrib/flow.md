@@ -3,7 +3,7 @@
 !!! warning
     This section is for contributing developers of the uvicore source code. Or for folks who just wish to learn how uvicore works under the hood!
 
-## :material-pound: Flow
+## Flow
 
 - Uvicore is booted and raises the [AppEvents.Booted](https://github.com/uvicore/framework/blob/master/uvicore/foundation/events/app.py) event
 - [database/package/provider.py](https://github.com/uvicore/framework/blob/master/uvicore/database/package/provider.py)

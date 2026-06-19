@@ -6,9 +6,9 @@ Uvicore comes with the async `aiohttp` HTTP client so you can talk to other API'
     Uvicore also comes with `httpx`, another async HTTP client that is used during pytests.  However uvicore does not provide a standard way to access it like it does for `aiohttp`.  So you are on your own there :)
 
 
-## :material-pound: Dependencies
+## Dependencies
 
-The HTTP client is available to all levels of Uvicore, regardless of the options you chose when running the [Uvicore Installer](/getting-started/installation/)
+The HTTP client is available to all levels of Uvicore, regardless of the options you chose when running the [Uvicore Installer](../getting-started/installation.md)
 
 You will notice in your your `config/dependencies.py` file that HTTP client is enabled by default
 
@@ -26,7 +26,7 @@ dependencies = OrderedDict({
 
 
 
-## :material-pound: Basic Usage
+## Basic Usage
 
 Basic usage is to make the HTTP Client form the IoC and use it like so
 
@@ -49,7 +49,7 @@ async def some_async_method():
 
 
 
-## :material-pound: Example Basic Auth GET Helper
+## Example Basic Auth GET Helper
 
 ```python
 import json
@@ -94,7 +94,7 @@ async def http_get(url: str, *, json: bool = True, basic_auth: str = None) -> tu
 
 
 
-## :material-pound: Example Simple SugarCRM Client
+## Example Simple SugarCRM Client
 
 Just a basic example of building your own SugarCRM client class to login and interact with the Sugar API.  This example shows `GET` method only, but you "get" the point :)  This code saves the login token to a temp file to re-use it.  If the token expires, the `GET` request will attempt to login once before failing.
 
@@ -239,7 +239,7 @@ accounts = (await SugarClient.get(
 
 
 
-## :material-pound: Example FusionAuth Client
+## Example FusionAuth Client
 
 
 ```python

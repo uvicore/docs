@@ -5,7 +5,7 @@ Uvicore comes with a built-in caching system capable of connecting to any number
 The caching system is generally used to cache expensive database queries or other data lookups.  But of course, you are free to use it for any arbitrary key/value storage.  Just remember, cache is not a database, it expires unless you define otherwise.  Even still, it should be considered volatile.
 
 
-## :material-pound: Configuration
+## Configuration
 
 Most of uvicore's configuration is set to sensible defaults with quick and easy `.env` file overrides.
 
@@ -41,7 +41,7 @@ All cache configuration is done at the running application level.  This means yo
             'redis': {
                 'driver': 'uvicore.cache.backends.redis.Redis',
                 'connection': 'cache',
-                'prefix': env('CACHE_PREFIX', 'acme.appstub::cache/'),
+                'prefix': env('CACHE_PREFIX', 'acme.wiki::cache/'),
                 'seconds': env.int('CACHE_EXPIRE', 600),  # 0=forever
             },
         },
@@ -57,7 +57,7 @@ The `prefix` section defines the prefix added to each key that is saved to cache
 
 The `seconds` are the default expiration given to each cache key.  Cache is generally meant to expire.  If you don't ever want key/values to expire, set `seconds: 0`.  This config defines the default behavior of `cache.put()` and other save methods.  You can also override each individual call using the optional seconds parameter `cache.put('mykey', 'myvalue', seconds=50)`
 
-The `connection` key is pointing to a redis database connection key which is defined in your packages `config/package.py` configuration.  All packages created from the [Uvicore Installer](/installation/) already contain a `cache` redis connection key.  All you have to do is ensure your `.env` has the proper values to override it.
+The `connection` key is pointing to a redis database connection key which is defined in your packages `config/package.py` configuration.  All packages created from the [Uvicore Installer](../getting-started/installation.md) already contain a `cache` redis connection key.  All you have to do is ensure your `.env` has the proper values to override it.
 ```python
     # --------------------------------------------------------------------------
     # Redis Connections
@@ -84,21 +84,21 @@ The `connection` key is pointing to a redis database connection key which is def
 
 
 
-## :material-pound: Stores
+## Stores
 
 Uvicore ships with 2 backend cache stores, `Redis` and `Array`.  The community (that means YOU) may easily create other stores like memcache.
 
 The `array` store simply stores cached data in the running apps memory.  Array store does have full TTL expiry!  It should act just like redis cache except that it is in your running apps memory.  When the app dies, cache is gone forever.  This means cache entries with no expiry (seconds=0) will disappear when the app stops. Array is best used for testing or when you import another uvicore package that uses caching, but you don't have redis and don't really care about the cache.
 
 
-## :material-pound: Expiration
+## Expiration
 
 All values inserted to the cache store always use the config expire TTL seconds.
 This means all keys will automatically delete themselves.  You can override each insert operation using the optional `seconds=` parameter.  Using `seconds=0` means the key
 will NEVER expire.  If you want every key to persist forever, update your config seconds to 0.
 
 
-## :material-pound: Usage
+## Usage
 
 You can obtain a cache instance in multiple ways.  The easiest and **recommended** method is to simply use `uvicore.cache` since `import uvicore` is most likely already at the top of every file you will use.
 ```python
@@ -112,7 +112,7 @@ import uvicore.cache
 cache.get('key1')
 ```
 
-You can optionally get the cache instance from the [IoC](/deeper/ioc/) either by `uvicore.ioc.make` or by simply importing the cache manager.  In either case, you must manually `connect()` to start using the cache.
+You can optionally get the cache instance from the [IoC](ioc.md) either by `uvicore.ioc.make` or by simply importing the cache manager.  In either case, you must manually `connect()` to start using the cache.
 ```python
 # These options require you to run .connect().  If .connect() has no parameters, the default
 # cache store is used from your config.  You may also specify the store with .connect('redis')
@@ -124,7 +124,7 @@ cache = uvicore.ioc.make('cache').connect()
 ```
 
 
-### :material-pound: :material-pound: Change Stores
+### Change Stores
 
 Use an alternate store other than the default defined in your config
 ```python
@@ -132,7 +132,7 @@ await cache.store('redis').get('key1')
 ```
 
 
-### :material-pound: :material-pound: Get
+### Get
 
 Get one or more values from cache
 ```python
@@ -153,7 +153,7 @@ await cache.get(['missing1', 'key1'], default='not found')
 ```
 
 
-### :material-pound: :material-pound: Put
+### Put
 
 Put a single key value in cache
 ```python
@@ -173,7 +173,7 @@ await cache.put({
 ```
 
 
-### :material-pound: :material-pound: Add
+### Add
 
 Add a single value only if not exists.  Like put, but will not overwrite an existing value.
 ```python
@@ -183,7 +183,7 @@ await cache.add('key1', 'value1')
 ```
 
 
-### :material-pound: :material-pound: Pull
+### Pull
 
 Pull one or more values from cache and delete after retrieval. Like get, but
 once retrieved, cache entry is DELETED.
@@ -197,7 +197,7 @@ await cache.pull(['key1', 'key2'])
 
 
 
-### :material-pound: :material-pound: Remember
+### Remember
 
 The `.remember()` method will get one or more values if exist, if not, it will set the default to the cache store and return it.  Different that `.get()` with a `default=` because `.remember()` will set the default in the cache store.  This is the **recommended** method to automatically cache expensive database queries or lookups into cache.  Works with callbacks!
 ```python
@@ -218,7 +218,7 @@ await cache.remember('all_posts', wiki_posts)
 ```
 
 
-### :material-pound: :material-pound: Forget (delete)
+### Forget (delete)
 
 Forget (delete) one or more keys
 ```python
@@ -236,7 +236,7 @@ await cache.flush()
 ```
 
 
-### :material-pound: :material-pound: Has Key
+### Has Key
 
 Check if a single cache key exists
 ```python
@@ -245,7 +245,7 @@ await cache.has('key1')
 
 
 
-### :material-pound: :material-pound: Touch
+### Touch
 
 Touch a key.  This alters the last access time of a key but does not retrieve the value.
 If `seconds=` are passed it will RESET the TTL to the given seconds.
@@ -260,7 +260,7 @@ await cache.touch('key1', seconds=60)
 ```
 
 
-### :material-pound: :material-pound: Increment
+### Increment
 
 Increment a key.  If key does not exist, it will create it.  Increment returns the current value after the increment
 ```python

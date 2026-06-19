@@ -7,9 +7,9 @@ You may define events in two ways.
 2. As a simple string with a loosely defined dictionary payload.
 
 
-## :material-pound: Class Based Events
+## Class Based Events
 
-Class based events not only provide a stricter interface, but they also bind themselves to the [IoC](/deeper/ioc/) allowing you to view all Class based events using the `./uvicore event list` CLI as long as that file has been `imported` in your packages provider.
+Class based events not only provide a stricter interface, but they also bind themselves to the [IoC](../ioc.md) allowing you to view all Class based events using the `./uvicore event list` CLI as long as that file has been `imported` in your packages provider.
 
 The benifits of an event class are that you can force the payload requirements
 using the class `__init__()` constructor.  An event class performs NO work.  It
@@ -33,7 +33,7 @@ class Created(Event):
 ```
 
 
-## :material-pound: String Based Events
+## String Based Events
 
 
 String based events are not known ahead of time, so they are harder to discover.  Read the package developers documentation to learn about the events they may fire.

@@ -11,7 +11,7 @@ is simple.
     Uvicore provides the synchronous `diaptch()` method and the asynchronous `codispatch()` method.
 
 
-### :material-pound: Dispatch Class Based Events
+### Dispatch Class Based Events
 
 Dispatch using `events.dispatch()` or `events.codispatch()`
 
@@ -40,7 +40,7 @@ await events.codispatch('acme.wiki.events.post.Created', {'post': post})
 ```
 
 
-### :material-pound: Dispatch String Based Events
+### Dispatch String Based Events
 
 String based events work with or without a matching event class.
 

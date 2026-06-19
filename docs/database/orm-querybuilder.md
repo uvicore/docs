@@ -87,8 +87,13 @@ posts = await (Post.query()
 
 
 !!! note "Operators"
-    Valid operators are `in, !in, like, !like, =, != >, >=, <, <=`.
-    and `'null'` (in quotes) is a valid "value" (not operator), see null example below.
+    Operators are case-insensitive and whitespace tolerant.  The full set is:
+    `=`, `==`, `!=`, `<>`, `>`, `>=`, `<`, `<=`, `in`, `!in` (or `not in`),
+    `like`, `!like` (or `not like`), `ilike`, `!ilike` (or `not ilike`),
+    `between` / `!between` (value is a `[low, high]` list), and `is` / `is not`.
+    The string `'null'` (in quotes) is a valid *value* (not an operator), see the null example below.
+
+    `like` is case-sensitive on some databases (Postgres) and case-insensitive on others (SQLite, MySQL).  Use `ilike` for portable case-insensitive matching.  See the [DB Query Builder operators](db-queries.md#operators) for the complete reference.
 
 Get all users with eye_color blue.  Operator is assumed `=`.
 ```python
@@ -269,3 +274,84 @@ posts = await (Post.query()
 # URL: /posts?include=comments&order_by=["created_at","DESC"]&sort=[["comments.created_at","ASC"],["comments.title","DESC"]]
 ```
 
+
+
+## Limit & Offset (Paging)
+
+Use `.limit()` and `.offset()` to page through large result sets.  In the automatic model router these are driven by the `page` and `page_size` URL parameters.
+
+```python
+# First 25 posts
+posts = await Post.query().order_by('id').limit(25).get()
+# URL: /posts?page=1&page_size=25
+
+# The next 25 (page 2)
+posts = await Post.query().order_by('id').limit(25).offset(25).get()
+# URL: /posts?page=2&page_size=25
+```
+
+!!! tip
+    Always pair paging with an `.order_by()`.  Without an explicit order, databases like Postgres and MySQL do not guarantee row order, so your pages could overlap or skip rows.
+
+
+## Count
+
+Get the number of matching rows without pulling back the records themselves.
+
+```python
+total = await Post.query().count()
+mine  = await Post.query().where('creator_id', 1).count()
+```
+
+
+## Key By
+
+By default `.get()` returns a `List` of model instances.  Use `.key_by()` to instead return a `Dict` keyed by one of the model's fields, perfect for quick lookups.
+
+```python
+# Returns {'linux': <Tag>, 'mac': <Tag>, 'bsd': <Tag>, ...}
+tags = await Tag.query().key_by('name').get()
+linux = tags['linux']
+```
+
+
+## Update & Delete
+
+The query builder can also perform bulk updates and deletes against everything matching your `.where()` clauses.
+
+```python
+# Bulk update matching rows
+await Post.query().where('creator_id', 5).update(owner_id=1)
+
+# Bulk delete matching rows
+await Post.query().where('other', 'is', None).delete()
+```
+
+!!! note
+    These operate directly at the query level and do **not** fire the model [lifecycle hooks](orm-basics.md#hooks).  To run hooks, load the model(s) and call `.save()` or `.delete()` on each instance instead.
+
+
+## Caching
+
+Cache a query's results with `.cache()`.  Pass an optional key, TTL `seconds` and `store`.  See [Cache](../deeper/cache.md) for backend configuration.
+
+```python
+# Cache using the default store and TTL
+posts = await Post.query().cache().get()
+
+# Custom key, 60 second TTL, specific store
+posts = await Post.query().cache('all_posts', seconds=60, store='redis').get()
+```
+
+
+## Inspecting the SQL
+
+While building a query, call `.sql()` to see the generated SQL without executing it, handy for debugging.
+
+```python
+from uvicore.support.dumper import dump
+
+query = Post.query().include('comments').where('creator_id', 1)
+dump(query.sql())
+posts = await query.get()
+```

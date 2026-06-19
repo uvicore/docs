@@ -70,12 +70,12 @@ hide:
 
 <div class="grid cards" markdown>
 - :material-code-json: **Code** [github.com/uvicore/framework](https://github.com/uvicore/framework)
-- :simple-googledocs: **Docs** [Getting Started](/getting-started/installation)
+- :simple-googledocs: **Docs** [Getting Started](getting-started/installation.md)
 - :simple-python: **Package** [pypi.org/project/uvicore](https://pypi.org/project/uvicore/)
 </div>
 
 
-## :material-pound: Full Stack Elegance
+## Full Stack Elegance
 
 <div class="grid cards" markdown>
 
@@ -122,7 +122,7 @@ hide:
 
 
 
-## :material-pound: Why Uvicore?
+## Why Uvicore?
 
 Fullstack, Modular and Asynchronous. A Full Solution for Web, API and CLI Development!
 
@@ -135,7 +135,7 @@ require structure, standards and many libraries and layers that work together.
 
 
 
-## :material-pound: Full Stack vs Micro Frameworks
+## Full Stack vs Micro Frameworks
 
 Uvicore is built on many libraries and modules including FastAPI, Starlette, Pydantic and SQLAlchemy.
 
@@ -154,7 +154,7 @@ Uvicore is built on many libraries and modules including FastAPI, Starlette, Pyd
 
 
 
-## :material-pound: Inspiration
+## Inspiration
 
 - Heavily inspired by the amazing PHP Laravel Framework.
 - Inspired by Django, Django Rest Framework, Starlette and FastAPI.

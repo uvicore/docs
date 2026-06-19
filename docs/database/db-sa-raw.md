@@ -1,8 +1,8 @@
 # SQLAlchemy RAW SQL
 
-Uvicore provides [3 Layers](/database/#the-3-layers) of database access.  Here we discuss forgoing the [Uvicore ORM](/database/orm-basics/) and the [Uvicore Query Builder](/database/db-queries/) and we even skip [SQLAlchemy Query Builder](/database/db-sa-queries/) and go straight for RAW parameterized SQL
+Uvicore provides [3 Layers](index.md#the-3-layers) of database access.  Here we discuss forgoing the [Uvicore ORM](orm-basics.md) and the [Uvicore Query Builder](db-queries.md) and we even skip [SQLAlchemy Query Builder](db-sa-queries.md) and go straight for RAW parameterized SQL
 
-Generally the [ORM](/database/orm-basics/) is the best way to utilize and query your tables.  And if you prefer to skip the ORM, give the [Uvicore Query Builder](/database/db-queries/) a shot.  It's simple and elegant.
+Generally the [ORM](orm-basics.md) is the best way to utilize and query your tables.  And if you prefer to skip the ORM, give the [Uvicore Query Builder](db-queries.md) a shot.  It's simple and elegant.
 
 However, if you need ultimate RAW SQL power, keep reading!
 
@@ -10,23 +10,23 @@ However, if you need ultimate RAW SQL power, keep reading!
 ---
 
 
-## :material-pound: Why RAW SQL?
+## Why RAW SQL?
 
 Sometimes, query performance is paramount and the queries are so incredibly complex that nothing but plain old RAW SQL will do. SQLAlchemy allows you to write raw SQL and even parameterize all inputs for safety!
 
-When using RAW SQL, you don't even need to build SQLAlchemy [table definitions](/database/db-tables/). You can start querying your database right away without the need for any other boilerplate.
+When using RAW SQL, you don't even need to build SQLAlchemy [table definitions](db-tables.md). You can start querying your database right away without the need for any other boilerplate.
 
 
-See [ORM vs Query Builder vs RAW SQL](/database/#orm-vs-query-builder-vs-raw) for more comparisons.
+See [ORM vs Query Builder vs RAW SQL](index.md#orm-vs-query-builder-vs-raw) for more comparisons.
 
 
 
 ---
 
 
-## :material-pound: Query without Table Definitions
+## Query without Table Definitions
 
-Predefined SQLAlchemy [table definitions](/database/db-tables/) are OPTIONAL when using RAW SQL.  They do however provide a more convenient way to run the RAW SQL, but are in no way required!
+Predefined SQLAlchemy [table definitions](db-tables.md) are OPTIONAL when using RAW SQL.  They do however provide a more convenient way to run the RAW SQL, but are in no way required!
 
 
 You can query database tables without a pre-defined SQLAlchemy table definition.
@@ -62,12 +62,45 @@ await uvicore.db.execute(query, {
 
 
 
-## :material-pound: Select
+## Query with Table Definitions
 
+If you *have* defined your [DB Tables](db-tables.md), you don't have to hardcode table names in your SQL.  Use `uvicore.db.tablename()` to get the proper, prefix-aware name and interpolate it into your query string.  Your parameterized **values** still go through the `:param` bindings, never string-concatenate user input into SQL.
 
-...
+```python
+posts = uvicore.db.tablename('wiki.posts')
 
+query = f"SELECT id, title FROM {posts} WHERE creator_id = :creator_id"
+rows = await uvicore.db.fetchall(query, {'creator_id': 1}, connection='wiki')
+```
 
+---
 
+## Execution Helpers
 
-Can also use `fetchone()` and `execute()` for INSERTS, UPDATES and DELETES
+The same helpers used elsewhere in the database layer work with raw SQL.  Each accepts the SQL string, an optional dict of parameters, and a `connection=`.
+
+| Method | Use for |
+|--------|---------|
+| `await uvicore.db.fetchall(sql, params, connection=...)` | SELECT returning many rows |
+| `await uvicore.db.first(sql, params, connection=...)` | SELECT returning the first row (or `None`) |
+| `await uvicore.db.scalar(sql, params, connection=...)` | SELECT returning a single value |
+| `await uvicore.db.execute(sql, params, connection=...)` | INSERT, UPDATE and DELETE |
+
+```python
+# A single scalar value
+count = await uvicore.db.scalar(
+    "SELECT COUNT(*) FROM posts WHERE creator_id = :id",
+    {'id': 1},
+    connection='wiki',
+)
+
+# An INSERT
+await uvicore.db.execute(
+    "INSERT INTO posts (slug, title, creator_id, owner_id) VALUES (:slug, :title, :cid, :oid)",
+    {'slug': 'hello', 'title': 'Hello', 'cid': 1, 'oid': 1},
+    connection='wiki',
+)
+```
+
+!!! danger "Always parameterize"
+    Never build SQL by concatenating untrusted values into the string.  Always pass them through the `:param` bindings as shown above, SQLAlchemy safely escapes them for you and protects against SQL injection.

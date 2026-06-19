@@ -2,7 +2,7 @@
 
 Handlers are callbacks that are dispatched when an event fires.  Handlers are
 defined using `.listen(), .listener(), .handle(), .handler() .call() or .subscribe()` methods as noted in
-[Listening To Events](#listening-to-events).
+[Listening To Events](listening.md).
 
 Handlers can be basic python methods (functions) or dedicated handler classes.
 
@@ -14,7 +14,7 @@ If the event listener is just a string, the payload is a `namedtuple` of
 parameters.
 
 
-### :material-pound: Callable Handlers
+### Callable Handlers
 
 Basically anything in python that is callable.
 
@@ -43,7 +43,7 @@ OnPostCreated.listen(MyHandler)
 ```
 
 
-### :material-pound: Class Handlers
+### Class Handlers
 
 A good practice is to make yourself a `handlers` folder with handler classes.  The `handle()` method will be called when the even is fired.
 
@@ -60,7 +60,7 @@ class NotifyUser(Handler):
 ```
 
 
-### :material-pound: Subscription Handler
+### Subscription Handler
 
 Subscriptions are a great way to listen and handle multiple events from a single
 file.
