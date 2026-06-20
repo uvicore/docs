@@ -17,10 +17,9 @@ Output
 ```
 Usage: uvicore [OPTIONS] COMMAND [ARGS]...
 
-  Uvicore 0.2.0
+  App1 v0.1.0
+  Powered by https://uvicore.io v0.4.2
   The Fullstack Async Web, API and CLI Python Framework
-
-  Copyright (c) 2023 Matthew Reschke License http://mreschke.com/license/mit
 
 Options:
   --version  Show the version and exit.
@@ -28,20 +27,24 @@ Options:
 
 Commands:
   app      Uvicore Application Information
+  app1     App1 Commands
   config   Configuration Information
+  db       Database Commands
   event    Uvicore Event Information
   gen      Generate New Schematics (commands, models, views...)
+  http     Uvicore HTTP Commands
   ioc      Uvicore Ioc (Inversion of Control) Information
   package  Uvicore Package Information
-  myapp    MyApp Commands
 ```
 
 Not only are your own apps commands available from this interface, but other Uvicore and 3rd party module commands are also available.
 
 
-## Build in Commands
+## Built-In Commands
 
-Uvicore comes with several build-in commands to view your configs, routes, IoC bindings and package information.
+Uvicore comes with many built-in commands to view your configs, database connections, routes, IoC
+bindings, events and package information, plus generators and a dev server.  These are merged in
+from the core Uvicore packages your app depends on, and appear right alongside your own commands.
 
-Explore the built-in Uvicore CLI Commands!
+Explore them all in [Built-In Commands](built-in-commands.md)!
 

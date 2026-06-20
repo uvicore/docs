@@ -44,6 +44,7 @@ nav:
   - CLI:
     - cli/index.md
     - cli/commands.md
+    - cli/built-in-commands.md
     - cli/writing-commands.md
     - cli/python-entrypoints.md
   - Database:
