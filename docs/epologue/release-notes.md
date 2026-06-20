@@ -37,5 +37,6 @@ A **breaking** release that modernizes the web stack and hardens the database an
 - **Expanded query operators** - `ilike`/`!ilike`, `between`/`!between`, `<>`, `not in`, `not like`, and explicit `is` / `is not`, all case-insensitive and whitespace tolerant.
 - **Cross-database robustness** - validated against real Postgres, MySQL and MariaDB, with portable auto-increment primary keys, type-safe `find()`, and `postgres`/`postgresql` dialect normalization.
 - **ORM fixes** - multiple `*Many` includes no longer cartesian-multiply, `HasMany` `delete()`/`set()` now work, and the auto-API create endpoint is fixed.
+- **HTTP client moved to httpx** (0.4.1) - the bundled async [HTTP Client](../deeper/http-client.md) switched from `aiohttp` to `httpx` and `aiohttp` was dropped entirely.  This is breaking for code that calls `uvicore.ioc.make('aiohttp')`: requests are now awaited directly (no `async with`) and the response uses `r.status_code`/`r.text`/`r.json()`.
 
 See the [0.4 Changelog](changelog/0.4.md) and [Upgrade 0.3 to 0.4](upgrade/from-0.3-to-0.4.md) for details.

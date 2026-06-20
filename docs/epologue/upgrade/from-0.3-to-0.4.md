@@ -117,6 +117,64 @@ If any of your code imports these, they were moved or deleted in v2:
 
 ---
 
+## HTTP Client Changed From aiohttp to httpx
+
+Uvicore's bundled async [HTTP Client](../../deeper/http-client.md) switched from **`aiohttp`** to
+**`httpx`** in 0.4.  `aiohttp` is no longer a dependency.  If any of your code calls
+`uvicore.ioc.make('aiohttp')`, it will fail until updated.
+
+The client is now resolved as `http_client` or `httpx`, the request is **awaited directly** (no
+`async with`), and the response accessors are **not** awaited:
+
+```python
+# Before (0.3 — aiohttp)
+http = uvicore.ioc.make('aiohttp')
+async with http.get(url, auth=aiohttp.BasicAuth(user, pw)) as r:
+    if r.status == 200:
+        data = await r.json()
+
+# After (0.4 — httpx)
+http = uvicore.ioc.make('httpx')              # or 'http_client'
+r = await http.get(url, auth=(user, pw))
+if r.status_code == 200:
+    data = r.json()
+```
+
+The full mapping of every aiohttp idiom to its httpx equivalent:
+
+| aiohttp (0.3) | httpx (0.4) |
+|---|---|
+| `uvicore.ioc.make('aiohttp')` | `uvicore.ioc.make('httpx')` *(or `'http_client'`)* |
+| `async with http.get(url) as r:` | `r = await http.get(url)` |
+| `async with http.post(url, json=p) as r:` | `r = await http.post(url, json=p)` |
+| `r.status` | `r.status_code` |
+| `await r.text()` | `r.text` |
+| `await r.json()` | `r.json()` |
+| `await r.read()` | `r.content` |
+| `aiohttp.BasicAuth(user, pw)` | `(user, pw)` *or* `httpx.BasicAuth(user, pw)` |
+| `aiohttp.FormData()` + `.add_field(...)` | `data={...}` (form) and/or `files=[...]` (uploads) |
+| repeated `add_field('to', x)` | `data={'to': ['a', 'b']}` (list value) |
+| `await session.close()` | `await client.aclose()` |
+
+The two gotchas that catch everyone:
+
+1. **No `async with` on the request.** httpx awaits the request and hands you a fully‑read
+   response.  `async with` is only for [streaming](../../deeper/http-client.md#streaming-large-responses).
+2. **Response accessors aren't awaited.**  `r.text` is a property and `r.json()` is a sync method,
+   `await`ing either is an error.
+
+See the [HTTP Client](../../deeper/http-client.md) guide for the complete, httpx‑based API including
+auth helpers, timeouts, streaming, error handling and building your own client instances.
+
+!!! note "httpx is also the pytest client"
+    Uvicore already used `httpx` internally for its in‑process ASGI test client, so 0.4 simply
+    consolidates onto the one library.  If you write framework‑style tests with
+    `httpx.AsyncClient`, note the modern signature is
+    `AsyncClient(transport=ASGITransport(app=...))` (the old `app=` shortcut was removed in
+    httpx 0.28).
+
+---
+
 ## Deprecations
 
 These still work but emit `PydanticDeprecatedSince20` warnings, migrate when convenient.
@@ -239,3 +297,5 @@ Postgres connections now work whether you set `dialect` to `postgres` or `postgr
     - **Port** `@validator` → `@field_validator`, `class Config` → `model_config`, and
       `.dict()`/`.json()` → `.model_dump()`/`.model_dump_json()`.
     - Re-check any test that asserts exact JSON or OpenAPI output, v2 + OpenAPI 3.1 shift the shape.
+    - **Swap `uvicore.ioc.make('aiohttp')`** for `make('httpx')`, await requests directly (no
+      `async with`), and use `r.status_code` / `r.text` / `r.json()` (not awaited).
