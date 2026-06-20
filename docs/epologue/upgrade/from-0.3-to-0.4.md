@@ -175,6 +175,49 @@ auth helpers, timeouts, streaming, error handling and building your own client i
 
 ---
 
+## How `.env` Is Loaded Changed (environs upgrade)
+
+0.4 upgraded the `environs` library (up through **15.x**).  As of `environs >= 11`, `read_env()`
+loads variables **only into the `Env` instance it is called on** — it no longer exports them to the
+global `os.environ`.  Older `environs` (≤ 9) loaded `.env` via python-dotenv's `load_dotenv`, which
+populated `os.environ`, so *every* `Env` instance could see the values.
+
+This breaks the default `package/bootstrap.py` that earlier app scaffolds shipped.  It read `.env`
+into a **throwaway** `Env()` instance:
+
+```python
+# Before — loads .env into a brand-new instance that is then discarded
+from uvicore.configuration import Env
+...
+Env().read_env(base_path + '/.env')
+```
+
+But your config files read variables through the **shared** `env` exported from
+`uvicore.configuration`:
+
+```python
+from uvicore.configuration import env
+config = {'name': env('APP_NAME', 'Acme')}
+```
+
+Under modern `environs` those are two different stores, so the configs see **none** of your `.env`
+values and silently fall back to the defaults in `env('KEY', default)`.  Fix it by reading `.env`
+into that same shared instance:
+
+```python
+# After — load .env into the shared instance the configs actually read
+from uvicore.configuration import env
+...
+env.read_env(base_path + '/.env')
+```
+
+!!! tip "One-line fix"
+    In `package/bootstrap.py`, change the import from `Env` to `env` and the call from
+    `Env().read_env(...)` to `env.read_env(...)`.  Newly generated apps already have this, only
+    apps scaffolded before this change need the edit.
+
+---
+
 ## Deprecations
 
 These still work but emit `PydanticDeprecatedSince20` warnings, migrate when convenient.
