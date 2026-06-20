@@ -17,8 +17,10 @@ poetry run mkdocs build --strict        # the correctness gate — run after edi
 ```
 
 - **Gate on `--strict`.** It builds clean today; a non-zero exit means a real problem to fix.
-- `INFO ... 'absolute link' ... left as is` lines are **expected** — absolute links are the house
-  style (see below), not errors, and `--strict` does not flag them.
+- `--strict` does **not** fail on bad links — they emit `INFO ... 'absolute link' ... left as is`
+  or `INFO ... 'unrecognized relative link' ... left as is` lines. These are **defects to fix**
+  (links are relative `.md`, see below), so after edits scan the build output for any
+  `absolute link` / `unrecognized relative link` lines and correct them.
 - If `--strict` ever aborts on an emoji deprecation, fix `pymdownx.emoji` in `mkdocs.yml` to use
   `material.extensions.emoji.*` (not the old `materialx.emoji.*`).
 
@@ -31,8 +33,10 @@ than inferring it. Don't ship an example you haven't grounded in source.
 ## House conventions (match neighbors exactly)
 
 - Start with `---\ntitle: X\n---` then `# X`. Separate `##` sections with `---`.
-- Links are **absolute, no `.md`, trailing slash**: `[Routing](/http/api/routing/)`. Leave them
-  as-is; do not "fix" them to relative paths.
+- Links are **relative, with the `.md` extension**, resolved from the current file's directory:
+  `[Routing](routing.md)`, `[Provider](../../deeper/provider.md)`, fragments like
+  `[Where](orm-querybuilder.md#where)`. Do **not** use absolute (`/http/api/routing/`) or
+  extension-less links — they break the build's link resolution.
 - Admonitions: `!!! note`, `!!! tip "X tips"`, `!!! danger "..."`, and the
   `!!! note "See The Code on Github"` source-link block.
 - Code fences tagged `python`/`bash`/`json`/`html`; examples use the `acme.wiki` demo namespace.
