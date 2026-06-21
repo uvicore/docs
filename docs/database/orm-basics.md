@@ -15,7 +15,7 @@ Using the ORM is **optional**, you can always drop down to the [DB Query Builder
 A Uvicore model (also called an *entity*) is a higher-level abstraction over a [database table](db-tables.md).  Unlike most ORMs, a Uvicore model does not have to match its table one-to-one:
 
 - Model fields can be **renamed** from their underlying columns (your table may use `lowercase_underscore` while your model enjoys `camelCase`).
-- A model can expose **computed or virtual** fields that don't exist on the table.
+- A model can expose **[computed or virtual](orm-model.md#computed-virtual-fields)** fields that don't exist on the table.
 - A model can expose **only a subset** of the table's columns.
 - A model carries **relations**, so a single query can eager-load deeply nested related objects.
 

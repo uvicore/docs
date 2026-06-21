@@ -81,6 +81,68 @@ See [Pydantic](orm-pydantic.md) for how these options shape validation and the O
 
 ---
 
+## Computed / Virtual Fields
+
+Because a model is the *entity* your application exposes, and not a raw dump of table columns, it can carry fields that **don't exist on the table at all**.  These **computed** (or **virtual**) fields are declared with a `Field()` whose column name is `None`, and they derive their value from the other fields or from the incoming database row.  They serialize into your API responses and OpenAPI schema just like a normal column.
+
+There are two flavors, distinguished by *when* they run: `callback` runs **after** the model is built (so it sees `self`), while `evaluate` runs **before** (so it only sees the raw row).
+
+### `callback` — computed after the model is built
+
+A `callback` names a method on the model that runs **after** the model has been instantiated, so it has full access to `self`, every other field, relations included.  Think of it as a computed property that is materialized onto the model.
+
+A common example is a `full_name` assembled from separate `first_name` and `last_name` columns:
+
+```python
+@uvicore.model()
+class User(Model['User'], metaclass=ModelMetaclass):
+    """Wiki Users"""
+    __tableclass__ = table.Users
+
+    id: Optional[int] = Field('id', primary=True, read_only=True)
+    first_name: str = Field('first_name')
+    last_name: str = Field('last_name')
+
+    # Computed field — column name is None, so it maps to no database column
+    full_name: Optional[str] = Field(None,
+        callback='compute_full_name',
+        description='First and last name combined',
+    )
+
+    def compute_full_name(self):
+        return f'{self.first_name} {self.last_name}'
+```
+
+Every `User` you query or build now exposes `user.full_name` even though there is no `full_name` column, and it shows up in the JSON response and OpenAPI schema.  Because the callback runs *after* instantiation, it can read any field on the model, including eager-loaded relations (for example, summing the totals of a `HasMany` to expose an `order_count`).
+
+!!! note
+    A `callback` field has no underlying column, so it is read-only by nature, it is computed on the way out and never written back to the database on `.save()`.
+
+### `evaluate` — transform the row before the model is built
+
+An `evaluate` function runs **before** the model is instantiated, while the raw database row (a dict) is being mapped into the model.  It receives the row and returns the value for that field, so use it to reshape, cast or extract a value as it comes out of the database (it has the row, but no `self`).
+
+```python
+# Pull a nested value out of a JSON column, with a fallback
+name: Optional[str] = Field(None,
+    evaluate=lambda row: row['data']['name'] if 'data' in row else row['name']
+)
+
+# A standalone function instead of a lambda
+def decode_status(row):
+    return 'active' if row['status'] == 1 else 'inactive'
+
+status: Optional[str] = Field(None, evaluate=decode_status)
+
+# A function that also takes extra parameters, pass a (func, *args) tuple
+flag: Optional[str] = Field(None, evaluate=(decode_status, 'Data'))
+```
+
+!!! tip
+    Reach for `evaluate` when the value depends only on the **raw row** (casting, extracting from a JSON blob, choosing between columns).  Reach for `callback` when the value depends on the **finished model**, other computed fields, or eager-loaded relations.
+
+---
+
 ## Relations
 
 Relations are declared as a `Field(None, relation=...)`.  The first argument to every relation is the **import path** of the related model.  Import the relation types from `uvicore.orm`.
