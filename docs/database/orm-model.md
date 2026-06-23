@@ -39,16 +39,15 @@ class Post(Model['Post'], metaclass=ModelMetaclass):
         relation=HasMany('acme.wiki.models.comment.Comment', foreign_key='post_id'))
 
 
-# Resolve forward-referenced relation types
+# Import forward-referenced relation types at the bottom of the file
 from acme.wiki.models.comment import Comment   # isort:skip
-Post.update_forward_refs()
 ```
 
 !!! note
     The model field name does **not** have to match the table column name.  Above, the model field `slug` maps to the table column `unique_slug` (the first argument of `Field()`).  This is the "column mapper" concept, your model is the entity your API exposes, not a raw dump of the table.
 
 !!! warning
-    When a relation references a type that isn't imported yet (a forward reference), import it at the bottom of the file and call `Model.update_forward_refs()`.  This sidesteps circular imports between related models.
+    When a relation references a type that isn't imported yet (a forward reference), import it at the **bottom** of the file (and keep `from __future__ import annotations` at the top).  This sidesteps circular imports between related models.  You do **not** need to call `Model.update_forward_refs()` / `Model.model_rebuild()` — as of 0.4 (Pydantic v2) Uvicore rebuilds every registered model **centrally at boot**.
 
 ---
 
@@ -184,6 +183,66 @@ attributes: Optional[Dict] = Field(None,
 ```
 
 Eager-load relations with [`.include()`](orm-querybuilder.md#include-relations), and manage them with `.create()`, `.add()`, `.set()`, `.link()`, `.unlink()` and `.delete()` (see [ORM Basics](orm-basics.md#saving)).
+
+### How `local_key` and `foreign_key` are derived
+
+Every non-pivot relation joins on two columns, and the JOIN is always:
+
+```
+this_table.local_key  =  related_table.foreign_key
+```
+
+- **`local_key`** is the column on **this** model's table (the model you're declaring the relation *on*).
+- **`foreign_key`** is the column on the **related** model's table.
+
+In the examples above both keys are *omitted* on `BelongsTo` and `local_key` is omitted on `HasMany`.  That's perfectly fine — Uvicore **derives** the missing key for you so the common case stays terse.  The derivation rules differ per relation type:
+
+| Relation | `local_key` (this table) | `foreign_key` (related table) |
+|----------|--------------------------|-------------------------------|
+| `BelongsTo` | derives to `'{field_name}_id'` | derives to `'id'` |
+| `HasOne` | derives to `'id'` | **required** — you must pass it |
+| `HasMany` | derives to `'id'` | **required** — you must pass it |
+| `MorphOne` / `MorphMany` | derives to `'id'` | derives to `'{polyfix}_id'` |
+
+`{field_name}` is the name of the relation field itself (e.g. the `creator` field derives `creator_id`).  `HasOne`/`HasMany` cannot derive `foreign_key` — they don't know this model's name — so it is a required argument; only `local_key` is optional for them.
+
+The examples below are written **fully explicit** so you can see exactly what the terse versions resolve to.  Each pair is equivalent:
+
+```python
+# BelongsTo — terse (both keys derived):
+creator: Optional[User] = Field(None, relation=BelongsTo('uvicore.auth.models.user.User'))
+# BelongsTo — explicit equivalent (join: posts.creator_id = users.id):
+creator: Optional[User] = Field(None,
+    relation=BelongsTo('uvicore.auth.models.user.User', local_key='creator_id', foreign_key='id'))
+
+# HasMany — terse (local_key derived):
+comments: Optional[List[Comment]] = Field(None,
+    relation=HasMany('acme.wiki.models.comment.Comment', foreign_key='post_id'))
+# HasMany — explicit equivalent (join: posts.id = comments.post_id):
+comments: Optional[List[Comment]] = Field(None,
+    relation=HasMany('acme.wiki.models.comment.Comment', foreign_key='post_id', local_key='id'))
+```
+
+Pass the keys explicitly whenever your columns don't match the derived names — for example a `BelongsTo` whose FK column is `author_id` rather than `{field_name}_id`, or a self-referential relation:
+
+```python
+# A 'parent' BelongsTo on the same table, FK column is parent_id (matches default), PK is id:
+parent: Optional[Post] = Field(None,
+    relation=BelongsTo('acme.wiki.models.post.Post', local_key='parent_id', foreign_key='id'))
+
+# A BelongsTo whose FK column name does NOT match the field name (field 'owner', column 'user_id'):
+owner: Optional[User] = Field(None,
+    relation=BelongsTo('uvicore.auth.models.user.User', local_key='user_id', foreign_key='id'))
+```
+
+!!! tip "Composite (multi-column) keys"
+    `foreign_key` and `local_key` accept an **ordered list** of columns as well as a single
+    string, producing a multi-column JOIN `ON` clause (e.g. `foreign_key=['tenant_id', 'workspace_id', 'post_id']`).
+    The two lists are **positional** and must be the same length (`local_key[i]` pairs with
+    `foreign_key[i]`, `AND`-ed in declared order); composite keys are **not** derived, so list every
+    column explicitly on both sides.  This is needed for sharded backends (Vitess / PlanetScale)
+    that must join on the shard key — list it first.
+    See [Composite Relation Keys](orm-querybuilder.md#composite-multi-column-relation-keys) for full details.
 
 !!! tip
     `*Many` relations (`HasMany`, `BelongsToMany`, `MorphMany`, `MorphToMany`) accept `dict_key`, `dict_value` and `list_value` to shape the output as a dict or a flat list instead of a list of full model objects.  When you set `dict_key`, type the field as `Optional[Dict]`; otherwise type it `Optional[List[RelatedModel]]`.

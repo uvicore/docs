@@ -83,6 +83,71 @@ posts = await (Post.query()
 
 
 
+## Composite (Multi-Column) Relation Keys
+
+Every relation's `foreign_key` and `local_key` accept **either a single column name or an
+ordered list of column names**.  When you pass lists, Uvicore builds a multi-column JOIN `ON`
+clause, pairing the columns by position and `AND`-ing them together **in the order you declare
+them**.
+
+```python
+from typing import List, Optional
+from uvicore.orm import Model, ModelMetaclass, Field, BelongsTo, HasMany
+
+class Post(Model['Post'], metaclass=ModelMetaclass):
+    ...
+    # One Post HasMany Comments, joined on THREE columns
+    comments: Optional[List[Comment]] = Field(None,
+        relation=HasMany('acme.wiki.models.comment.Comment',
+            foreign_key=['tenant_id', 'workspace_id', 'post_id'],   # columns on comments
+            local_key =['tenant_id', 'workspace_id', 'id'],         # columns on posts
+        ),
+    )
+
+class Comment(Model['Comment'], metaclass=ModelMetaclass):
+    ...
+    # Inverse BelongsTo, same three columns
+    post: Optional[Post] = Field(None,
+        relation=BelongsTo('acme.wiki.models.post.Post',
+            foreign_key=['tenant_id', 'workspace_id', 'id'],         # columns on posts
+            local_key =['tenant_id', 'workspace_id', 'post_id'],     # columns on comments
+        ),
+    )
+```
+
+`await Post.query().include('comments').get()` then generates a multi-column join:
+
+```sql
+... FROM posts LEFT OUTER JOIN comments
+      ON posts.tenant_id    = comments.tenant_id
+     AND posts.workspace_id = comments.workspace_id
+     AND posts.id           = comments.post_id
+```
+
+The lists are **positional**: `local_key[i]` is matched to `foreign_key[i]`, so both lists must
+be the same length (a clear exception is raised otherwise).  A single-string key
+(`foreign_key='post_id'`) keeps working exactly as before, it is simply a one-element composite.
+
+Composite keys are honored **everywhere** the relation is used: eager-loading (`.include()`),
+the inline join for `*One` relations (`BelongsTo` / `HasOne`), the secondary query for `*Many`
+relations (`HasMany`), and the in-memory matching that stitches children back to their parents.
+
+!!! info "Why composite keys?"
+    Sharded / distributed databases like **Vitess / PlanetScale** route a query to a single
+    shard using a **shard key** (vindex).  A join that omits the shard key forces a cross-shard
+    scatter/gather, which is slow and is frequently rejected or times out.  Declaring the shard
+    key columns (`tenant_id`, `workspace_id`) as the leading members of the relation key keeps the
+    join on a single shard.  The columns are emitted in declared order, so list the shard key
+    first.
+
+!!! tip
+    Which side each key column lives on (`foreign_key` vs `local_key`) follows the same rule as
+    single keys, see the [relation reference](orm-model.md#relations).  `BelongsTo` keeps the
+    foreign key on **this** table; `HasOne` / `HasMany` keep it on the **related** table.
+
+
+
+
 ## Where
 
 

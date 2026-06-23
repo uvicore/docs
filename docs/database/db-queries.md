@@ -419,6 +419,75 @@ posts = (await uvicore.db.query()
 ---
 
 
+## Joins
+
+Use `.join()` (INNER) or `.outer_join()` (LEFT OUTER) to join another table.  The simplest
+form takes the join table plus the two columns to match, with an optional `alias` for the
+joined table (the alias is what you reference in nested dot/underscore `.where()`, `.select()`,
+`.order_by()` etc).
+
+```python
+posts = (await uvicore.db.query('app1')
+    .table('posts')
+    .join('auth.users', 'posts.creator_id', 'auth.users.id', alias='creator')
+    .where('creator.email', 'administrator@example.com')
+    .get()
+)
+```
+
+`.outer_join()` is identical but produces a `LEFT OUTER JOIN`:
+
+```python
+.outer_join('auth.users', 'posts.creator_id', 'auth.users.id', alias='creator')
+```
+
+### Multiple ON conditions (composite joins)
+
+When a join needs more than one column in its `ON` clause, pass a complete SQLAlchemy boolean
+expression as the **second** argument and **omit** the third.  Build the multi-column clause
+with `sa.and_()`, the conditions are ANDed in the order you write them.
+
+This is required for sharded backends such as **Vitess / PlanetScale**, where the shard key
+(e.g. `tenant_id`, `workspace_id`) must be part of every join in addition to the natural key, or
+the query is rejected / scatters across shards.
+
+```python
+import sqlalchemy as sa
+from acme.wiki.database.tables.posts import Posts
+from acme.wiki.database.tables.comments import Comments
+
+posts    = Posts.table.c
+comments = Comments.table.c
+
+# JOIN comments c ON p.tenant_id    = c.tenant_id
+#                AND p.workspace_id = c.workspace_id
+#                AND p.id           = c.post_id
+posts_with_comments = (await uvicore.db.query('wiki')
+    .table('posts')
+    .join('comments', sa.and_(
+        posts.tenant_id    == comments.tenant_id,
+        posts.workspace_id == comments.workspace_id,
+        posts.id           == comments.post_id,
+    ), alias='comments')
+    .get()
+)
+```
+
+!!! note
+    The single-column form `.join(table, 'a.col', 'b.col')` is just shorthand for
+    `.join(table, a.c.col == b.c.col)`.  Whenever the second argument is already a complete
+    expression (a single comparison **or** an `sa.and_()` of several), leave the third argument
+    off and Uvicore uses it verbatim as the `ON` clause.
+
+!!! tip
+    If you are using the [ORM](orm-basics.md), you don't build joins by hand at all, define a
+    relation with composite keys and `.include()` it.  See
+    [Composite Relation Keys](orm-querybuilder.md#composite-multi-column-relation-keys).
+
+
+---
+
+
 ## .where()
 
 The default chained `.where()` clauses are AND statements.

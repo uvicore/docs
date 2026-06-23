@@ -89,6 +89,8 @@ rows = await uvicore.db.fetchall(query, connection='wiki')
 
 ## Joins
 
+A simple single-column join:
+
 ```python
 posts = uvicore.db.table('wiki.posts')
 users = uvicore.db.table('auth.users')
@@ -99,6 +101,34 @@ query = (sa.select(posts, users.c.email)
 )
 rows = await uvicore.db.fetchall(query, connection='wiki')
 ```
+
+### Multiple ON conditions (composite joins)
+
+A join's `onclause` is just a SQLAlchemy boolean expression, so you can `AND` several
+conditions together with `sa.and_()`.  This is essential on sharded backends such as
+**Vitess / PlanetScale**, where every join must include the shard key (e.g. `tenant_id`,
+`workspace_id`) alongside the natural key, otherwise the query scatters across all shards and is
+rejected or times out.
+
+```python
+posts    = uvicore.db.table('wiki.posts')
+comments = uvicore.db.table('wiki.comments')
+
+# JOIN comments c ON p.tenant_id    = c.tenant_id
+#                AND p.workspace_id = c.workspace_id
+#                AND p.id           = c.post_id
+query = (sa.select(posts, comments.c.id.label('comment_id'))
+    .select_from(posts.join(comments, sa.and_(
+        posts.c.tenant_id    == comments.c.tenant_id,
+        posts.c.workspace_id == comments.c.workspace_id,
+        posts.c.id           == comments.c.post_id,
+    )))
+)
+rows = await uvicore.db.fetchall(query, connection='wiki')
+```
+
+The conditions are ANDed in the exact order you list them.  Use `posts.outerjoin(...)` instead of
+`posts.join(...)` for a `LEFT OUTER JOIN`.
 
 ---
 

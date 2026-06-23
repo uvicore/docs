@@ -77,14 +77,40 @@ rows = await uvicore.db.fetchall(query, {'creator_id': 1}, connection='wiki')
 
 ## Execution Helpers
 
-The same helpers used elsewhere in the database layer work with raw SQL.  Each accepts the SQL string, an optional dict of parameters, and a `connection=`.
+The same helpers used elsewhere in the database layer work with raw SQL.  Each accepts the SQL string (or a SQLAlchemy query object), an optional dict of parameters, and a `connection=` (or `metakey=`).
+
+**Many rows**
 
 | Method | Use for |
 |--------|---------|
-| `await uvicore.db.fetchall(sql, params, connection=...)` | SELECT returning many rows |
-| `await uvicore.db.first(sql, params, connection=...)` | SELECT returning the first row (or `None`) |
-| `await uvicore.db.scalar(sql, params, connection=...)` | SELECT returning a single value |
-| `await uvicore.db.execute(sql, params, connection=...)` | INSERT, UPDATE and DELETE |
+| `await uvicore.db.all(sql, params, connection=...)` | SELECT returning many rows.  Returns an empty list if none found |
+| `await uvicore.db.fetchall(sql, params, connection=...)` | Alias to `.all()` |
+
+**One row**
+
+| Method | Use for |
+|--------|---------|
+| `await uvicore.db.first(sql, params, connection=...)` | SELECT returning the first row, or `None` if none found |
+| `await uvicore.db.fetchone(sql, params, connection=...)` | Alias to `.first()` |
+| `await uvicore.db.one(sql, params, connection=...)` | SELECT returning exactly one row.  Throws if zero rows or more than one row |
+| `await uvicore.db.one_or_none(sql, params, connection=...)` | SELECT returning one row or `None`.  Throws if more than one row |
+
+**Scalar values**
+
+| Method | Use for |
+|--------|---------|
+| `await uvicore.db.scalars(sql, params, connection=...)` | Many scalar values (the first column of each row).  Returns an empty list if none found |
+| `await uvicore.db.scalar(sql, params, connection=...)` | A single scalar value, or `None` if none found.  Returns the first if more than one |
+| `await uvicore.db.scalar_one(sql, params, connection=...)` | Exactly one scalar value.  Throws if zero rows or more than one row |
+| `await uvicore.db.scalar_one_or_none(sql, params, connection=...)` | One scalar value or `None`.  Throws if more than one row |
+
+**Writes**
+
+| Method | Use for |
+|--------|---------|
+| `await uvicore.db.execute(sql, params, connection=...)` | INSERT, UPDATE and DELETE.  Returns the SQLAlchemy `CursorResult` |
+| `await uvicore.db.insertone(sql, params, connection=...)` | Insert one row, returning its primary key |
+| `await uvicore.db.insertmany(sql, params, connection=...)` | Bulk insert many rows, returning the primary keys (on databases that support `INSERT..RETURNING`) |
 
 ```python
 # A single scalar value

@@ -39,8 +39,35 @@ than inferring it. Don't ship an example you haven't grounded in source.
   extension-less links — they break the build's link resolution.
 - Admonitions: `!!! note`, `!!! tip "X tips"`, `!!! danger "..."`, and the
   `!!! note "See The Code on Github"` source-link block.
-- Code fences tagged `python`/`bash`/`json`/`html`; examples use the `acme.wiki` demo namespace.
+- Code fences tagged `python`/`bash`/`json`/`html`; examples use the **`acme.wiki` demo domain**
+  (see next section — reuse its names, never invent a different namespace like `vfi`/`myapp`).
 - Friendly, second-person voice. Close pages with a `!!! tip` bullet summary.
+
+## The `acme.wiki` demo domain (canonical — reuse these exact names)
+
+**Every example across the whole site lives in one shared fictional app.** Don't invent per-page
+entities — drift (`vfi`, `myapp`, random model names) is the #1 consistency defect here. Reuse:
+
+- **Namespace** `acme.wiki`; **connection** `'wiki'`. The cross-package user lives in the **auth**
+  package — reference it as `uvicore.auth.models.user.User` / table `auth.users`; never redefine it.
+- **Core entities** (model → table, tables are snake_case plural):
+
+  | Model | Table | Key columns | Relations |
+  |---|---|---|---|
+  | `Post` | `posts` | `id`, `unique_slug` (mapped to model field `slug`), `title`, `body`, `creator_id` | `creator` BelongsTo `User`; `comments` HasMany; `tags` BelongsToMany (pivot `post_tags`) |
+  | `Comment` | `comments` | `id`, `post_id`, `creator_id`, `body` | `post` BelongsTo `Post` |
+  | `Tag` | `tags` | `id`, `name` | `posts` BelongsToMany (pivot `post_tags`) |
+  | `User` | `auth.users` | (from the auth package) | target of `creator` |
+
+- **Pivot** `post_tags` (`post_id`, `tag_id`). **Polymorphic** examples use `Attribute` via
+  `MorphMany(..., polyfix='attributable')`.
+- **Sharded / composite-key** examples: lead with shard keys `tenant_id`, `workspace_id`, then the
+  natural key (`posts.id` ↔ `comments.post_id`). See `database/orm-querybuilder.md`.
+- **Need a niche entity** a core one can't illustrate? Keep it in the wiki domain, snake_case, and
+  prefer reusing it. Existing one-offs (`Forecast` for computed `callback`; `invoices` for composite
+  PKs) are tolerated as feature-specific illustrations — don't add more without good reason.
+
+When in doubt, grep `docs/docs/` for how the entity is already used and match it exactly.
 
 ## Where a page goes (topic → folder)
 
@@ -105,7 +132,8 @@ Which page to touch:
 
 - `epologue/release-notes.md` — when the change is notable enough for the high-level
   release summary.
-- `epologue/changelog/<version>.md` (e.g. `0.4.0.md`) — version-specific details.
+- `epologue/changelog/<major.minor>.md` (e.g. `0.4.md`, **not** `0.4.0.md`) — version-specific
+  details. Files on disk are `0.3.md`, `0.4.md`.
 - `epologue/upgrade/from-<old>-to-<new>.md` (e.g. `from-0.3-to-0.4.md`) — whenever
   users must take action to upgrade safely.
 

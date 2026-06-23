@@ -3,6 +3,21 @@
 This repo is the MkDocs source for https://uvicore.io — documentation for the Uvicore framework.
 It contains **no framework code**, only Markdown content under `docs/docs/` plus `mkdocs.yml`.
 
+## Where knowledge lives (repo vs. machine-local)
+
+These repos are worked on by **dozens of team members across many machines**. All shared/durable
+knowledge — conventions, decisions, gotchas, repeatable workflows — **goes in the repo**
+(`CLAUDE.md`, `.claude/skills/`, `.claude/settings.json`), so everyone gets it on every machine.
+Claude's `~/.claude/.../memory/` is **per-machine and per-user** (not committed, not synced): fine
+for Claude's own internal working notes, but never the home for anything a teammate or another
+machine would need — promote anything broadly useful into the repo.
+
+### Journal & decision records
+A dated technical narrative lives in **`journal/`** (`journal/YYYY-MM-DD.md`, H2 entries) and durable
+decisions in **`adr/`** — both at the repo **root, outside `docs/docs/`** so MkDocs never publishes
+them. Append a journal entry at the end of any substantive docs task; write an ADR for a significant
+docs-architecture decision. See `journal/README.md` and `adr/README.md`.
+
 ## Commands (always use Poetry)
 
 MkDocs is installed in a Poetry venv, **not** globally. Always prefix with `poetry run`.
@@ -54,7 +69,8 @@ Release-oriented pages live under `docs/docs/epologue/` with **fixed filename pa
 don't invent variants:
 
 - `epologue/release-notes.md` — high-level release summary.
-- `epologue/changelog/<version>.md` — version-specific details, e.g. `0.4.0.md`.
+- `epologue/changelog/<major.minor>.md` — version-specific details, e.g. `0.4.md`
+  (major.minor, **not** `0.4.0.md`; files on disk are `0.3.md`, `0.4.md`).
 - `epologue/upgrade/from-<old>-to-<new>.md` — migration steps, e.g. `from-0.3-to-0.4.md`
   (minor-version path; not `from-0.3.0-to-0.4.0.md`).
 
@@ -82,7 +98,10 @@ a router option, an exception constructor — **read the real source** instead o
   (`/http/api/routing/`) or extension-less links (`built-in-commands`) — the build must emit no
   `'absolute link'` / `'unrecognized relative link'` INFO lines.
 - **Code fences** are language-tagged: `python`, `bash`, `json`, `html`. Python examples use the
-  `acme.wiki` demo package namespace.
+  **`acme.wiki` demo domain** — one shared fictional app (connection `wiki`; models
+  `Post`/`Comment`/`Tag` + the auth `User`). Reuse its exact entity/table/column names across pages;
+  never invent a new namespace or per-page entities. The `uvicore-docs` skill has the canonical
+  entity table.
 - **Voice**: friendly, second person, lightly playful ("Great.", "It's routers all the way down!").
   Keep it instructional, not stiff.
 - End most pages with a `!!! tip "X tips"` bullet summary.

@@ -309,6 +309,32 @@ posts = await Post.query().where('title', 'ilike', '%uvicore%').get()
 
 ---
 
+## New: Composite (Multi-Column) Joins
+
+Relations and the query builder can now join on **multiple columns** at once, ANDed together in
+declared order, needed for sharded backends like **Vitess / PlanetScale** that must join on the
+shard key in addition to the natural key.  This is purely additive; single-column relations and
+joins are unchanged (a single string key is just a one-element composite).
+
+```python
+# Relation keys accept ordered lists (paired positionally)
+items: Optional[List[RoItem]] = Field(None,
+    relation=HasMany('vfi.core.models.ro_item.RoItem',
+        foreign_key=['qgroup_id', 'client_id', 'ro_key'],   # columns on ro_items
+        local_key =['qgroup_id', 'client_id', 'key']))      # columns on ros
+
+# The DB query builder's .join() accepts a full sa.and_() ON clause
+.join('ro_items', sa.and_(
+    ros.qgroup_id == items.qgroup_id,
+    ros.client_id == items.client_id,
+    ros.key       == items.ro_key,
+), alias='items')
+```
+
+See [Composite Relation Keys](../../database/orm-querybuilder.md#composite-multi-column-relation-keys) and the [Joins section](../../database/db-queries.md#joins).
+
+---
+
 ## Behavior Improvements to Be Aware Of
 
 These are bug fixes rather than breaking changes, but they alter behavior you may have worked around:
@@ -317,6 +343,8 @@ These are bug fixes rather than breaking changes, but they alter behavior you ma
 - **Auto-increment primary keys.** Inserts no longer send an explicit `NULL` primary key.  Behavior is unchanged on SQLite, and inserts that previously failed on Postgres/MySQL now succeed.
 - **`find()` by primary key** coerces the value to the column's type, so passing a string id works on strict engines like Postgres.
 - **`HasMany` `delete()` / `set()`** now work (they previously raised).
+- **Eager-loading on a natural (non-primary-key) `local_key`** (0.4.3).  A `HasMany` / `HasOne` whose `local_key` is *not* the parent's primary key (e.g. `ros.key` ↔ `ro_items.ro_key`) now attaches its children correctly; such `*Many` collections previously came back empty.  If you worked around this by querying children separately, you can now just `.include()` them.
+- **`*Many` includes combined with `.limit()` / `.offset()`** (0.4.3).  Limit/offset now page the **parent** rows (each parent keeps all of its children) instead of truncating on the multiplied join rows.  If you avoided combining `.include()` of a many-relation with `.limit()`, that combination now works.
 
 ---
 

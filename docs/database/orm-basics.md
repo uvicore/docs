@@ -58,9 +58,8 @@ class Post(Model['Post'], metaclass=ModelMetaclass):
         relation=HasMany('acme.wiki.models.comment.Comment', foreign_key='post_id'))
 
 
-# Resolve forward-referenced relation types
+# Import forward-referenced relation types at the bottom of the file
 from acme.wiki.models.comment import Comment   # isort:skip
-Post.update_forward_refs()
 ```
 
 Generate a fresh model skeleton with the [schematic generator](../cli/built-in-commands.md):
