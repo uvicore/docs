@@ -185,17 +185,37 @@ api = {
 }
 ```
 
-Each route is also given a **name**, automatically prefixed with your package's short name.  Prefer referencing routes by name rather than by hardcoded URL, paths can change when another app mounts your package under a different prefix, but names are stable.
+Each route is also given a **name**.  API route names are automatically prefixed with your package's short name *and* an `api` segment, so a `/welcome` route in the `acme.wiki` package is named `wiki.api.welcome`.  That extra `api` segment comes from the `name_prefix='api'` default of `register_http_api_routes()` in your provider (web routes get no such segment, hence `wiki.welcome` for the web side).  Prefer referencing routes by name rather than by hardcoded URL, paths can change when another app mounts your package under a different prefix, but names are stable.
 
 ```python
-@route.get('/welcome')              # auto-named, e.g. wiki.welcome
+@route.get('/welcome')              # auto-named, e.g. wiki.api.welcome
 async def welcome():
     ...
 
-@route.get('/welcome', name='greeting')   # custom name (still auto-prefixed)
+@route.get('/welcome', name='greeting')   # custom name (still auto-prefixed -> wiki.api.greeting)
 async def welcome():
     ...
 ```
+
+### Resolving a Route URL in Code
+
+In templates you reach for the [`url()` helper](../web/templating.md).  From Python, resolve a route name to its URL with `url_path_for()` on the running app, or with the request when you have one, both hit the same name registry the `url()` helper uses, so they honor the configured api prefix automatically.
+
+```python
+import uvicore
+
+# Anywhere, no request needed - returns the path (api prefix included)
+path = uvicore.app.http.url_path_for('wiki.api.welcome')   # -> '/api/welcome'
+
+# Inside a route handler, when you have the request
+@route.get('/welcome')
+async def welcome(request: Request):
+    path = request.url_path_for('wiki.api.welcome')   # -> '/api/welcome'
+    url = request.url_for('wiki.api.welcome')          # -> http://host/api/welcome (absolute)
+    ...
+```
+
+Not sure of a route's exact name?  List every registered route and its name with `./uvicore http routes`.
 
 ### Overriding Another Package's Route
 

@@ -176,14 +176,16 @@ web = {
 Each route is also given a **name**, auto-prefixed with your package's short name.  Prefer referencing routes by name rather than hardcoded URL, paths shift when another app mounts your package under a different prefix, but names stay put.
 
 ```python
-@route.get('/')                     # auto-named, e.g. wiki.home
-async def home(request: Request):
+@route.get('/dashboard')            # auto-named from the path -> wiki.dashboard
+async def dashboard(request: Request):
     ...
 
-@route.get('/', name='home')        # custom name (still auto-prefixed -> wiki.home)
+@route.get('/', name='home')        # the root path auto-names to wiki.root, so name it -> wiki.home
 async def home(request: Request):
     ...
 ```
+
+(Web route names are prefixed with your package's short name only, there is no `api` segment like the [API side](../api/routing.md#prefixes-and-route-names) gets.)
 
 ### Generating URLs From Names
 
@@ -193,6 +195,15 @@ In your templates, use the `url()` helper to build URLs from route names instead
 <a href="{{ url('wiki.home') }}">Home</a>
 <a href="{{ url('wiki.user', id=user.id) }}">Profile</a>
 ```
+
+From Python, resolve a name to its URL with `url_path_for()` on the running app (or `request.url_for()` when you have a request), the same name registry the `url()` helper uses:
+
+```python
+import uvicore
+path = uvicore.app.http.url_path_for('wiki.home')   # -> '/'
+```
+
+See [Resolving a Route URL in Code](../api/routing.md#resolving-a-route-url-in-code) for the full rundown.
 
 ### Overriding Another Package's Route
 
