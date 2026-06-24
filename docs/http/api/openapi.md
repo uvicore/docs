@@ -19,9 +19,11 @@ OpenAPI behavior lives under `api.openapi` in your `config/http.py`.
 'openapi': {
     'title': env('OPENAPI_TITLE', 'Acme Wiki API Docs'),
     'path': '/openapi.json',
+    'separate_schemas': env.bool('OPENAPI_SEPARATE_SCHEMAS', False),
     'docs': {
         'path': '/docs',
         'expansion': 'list',                 # list, none or full
+        'models_expansion': env.int('OPENAPI_MODELS_EXPANSION', -1),
         'favicon_url': '...',
         'js_url': '/assets/wiki/js/swagger-ui-bundle.min.js',
         'css_url': '/assets/wiki/css/swagger-dark-ui.css',
@@ -77,6 +79,45 @@ Uvicore overrides FastAPI's default Swagger UI HTML so it can expose settings Fa
 - OAuth2 integration for interactive auth
 
 This is why a fresh Uvicore app ships its own local Swagger assets under `http/public/assets/` and references them in the `docs` config, your docs work offline and on-brand out of the box.
+
+---
+
+## Taming Large Schema Sets
+
+When you expose many models, especially through the [automatic model CRUD API](model-router.md), the OpenAPI schema can grow large and the Swagger UI can become sluggish, because Swagger renders the entire **Schemas** section and resolves every `$ref`.  Two config knobs keep it fast.
+
+### `separate_schemas` — one schema per model, not two
+
+By default FastAPI emits **two** schemas for every model, `Foo-Input` (request bodies) and `Foo-Output` (responses), even when the two are identical.  With a large model graph this doubles your schema count and can easily double the size of your `openapi.json`.
+
+Uvicore defaults `separate_schemas` to `False`, collapsing each model into a **single** `Foo` schema:
+
+```python
+'openapi': {
+    'separate_schemas': env.bool('OPENAPI_SEPARATE_SCHEMAS', False),  # one schema per model
+    ...
+},
+```
+
+Set it to `True` only if you genuinely need FastAPI's split input/output schema behavior (e.g. you rely on read-only fields differing between request and response).
+
+### `models_expansion` — hide the giant Schemas section
+
+The `models_expansion` setting maps to Swagger UI's `defaultModelsExpandDepth` and controls the **Schemas** section at the bottom of the docs:
+
+- `-1` (Uvicore default) hides the Schemas section entirely, the single biggest win for responsiveness when your model graph is large.
+- `0` shows the section collapsed.
+- `1` or higher expands the models.
+
+```python
+'docs': {
+    'models_expansion': env.int('OPENAPI_MODELS_EXPANSION', -1),  # -1 hides, 0 collapses, 1+ expands
+    ...
+},
+```
+
+!!! tip
+    Hiding the Schemas section (`models_expansion: -1`) does not remove anything from `openapi.json`, your endpoints still document their full request/response shapes inline.  It only stops Swagger UI from rendering the (often huge) standalone model list.
 
 ---
 
