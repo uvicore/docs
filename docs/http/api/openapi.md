@@ -84,7 +84,7 @@ This is why a fresh Uvicore app ships its own local Swagger assets under `http/p
 
 ## Taming Large Schema Sets
 
-When you expose many models, especially through the [automatic model CRUD API](model-router.md), the OpenAPI schema can grow large and the Swagger UI can become sluggish, because Swagger renders the entire **Schemas** section and resolves every `$ref`.  Two config knobs keep it fast.
+When you expose many models, especially through the [automatic model CRUD API](model-router.md), the OpenAPI schema can grow large and the Swagger UI can become sluggish, because Swagger renders the entire **Schemas** section and resolves every `$ref`.  A few config knobs keep it fast.
 
 ### `separate_schemas` — one schema per model, not two
 
@@ -118,6 +118,39 @@ The `models_expansion` setting maps to Swagger UI's `defaultModelsExpandDepth` a
 
 !!! tip
     Hiding the Schemas section (`models_expansion: -1`) does not remove anything from `openapi.json`, your endpoints still document their full request/response shapes inline.  It only stops Swagger UI from rendering the (often huge) standalone model list.
+
+### `model_expansion` — collapse the per-operation model tree
+
+Hiding the Schemas section fixes the *initial* page load, but expanding a single operation (e.g. `GET /ros`) can still take a couple of seconds the first time, because Swagger recursively renders that operation's request/response **model tree** and resolves every nested relation `$ref`.
+
+`model_expansion` maps to Swagger UI's `defaultModelExpandDepth` and controls that per-operation tree:
+
+- `1` (Swagger's default) pre-renders one level of the model when you expand an operation.
+- `0` keeps the model collapsed so operations expand instantly, you click into the model only when you want it.
+
+```python
+'docs': {
+    'model_expansion': env.int('OPENAPI_MODEL_EXPANSION', 0),  # 0 = collapse per-op model, fastest
+    ...
+},
+```
+
+### `parameters` — any other Swagger UI setting
+
+For anything else, `parameters` is a raw passthrough merged into the `SwaggerUIBundle({...})` config (and it overrides the defaults above).  For example, if the lag on expand is the **example-value** computation rather than the model tree, default each operation to the cheaper Schema tab:
+
+```python
+'docs': {
+    'parameters': {
+        'defaultModelRendering': 'model',   # show the Schema tab, not a computed Example Value
+        'tryItOutEnabled': True,
+    },
+    ...
+},
+```
+
+!!! note "The deeper lever"
+    Per-operation expand cost scales with the size of each model's *resolved* schema.  The biggest models are big because their relations are embedded as nested `$ref`s that cascade through the graph.  These knobs make Swagger render that schema lazily; they don't shrink it.  If you need the schema itself smaller, reduce what each model embeds (relations are loadable on demand via `?include=`).
 
 ---
 
