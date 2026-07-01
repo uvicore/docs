@@ -30,6 +30,9 @@ Redis connections are defined in your package's `config/package.py` under the to
                 'port': env.int('REDIS_WIKI_PORT', 6379),
                 'database': env.int('REDIS_WIKI_DB', 0),
                 'password': env('REDIS_WIKI_PASSWORD', None),
+                'options': {
+                    'health_check_interval': 30,
+                },
             },
             'cache': {
                 'host': env('REDIS_CACHE_HOST', '127.0.0.1'),
@@ -42,6 +45,8 @@ Redis connections are defined in your package's `config/package.py` under the to
 ```
 
 Each connection is a named entry with `host`, `port`, `database` (the Redis logical database number) and an optional `password`.  The `default` key names the connection used whenever you don't ask for one explicitly.
+
+An optional `options` dict lets you pass **arbitrary client keyword arguments** straight through to the underlying [redis-py](https://redis.readthedocs.io/) async client — anything its `from_url()` accepts, such as `health_check_interval`, `socket_timeout`, `socket_connect_timeout`, `max_connections` or `decode_responses`.  This mirrors the `options` dict on a [database connection](../database/db-config.md) (which becomes SQLAlchemy `connect_args`).  Omit the key entirely and the client's own defaults apply.
 
 As always, every value is `.env` overridable so the same code runs in dev, staging and production untouched:
 ```
