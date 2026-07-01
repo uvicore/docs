@@ -27,7 +27,7 @@ MkDocs is installed in a Poetry venv, **not** globally. Always prefix with `poet
 | Build | `./build` or `poetry run mkdocs build` | Output goes to `site/` (gitignored) |
 | Build (gated) | `poetry run mkdocs build --strict` | **Use this to validate work** — exits non-zero on real problems |
 | Live preview | `./serve` or `poetry run mkdocs serve` | Serves on `0.0.0.0:8034` |
-| Deploy | `./deploy-xenweb1` | Builds + rsyncs `site/` to the web host |
+| Deploy | `./deploy-linweb1` | Builds + rsyncs `site/` to the web host |
 
 Python 3.14.x (floor `>=3.12`), Poetry, `package-mode = false`. Deps: `mkdocs`, `mkdocs-material`.
 
