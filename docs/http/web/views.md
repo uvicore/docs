@@ -135,6 +135,12 @@ Reach for the built-in `url()` and `asset()` helpers rather than hardcoding path
 
 ---
 
+## Sharing Data Across Views
+
+Need the same context, a sidebar's tags, the current user's notifications, site navigation, on many views without fetching it by hand in every controller?  Register a [View Composer](view-composers.md) against a view wildcard and Uvicore merges its data into every matching view automatically.
+
+---
+
 ## Beyond Web Views
 
 The templating engine isn't only for HTTP views, you can render templates anywhere in your app, for emails, PDFs, generated files or CLI output.  See [Templating (Digging Deeper)](../../deeper/templating.md) for standalone usage.

@@ -43,7 +43,7 @@ class Weather:
 | `@uvicore.event()` | An [Event](events/index.md) |
 | `@uvicore.job()` | A [Job](jobs.md) |
 | `@uvicore.controller()` / `@uvicore.routes()` | An HTTP [controller or routes](../http/web/controllers.md) class |
-| `@uvicore.composer()` | A view composer that attaches data to a view |
+| `@uvicore.composer()` | A [View Composer](../http/web/view-composers.md) that attaches data to a view |
 
 If you don't pass a name, the binding name defaults to the class's fully qualified path, for example `acme.wiki.services.weather.Weather`.  Pass `aliases=[...]` to give it short, friendly names and `singleton=True` if the container should hand back the same instance every time.
 
