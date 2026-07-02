@@ -133,6 +133,18 @@ If you were to use a 3rd party dialect like `snowflake-sqlalchemy` you may utili
 ---
 
 
+## Engine Lifecycle
+
+Uvicore builds one SQLAlchemy engine (connection pool) per unique server+database during bootstrap, shared by every connection that points at the same place.
+
+- **Shutdown is automatic.**  When the CLI command, HTTP server or pytest run ends, Uvicore disposes every engine (closing all pooled driver connections) via the framework's `Shutdown` events.  Without this, async driver connections (aiomysql, asyncpg...) would be garbage collected after the event loop closes and spew `RuntimeError: Event loop is closed` tracebacks on exit.
+- **Re-initialization is safe.**  Advanced apps that call `uvicore.db.init()` again at runtime (for example to switch a snowflake warehouse, which requires a new engine URL) will not leak: an engine whose URL is unchanged is reused as-is, and a replaced engine is properly disposed rather than orphaned.  Its SQLAlchemy `MetaData` (and all tables registered on it) is preserved.
+- **Manual disconnect.**  You can dispose engines yourself with `await uvicore.db.disconnect(connection='wiki')`, by `metakey=`, or everything with `await uvicore.db.disconnect(all_dbs=True)`.
+
+
+---
+
+
 ## View from CLI
 
 From the [Uvicore CLI](../cli/index.md), you can see all deeply merged connection strings for your app and any Uvicore package dependencies that use the DB by running

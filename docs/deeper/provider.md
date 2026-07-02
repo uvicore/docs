@@ -102,7 +102,7 @@ def boot(self) -> None:
 |-------|--------|---------|
 | `Cli` | `uvicore.console.package.registers` | `register_cli_commands()` |
 | `Db` | `uvicore.database.package.registers` | `register_db_connections()`, `register_db_models()`, `register_db_tables()`, `register_db_seeders()` |
-| `Http` | `uvicore.http.package.registers` | `register_http_web_routes()`, `register_http_api_routes()`, `register_http_views()`, `register_http_public()`, `register_http_assets()` |
+| `Http` | `uvicore.http.package.registers` | `register_http_web_routes()`, `register_http_api_routes()`, `register_http_views()`, `register_http_public()`, `register_http_assets()`, `register_http_view_context_processors()`, `register_http_view_composers()` |
 | `Redis` | `uvicore.redis.package.registers` | `register_redis_connections()` |
 | `Templating` | `uvicore.templating.package.registers` | `register_templating_paths()`, `register_templating_context_processors()` |
 

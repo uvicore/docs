@@ -18,7 +18,7 @@ This section covers the deeper, cross-cutting features of the framework.  None o
 - **[IoC Container](ioc.md)** - Inversion of Control.  Override *anything*, even Uvicore's own core.
 - **[Jobs](jobs.md)** - Encapsulate a unit of work and dispatch it sync or async.
 - **[Templating](templating.md)** - Render Jinja templates anywhere, not just in Web views.
-- **[HTTP Client](http-client.md)** - A shared async `aiohttp` client for outbound HTTP calls.
+- **[HTTP Client](http-client.md)** - A shared async `httpx` client for outbound HTTP calls.
 - **[Cache](cache.md)** - Pluggable key/value caching with Redis and in-memory backends.
 - **[Redis](redis.md)** - A simple async connection helper and passthrough to the raw Redis client.
 - **[Mail](mail.md)** - A fluent, chainable mailer with swappable drivers.

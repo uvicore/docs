@@ -38,6 +38,7 @@ nav:
       - http/exceptions/smart.md
       - http/exceptions/http-exception.md
       - http/exceptions/not-found.md
+      - http/exceptions/bad-parameter.md
       - http/exceptions/permission-denied.md
       - http/exceptions/not-authenticated.md
       - http/exceptions/invalid-credentials.md
