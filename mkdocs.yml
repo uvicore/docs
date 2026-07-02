@@ -29,6 +29,7 @@ nav:
       - http/web/authorization.md
       - http/web/templating.md
       - http/web/views.md
+      - http/web/view-composers.md
     - Middleware:
       - http/middleware/concepts.md
       - http/middleware/authentication.md

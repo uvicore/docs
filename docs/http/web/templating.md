@@ -101,7 +101,7 @@ Uvicore's Jinja2 engine ships configured with sensible, secure defaults:
 - `autoescape=True` to protect against XSS
 - `keep_trailing_newline=True` for cleaner output
 - support for custom filters, tests and context functions
-- [view composers](../../deeper/templating.md) for injecting shared context into matching views
+- [view composers](view-composers.md) for injecting shared context into matching views
 
 !!! tip "Templating tips"
     - Organize templates by feature or section under `http/views/`.

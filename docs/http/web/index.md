@@ -70,4 +70,5 @@ If you are new to Uvicore's web layer, these pages build on each other in order:
 4. **[Authorization](authorization.md)** - what they are allowed to do.
 5. **[Templating](templating.md)** - Jinja2, filters and helpers.
 6. **[Views](views.md)** - rendering templates as responses.
-7. **[Controllers](controllers.md)** - organizing your routes.
+7. **[View Composers](view-composers.md)** - inject shared context into matching views.
+8. **[Controllers](controllers.md)** - organizing your routes.
