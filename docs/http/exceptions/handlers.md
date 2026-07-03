@@ -77,6 +77,8 @@ The default Web exception handler is defined in `config/http.py` is
 
 The default Web exception handler will attempt to locate and render a `Jinja2` template with the same name as the `status_code` inside a `errors` view folder.  For example a `404` error will try to render the `errors/404.j2` template.  If the template does not exist [in ANY package] it will then attempt to locate and render the `errors/catch_all.j2` template.  If that templates does not exist in any package it will return a basic HTML page with the error details.  By creating these templates, you have complete control over each individual error including a custom catch all!
 
+The rendered error template is returned with the **correct HTTP status code** (and any exception headers), so a `404` template really responds `404 Not Found`, not `200 OK`.
+
 
 
 
@@ -104,11 +106,13 @@ async def web(request: Request, e: HTTPException) -> response.HTML:
     (status_code, detail, message, exception, extra, headers) = expand_payload(e)
 
     try:
-        # Try to respond with a errors template, if exists
+        # Try to respond with a errors template, if exists.  Pass the real
+        # status_code/headers through so the rendered page returns the correct
+        # HTTP status (not a default 200).
         return await response.View('errors/' + str(status_code) + '.j2', {
             'request': request,
             **e.__dict__,
-        })
+        }, status_code=status_code, headers=headers)
     except:
 
         try:
@@ -116,7 +120,7 @@ async def web(request: Request, e: HTTPException) -> response.HTML:
             return await response.View('errors/catch_all.j2', {
                 'request': request,
                 **e.__dict__,
-            })
+            }, status_code=status_code, headers=headers)
         except:
             # Errors status_code or catch_all template does not exist.
             # Response with generic HTML error
