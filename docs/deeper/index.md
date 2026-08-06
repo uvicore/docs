@@ -22,6 +22,7 @@ This section covers the deeper, cross-cutting features of the framework.  None o
 - **[Cache](cache.md)** - Pluggable key/value caching with Redis and in-memory backends.
 - **[Redis](redis.md)** - A simple async connection helper and passthrough to the raw Redis client.
 - **[Mail](mail.md)** - A fluent, chainable mailer with swappable drivers.
+- **[Logging](logging.md)** - Rich colored console output, date-stamped log files, and a separate log per feature.
 - **[SuperDict](superdict.md)** - The dot-notation, deep-mergeable dictionary that powers all of Uvicore's config.
 
 !!! tip

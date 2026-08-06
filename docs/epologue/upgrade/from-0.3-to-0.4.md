@@ -335,6 +335,52 @@ See [Composite Relation Keys](../../database/orm-querybuilder.md#composite-multi
 
 ---
 
+## New: Date-Stamped Log Files and Log Channels
+
+Added in **0.4.10**.  Both are opt-in and **nothing is required** — your existing `logger` config keeps working byte for byte.
+
+**Date-stamped log files.**  Put strftime tokens in your log path and the date becomes part of the filename, rolling onto the next day's file by itself with nothing ever renamed:
+
+```python
+# config/logger.py
+'file': {
+    # Before - static filename, rename-based rotation
+    # 'file': env('LOG_FILE_PATH', '/var/log/acme.wiki/wiki.log'),
+
+    # After - the date IS the filename
+    'file': env('LOG_FILE_PATH', '/var/log/acme.wiki/%Y-%m-%d_{channel}.log'),
+    'retention': env.int('LOG_FILE_RETENTION', 30),  # days, 0 = keep forever
+},
+```
+
+!!! danger "Do this if more than one process writes your log file"
+    This is the one part of 0.4.10 worth acting on rather than merely knowing about.  If you run `uvicorn --workers N`, gunicorn with multiple workers, or a CLI command alongside your web server, and they share a `LOG_FILE_PATH`, then rename-based rotation is **already losing log data** for you today: one process renames the file out from under the others, and the losers keep appending to the renamed (or deleted) file and never rotate again for the rest of their lives.
+
+    Switching to a dated filename fixes it outright, because nothing is ever renamed.
+
+    Note that `backup_count` does **not** apply to dated filenames — set `retention` (in days) instead, or your logs will grow without bound.
+
+**Log channels.**  If your app has features that each deserve their own log file, declare channels and write to them:
+
+```python
+# config/logger.py
+'channels': {
+    'Auditor': {},
+    'Importer': {},
+    'Processor': {},
+},
+```
+
+```python
+uvicore.log.channel('Processor').info('Batch 7 complete')
+```
+
+Channels support the full logger interface, inherit your `console`/`file` config, and never double-write into your default log.  Channel names cannot contain a dot.
+
+See the [Logging](../../deeper/logging.md) page — new in this release — for the whole subsystem.
+
+---
+
 ## Behavior Improvements to Be Aware Of
 
 These are bug fixes rather than breaking changes, but they alter behavior you may have worked around:

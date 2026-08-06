@@ -87,6 +87,7 @@ nav:
     - deeper/cache.md
     - deeper/redis.md
     - deeper/mail.md
+    - deeper/logging.md
     - deeper/superdict.md
     - Contributor Notes:
       - deeper/contrib/bootstrap.md
