@@ -280,6 +280,37 @@ short-lived CLI that has no use for a heartbeat, for instance:
 ---
 
 
+## PlanetScale
+
+PlanetScale is a sharded MySQL built on [Vitess](https://vitess.io/), so it uses the ordinary `mysql`
+dialect with a MySQL driver such as `aiomysql`.  Two `options` keys are effectively mandatory:
+
+```python
+'options': {
+    'ssl': True,          # PlanetScale requires SSL
+    'autocommit': True,   # required as of PlanetScale's 2026-09-01 Vitess change
+}
+```
+
+Vitess previously reported the **wrong** autocommit value in the connection handshake, so
+pymysql/aiomysql connections ran autocommit-ON despite the driver intending OFF.  Now that Vitess
+reports it correctly those connections become `autocommit=False`, leaving an implicit transaction
+open that Vitess aborts after 20 seconds.  Setting `'autocommit': True` preserves the behavior a
+PlanetScale connection already had.
+
+!!! warning "Only on PlanetScale connections"
+    `autocommit` is **not** the driver default — pymysql and aiomysql both default to
+    `autocommit=False`.  Forcing it True on an ordinary MySQL/MariaDB/Aurora connection silently
+    disables rollback (an `INSERT` followed by `rollback()` stays committed), so scope it to the
+    connections that actually point at Vitess.
+
+See the [PlanetScale recipe](recipes/planetscale.md) for the full connection example and both of
+PlanetScale's suggested fixes.
+
+
+---
+
+
 ## View from CLI
 
 From the [Uvicore CLI](../cli/index.md), you can see all deeply merged connection strings for your app and any Uvicore package dependencies that use the DB by running
