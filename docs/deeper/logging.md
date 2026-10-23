@@ -241,7 +241,7 @@ A long-running process — a queue worker, a Kafka or Redis consumer looping for
 
 This is the recommended mode, for three concrete reasons:
 
-- **Multiple processes can share one log.** With `uvicorn --workers N`, or a CLI command running alongside your web server, every process independently derives the same wall-clock filename and appends to it.  There is nothing to coordinate and nothing to race on.
+- **Multiple processes can share one log.** With `uvicorn --workers N`, or a CLI command running alongside your web server, every process independently derives the same wall-clock filename and appends to it.  There is nothing to coordinate and nothing to race on — on one machine.  Several **machines** sharing one NFS/EFS log folder need [`{hostname}`](#one-file-per-machine-hostname).
 - **The filename never lies.** Every timestamp inside `2026-07-29_default.log` really does start with `2026-07-29`, because the filename is derived from each record's own creation time rather than from the clock at write time.
 - **Nothing is renamed, so nothing can be lost.** See the warning under legacy rotation below.
 
@@ -249,6 +249,32 @@ This is the recommended mode, for three concrete reasons:
 
 !!! note
     `{channel}` is optional.  If you leave it out, your main log uses the path exactly as written and each channel gets the channel name appended before the extension — so `/var/log/acme.wiki/wiki.log` yields `wiki.log`, `wiki_Processor.log`, `wiki_Auditor.log`.  A channel always gets its own file; that is the whole point of a channel.
+
+#### One file per machine: `{hostname}`
+
+When several machines log into one **shared** folder (an NFS or AWS EFS mount, say a load-balanced pair of app servers), put `{hostname}` in the path:
+
+```bash
+LOG_FILE_PATH="/mnt/shared/logs/acme.wiki/%Y-%m-%d_{channel}_{hostname}.log"
+```
+
+```bash
+/mnt/shared/logs/acme.wiki/2026-07-29_default_app1.log
+/mnt/shared/logs/acme.wiki/2026-07-29_default_app2.log
+```
+
+`{hostname}` is replaced with the machine's hostname (`socket.gethostname()`).  Without it, both machines append to the same file and you **will** get torn and lost lines: appends from processes on one machine are serialized by its kernel, but NFS has no atomic append across machines.  Each machine computes "end of file" from its own cached view and writes there, so near-simultaneous lines from two hosts overwrite each other's bytes:
+
+```bash
+2026-07-29 04:26:50.779 | INFO     | Batch | Saved 121.89 KB file ...
+026-07-29 04:26:50.158 | INFO     | Batch | Saved 50.0 KB file ...
+2
+```
+
+Retention is per machine too: each host only ever matches, and prunes, its own files.
+
+!!! tip "Docker"
+    Inside a container, `socket.gethostname()` is the container's hostname, a random ID by default that changes on every recreate.  Give the container the machine's name, e.g. `hostname: "${HOSTNAME}"` in `docker-compose.yml`.  Bash does not export `HOSTNAME` on Debian, so run `export HOSTNAME` (or set it explicitly) before `docker compose`, or compose sees a blank string.
 
 You can use any strftime tokens you like, including ones that create directories:
 
